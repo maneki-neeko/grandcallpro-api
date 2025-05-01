@@ -8,11 +8,14 @@
     "dev": "bun --watch run index.ts",
     "build": "bun build index.ts --outdir ./dist",
     "docker:build": "docker build -t grandcallpro-api .",
-    "docker:run": "docker run -p 8081:8081 grandcallpro-api"
+    "docker:run": "docker run -p 8081:8081 grandcallpro-api",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "@types/express": "^5.0.1"
+    "@types/express": "^5.0.1",
+    "prettier": "^3.5.3"
   },
   "peerDependencies": {
     "typescript": "^5"
