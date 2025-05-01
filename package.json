@@ -3,8 +3,16 @@
   "module": "index.ts",
   "type": "module",
   "private": true,
+  "scripts": {
+    "start": "bun run index.ts",
+    "dev": "bun --watch run index.ts",
+    "build": "bun build index.ts --outdir ./dist",
+    "docker:build": "docker build -t grandcallpro-api .",
+    "docker:run": "docker run -p 8081:8081 grandcallpro-api"
+  },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/express": "^5.0.1"
   },
   "peerDependencies": {
     "typescript": "^5"
