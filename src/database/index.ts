@@ -11,7 +11,7 @@ const dbPath = path.resolve(__dirname, './call_records.db');
 export const AppDataSource = new DataSource({
   type: 'sqlite',
   database: dbPath,
-  synchronize: false, // Não sincroniza o schema para preservar o banco existente
+  synchronize: true,
   logging: process.env.NODE_ENV === 'development',
   entities: [CallRecord, Extensions]
 });
