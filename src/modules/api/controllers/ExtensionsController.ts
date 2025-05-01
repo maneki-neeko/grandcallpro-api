@@ -20,10 +20,10 @@ export class ExtensionsController {
     try {
       const extensions = req.body as ExtensionsRequest;
 
+      // TODO: Validar dados recebidos, está faltando o enum de departamento
+
       // Processa os dados
-      const result = await this.processExtensionsCreationUseCase.perform(
-        extensions
-      );
+      const result = await this.processExtensionsCreationUseCase.perform(extensions);
 
       // Responde com sucesso
       res.status(201).json(result);
