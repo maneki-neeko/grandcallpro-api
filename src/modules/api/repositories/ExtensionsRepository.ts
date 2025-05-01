@@ -25,4 +25,9 @@ export class ExtensionsRepository {
 
     return this.repository.save(extensions);
   }
+
+  async delete(id: number): Promise<void> {
+
+    this.repository.delete(id);
+  }
 }

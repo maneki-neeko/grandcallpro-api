@@ -4,9 +4,9 @@ import { AppDataSource } from "../../../database";
 import { Extensions } from "../entities/Extensions";
 
 /**
- * Caso de uso responsável por processar a criação do ramal
+ * Caso de uso responsável por processar a exclusão do ramal
  */
-export class ProcessExtensionsCreationUseCase {
+export class ProcessExtensionsDeleteUseCase {
   private extensionsRepository: ExtensionsRepository;
 
   constructor() {
@@ -14,11 +14,12 @@ export class ProcessExtensionsCreationUseCase {
   }
 
   /**
-   * Processa os dados da criação do ramal
+   * Processa os dados da exclusão do ramal
    * @param data Dados do ramal
    * @returns Dados processados ou mensagem de sucesso
    */
-    async perform(data: ExtensionsRequest): Promise<Extensions> {
-        return this.extensionsRepository.save(data);
+  async perform(id: number): Promise<void> {
+    // TO-DO: Validar que usuário tenha permissão para exclusão de ramal
+    this.extensionsRepository.delete(id);
   }
 }
