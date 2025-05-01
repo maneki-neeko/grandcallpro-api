@@ -3,6 +3,7 @@ import express from 'express';
 import type { Request, Response } from 'express';
 import { coreRoutes } from './src/modules/core';
 import { initializeDatabase } from './src/database';
+import { extensionsRoutes } from './src/modules/api';
 
 // Configuração do servidor Express
 const app = express();
@@ -13,6 +14,9 @@ app.use(express.json());
 
 // Rotas do módulo core
 app.use('/', coreRoutes);
+
+// Rotas dos ramais
+app.use('/', extensionsRoutes);
 
 // Rota raiz
 app.get('/ping', (req: Request, res: Response) => {
