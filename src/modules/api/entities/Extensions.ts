@@ -1,23 +1,23 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import 'reflect-metadata';
+import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import "reflect-metadata";
 
 /**
  * Entidade que representa um registro dos ramais
  */
-@Entity('extensions')
+@Entity("extensions")
 export class Extensions {
-      @PrimaryGeneratedColumn()
-      id!: number;
+  @PrimaryGeneratedColumn()
+  id!: number;
 
-      @Column()
-      number!: number;
-      
-      @Column()
-      department!: string;
+  @Column()
+  number!: number;
 
-      @Column()
-      sector!: string;
+  @Column()
+  department!: string;
 
-      @Column()
-      employee!: string;
+  @Column()
+  sector!: string;
+
+  @Column()
+  employee!: string;
 }

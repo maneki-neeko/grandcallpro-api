@@ -1,6 +1,7 @@
 import { Repository, DataSource } from "typeorm";
 import { Extensions } from "../entities/Extensions";
-import type { ExtensionsRequest } from "../controllers/dtos/ExtensionsRequest";
+import type { ExtensionsCretionRequest } from "../controllers/dtos/ExtensionsCretionRequest";
+import type { ExtensionsUpdateRequest } from "../controllers/dtos/ExtensionsEditRequest";
 
 export class ExtensionsRepository {
   private repository: Repository<Extensions>;
@@ -15,7 +16,7 @@ export class ExtensionsRepository {
    * @returns O registro salvo
    */
 
-  async save(extensionsData: ExtensionsRequest): Promise<Extensions> {
+  async save(extensionsData: ExtensionsCretionRequest): Promise<Extensions> {
     const extensions = new Extensions();
 
     extensions.number = extensionsData.number;
@@ -32,5 +33,17 @@ export class ExtensionsRepository {
 
   async getAll(): Promise<Extensions[]> {
     return this.repository.find();
+  }
+
+  async update(extensionsData: ExtensionsUpdateRequest): Promise<void> {
+    this.repository.update(
+      { id: extensionsData.id },
+      {
+        number: extensionsData.number,
+        department: extensionsData.department,
+        sector: extensionsData.sector,
+        employee: extensionsData.employee,
+      }
+    );
   }
 }

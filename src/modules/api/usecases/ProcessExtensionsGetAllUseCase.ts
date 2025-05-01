@@ -1,4 +1,4 @@
-import type { ExtensionsRequest } from "../controllers/dtos/ExtensionsRequest";
+import type { ExtensionsCretionRequest } from "../controllers/dtos/ExtensionsCretionRequest";
 import { ExtensionsRepository } from "../repositories/ExtensionsRepository";
 import { AppDataSource } from "../../../database";
 import { Extensions } from "../entities/Extensions";

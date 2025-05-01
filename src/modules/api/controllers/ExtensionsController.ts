@@ -1,22 +1,27 @@
 import type { Request, Response } from "express";
-import type { ExtensionsRequest } from "./dtos/ExtensionsRequest";
+import type { ExtensionsCretionRequest } from "./dtos/ExtensionsCretionRequest.ts";
+import type { ExtensionsUpdateRequest } from "./dtos/ExtensionsEditRequest.ts";
 import { ProcessExtensionsCreationUseCase } from "./../usecases/ProcessExtensionsCreationUseCase";
 import { ProcessExtensionsDeleteUseCase } from "./../usecases/ProcessExtensionsDeleteUseCase";
 import { ProcessExtensionsGetAllUseCase } from "../usecases/ProcessExtensionsGetAllUseCase.ts";
+import { ProcessExtensionsUpdateUseCase } from "../usecases/ProcessExtensionsUpdateUseCase.ts";
 
 export class ExtensionsController {
   private processExtensionsCreationUseCase: ProcessExtensionsCreationUseCase;
   private processExtensionsDeleteUseCase: ProcessExtensionsDeleteUseCase;
   private processExtensionsGetAllUseCase: ProcessExtensionsGetAllUseCase;
+  private processExtensionsUpdateUseCase: ProcessExtensionsUpdateUseCase;
 
   constructor(
     processExtensionsCreationUseCase: ProcessExtensionsCreationUseCase,
     processExtensionsDeleteUseCase: ProcessExtensionsDeleteUseCase,
-    processExtensionsGetAllUseCase: ProcessExtensionsGetAllUseCase
+    processExtensionsGetAllUseCase: ProcessExtensionsGetAllUseCase,
+    processExtensionsEditUseCase: ProcessExtensionsUpdateUseCase
   ) {
     this.processExtensionsCreationUseCase = processExtensionsCreationUseCase;
     this.processExtensionsDeleteUseCase = processExtensionsDeleteUseCase;
     this.processExtensionsGetAllUseCase = processExtensionsGetAllUseCase;
+    this.processExtensionsUpdateUseCase = processExtensionsEditUseCase;
   }
 
   /**
@@ -26,7 +31,7 @@ export class ExtensionsController {
    */
   async createExtension(req: Request, res: Response): Promise<void> {
     try {
-      const extensions = req.body as ExtensionsRequest;
+      const extensions = req.body as ExtensionsCretionRequest;
 
       // TODO: Validar dados recebidos, está faltando o enum de departamento
 
@@ -73,6 +78,27 @@ export class ExtensionsController {
       console.error("Error show all extensions:", error);
       res.status(500).json({
         message: "Error show all extensions:",
+      });
+    }
+  }
+
+  async editExtension(req: Request, res: Response): Promise<void> {
+    try {
+      const extensions = req.body as ExtensionsUpdateRequest;
+
+      // TODO: Validar dados recebidos, está faltando o enum de departamento
+
+      // Processa os dados
+      const result = await this.processExtensionsUpdateUseCase.perform(
+        extensions
+      );
+
+      // Responde com sucesso
+      res.status(200).json(result);
+    } catch (error) {
+      console.error("Error update extension:", error);
+      res.status(500).json({
+        message: "Error update extension",
       });
     }
   }
