@@ -2,6 +2,7 @@ import { DataSource } from 'typeorm';
 import { CallRecord } from '../modules/core/entities/CallRecord';
 import path from 'path';
 import fs from 'fs';
+import { Extensions } from '../modules/api/entities/Extensions';
 
 // Caminho para o arquivo de banco de dados existente
 const dbPath = path.resolve(__dirname, './call_records.db');
@@ -12,7 +13,7 @@ export const AppDataSource = new DataSource({
   database: dbPath,
   synchronize: false, // Não sincroniza o schema para preservar o banco existente
   logging: process.env.NODE_ENV === 'development',
-  entities: [CallRecord],
+  entities: [CallRecord, Extensions]
 });
 
 // Função para inicializar a conexão com o banco de dados

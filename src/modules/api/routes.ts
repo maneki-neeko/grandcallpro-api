@@ -1,10 +1,17 @@
-import { Router } from 'express';
-import { ExtensionsController } from './controllers/ExtensionsController';
+import { Router } from "express";
+import { ExtensionsController } from "./controllers/ExtensionsController";
+import { ProcessExtensionsCreationUseCase } from "./usecases/ProcessExtensionsCreationUseCase";
 
 const router = Router();
 
-const extensionsController = new ExtensionsController();
+const processExtensionsCreationUseCase = new ProcessExtensionsCreationUseCase();
 
-router.post('/v1/extensions', (req, res) => extensionsController.createExtension(req, res));
+const extensionsController = new ExtensionsController(
+  processExtensionsCreationUseCase
+);
+
+router.post("/v1/extensions", (req, res) =>
+  extensionsController.createExtension(req, res)
+);
 
 export default router;
