@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: grandcallpro-api
+    ports:
+      - "8081:8081"
+    volumes:
+      # Montando o banco de dados SQLite para persistência
+      - ./src/database:/app/src/database
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=8081
+    command: bun start
+
+  # Serviço para desenvolvimento com hot-reload
+  api-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: grandcallpro-api-dev
+    ports:
+      - "3001:8081"
+    volumes:
+      # Montando o código-fonte para hot-reload
+      - ./src:/app/src
+      - ./index.ts:/app/index.ts
+      - ./tsconfig.json:/app/tsconfig.json
+      # Montando o banco de dados SQLite para persistência
+      - ./src/database:/app/src/database
+    environment:
+      - NODE_ENV=development
+      - PORT=8081
+    command: bun dev

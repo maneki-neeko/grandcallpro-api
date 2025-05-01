@@ -6,7 +6,7 @@ import { initializeDatabase } from './src/database';
 
 // Configuração do servidor Express
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8081;
 
 // Middleware para processar JSON
 app.use(express.json());

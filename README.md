@@ -1,15 +1,72 @@
-# grandcallpro-api
+# GrandCallPro API
 
-To install dependencies:
+API para receber, validar e persistir dados da UCM (Unidade de Controle de Módulos) do GrandCallPro.
+
+## Requisitos
+
+- [Bun](https://bun.sh) v1.2.11 ou superior
+- Docker e Docker Compose (opcional, para conteineirização)
+
+## Instalação
+
+### Desenvolvimento local
+
+Instalar dependências:
 
 ```bash
 bun install
 ```
 
-To run:
+Iniciar a aplicação em modo de desenvolvimento (com hot-reload):
 
 ```bash
-bun run index.ts
+bun dev
 ```
 
-This project was created using `bun init` in bun v1.2.11. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+Iniciar a aplicação em modo de produção:
+
+```bash
+bun start
+```
+
+### Docker
+
+Construir a imagem Docker:
+
+```bash
+bun docker:build
+# ou
+docker build -t grandcallpro-api .
+```
+
+Executar o container:
+
+```bash
+bun docker:run
+# ou
+docker run -p 3000:3000 grandcallpro-api
+```
+
+### Docker Compose
+
+Iniciar a aplicação em modo de produção:
+
+```bash
+docker-compose up api
+```
+
+Iniciar a aplicação em modo de desenvolvimento (com hot-reload):
+
+```bash
+docker-compose up api-dev
+```
+
+## Endpoints
+
+- `POST /data` - Recebe dados de chamada da UCM
+- `GET /troubleshooting/data` - Lista todos os registros de chamada (com paginação via query params `limit` e `offset`)
+- `GET /troubleshooting/data/:uniqueId` - Busca registros de chamada por uniqueId
+
+## Banco de Dados
+
+A aplicação utiliza SQLite como banco de dados, com o arquivo localizado em `src/database/call_records.db`.
