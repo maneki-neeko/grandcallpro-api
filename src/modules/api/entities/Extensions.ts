@@ -1,6 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import 'reflect-metadata';
-import { departments } from './../../../../../service-desk-flow/src/hooks/useRegisterForm';
 
 @Entity('extensions')
 export class Extensions {
