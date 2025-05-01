@@ -12,11 +12,11 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 // Rotas do módulo core
-app.use('/core', coreRoutes);
+app.use('/', coreRoutes);
 
 // Rota raiz
-app.get('/', (req: Request, res: Response) => {
-  res.json({ message: 'GrandCallPro API está funcionando!' });
+app.get('/ping', (req: Request, res: Response) => {
+  res.send('Pong!');
 });
 
 // Função para inicializar o servidor

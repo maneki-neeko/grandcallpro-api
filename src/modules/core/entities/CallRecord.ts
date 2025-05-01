@@ -9,102 +9,102 @@ export class CallRecord {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column({ nullable: true })
+  @Column()
   acct_id!: string;
 
-  @Column({ nullable: true })
+  @Column()
   accountcode!: string;
 
-  @Column({ nullable: true })
+  @Column()
   src!: string;
 
-  @Column({ nullable: true })
+  @Column()
   dst!: string;
 
-  @Column({ nullable: true })
+  @Column()
   dcontext!: string;
 
-  @Column({ nullable: true })
+  @Column()
   clid!: string;
 
-  @Column({ nullable: true })
+  @Column()
   channel!: string;
 
-  @Column({ nullable: true })
+  @Column()
   dstchannel!: string;
 
-  @Column({ nullable: true })
+  @Column()
   lastapp!: string;
 
-  @Column({ nullable: true })
+  @Column()
   lastdata!: string;
 
-  @Column({ nullable: true })
+  @Column()
   start!: string;
 
-  @Column({ nullable: true })
+  @Column()
   answer!: string;
 
-  @Column({ nullable: true })
+  @Column()
   end!: string;
 
-  @Column({ type: 'integer', nullable: true })
+  @Column({ type: 'integer' })
   duration!: number;
 
-  @Column({ type: 'integer', nullable: true })
+  @Column({ type: 'integer' })
   billsec!: number;
 
-  @Column({ nullable: true })
+  @Column()
   disposition!: string;
 
-  @Column({ nullable: true })
+  @Column()
   amaflags!: string;
 
-  @Column({ nullable: true })
+  @Column()
   uniqueid!: string;
 
-  @Column({ nullable: true })
+  @Column()
   userfield!: string;
 
-  @Column({ nullable: true })
+  @Column()
   channel_ext!: string;
 
-  @Column({ nullable: true })
+  @Column()
   dstchannel_ext!: string;
 
-  @Column({ nullable: true })
+  @Column()
   service!: string;
 
-  @Column({ nullable: true })
+  @Column()
   caller_name!: string;
 
-  @Column({ nullable: true })
+  @Column()
   recordfiles!: string;
 
-  @Column({ nullable: true })
+  @Column()
   dstanswer!: string;
 
-  @Column({ nullable: true })
+  @Column()
   chanext!: string;
 
-  @Column({ nullable: true })
+  @Column()
   dstchanext!: string;
 
-  @Column({ nullable: true })
+  @Column()
   session!: string;
 
-  @Column({ nullable: true })
+  @Column()
   action_owner!: string;
 
-  @Column({ nullable: true })
+  @Column()
   action_type!: string;
 
-  @Column({ nullable: true })
+  @Column()
   src_trunk_name!: string;
 
-  @Column({ nullable: true })
+  @Column()
   dst_trunk_name!: string;
 
-  @Column({ nullable: true })
+  @Column()
   sn!: string;
 }

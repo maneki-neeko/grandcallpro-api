@@ -68,4 +68,18 @@ export class CallRecordRepository {
       order: { id: 'DESC' }
     });
   }
+
+  /**
+   * Lista todos os registros de chamada
+   * @param limit Limite de registros a serem retornados
+   * @param offset Offset para paginação
+   * @returns Lista de registros
+   */
+  async findAll(limit = 100, offset = 0): Promise<CallRecord[]> {
+    return this.repository.find({
+      skip: offset,
+      take: limit,
+      order: { id: 'DESC' }
+    });
+  }
 }
