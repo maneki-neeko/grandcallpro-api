@@ -60,26 +60,28 @@ export class CallRecordRepository {
   /**
    * Busca registros de chamada pelo uniqueid
    * @param uniqueId ID único da chamada
-   * @returns Lista de registros com o mesmo uniqueid
+   * @returns Lista de registros com o mesmo uniqueid, ordenados pelo tempo mais recente
    */
   async findByUniqueId(uniqueId: string): Promise<CallRecord[]> {
-    return this.repository.find({ 
-      where: { uniqueid: uniqueId },
-      order: { id: 'DESC' }
-    });
+    return this.repository
+      .createQueryBuilder('call_record')
+      .where('call_record.uniqueid = :uniqueId', { uniqueId })
+      .orderBy('CASE WHEN call_record.end = \'\' THEN call_record.start ELSE call_record.end END', 'DESC')
+      .getMany();
   }
 
   /**
    * Lista todos os registros de chamada
    * @param limit Limite de registros a serem retornados
    * @param offset Offset para paginação
-   * @returns Lista de registros
+   * @returns Lista de registros ordenados pelo tempo mais recente
    */
   async findAll(limit = 100, offset = 0): Promise<CallRecord[]> {
-    return this.repository.find({
-      skip: offset,
-      take: limit,
-      order: { id: 'DESC' }
-    });
+    return this.repository
+      .createQueryBuilder('call_record')
+      .orderBy('CASE WHEN call_record.end = \'\' THEN call_record.start ELSE call_record.end END', 'DESC')
+      .skip(offset)
+      .take(limit)
+      .getMany();
   }
 }
