@@ -2,17 +2,21 @@ import type { Request, Response } from "express";
 import type { ExtensionsRequest } from "./dtos/ExtensionsRequest";
 import { ProcessExtensionsCreationUseCase } from "./../usecases/ProcessExtensionsCreationUseCase";
 import { ProcessExtensionsDeleteUseCase } from "./../usecases/ProcessExtensionsDeleteUseCase";
+import { ProcessExtensionsGetAllUseCase } from "../usecases/ProcessExtensionsGetAllUseCase.ts";
 
 export class ExtensionsController {
   private processExtensionsCreationUseCase: ProcessExtensionsCreationUseCase;
   private processExtensionsDeleteUseCase: ProcessExtensionsDeleteUseCase;
+  private processExtensionsGetAllUseCase: ProcessExtensionsGetAllUseCase;
 
   constructor(
     processExtensionsCreationUseCase: ProcessExtensionsCreationUseCase,
-    processExtensionsDeleteUseCase: ProcessExtensionsDeleteUseCase
+    processExtensionsDeleteUseCase: ProcessExtensionsDeleteUseCase,
+    processExtensionsGetAllUseCase: ProcessExtensionsGetAllUseCase
   ) {
     this.processExtensionsCreationUseCase = processExtensionsCreationUseCase;
     this.processExtensionsDeleteUseCase = processExtensionsDeleteUseCase;
+    this.processExtensionsGetAllUseCase = processExtensionsGetAllUseCase;
   }
 
   /**
@@ -27,7 +31,9 @@ export class ExtensionsController {
       // TODO: Validar dados recebidos, está faltando o enum de departamento
 
       // Processa os dados
-      const result = await this.processExtensionsCreationUseCase.perform(extensions);
+      const result = await this.processExtensionsCreationUseCase.perform(
+        extensions
+      );
 
       // Responde com sucesso
       res.status(201).json(result);
@@ -52,6 +58,21 @@ export class ExtensionsController {
       console.error("Error delete extension:", error);
       res.status(500).json({
         message: "Error delete extension",
+      });
+    }
+  }
+
+  async getAllExtension(req: Request, res: Response): Promise<void> {
+    try {
+      // Processa os dados
+      const result = await this.processExtensionsGetAllUseCase.perform();
+
+      // Responde com sucesso
+      res.status(200).json(result);
+    } catch (error) {
+      console.error("Error show all extensions:", error);
+      res.status(500).json({
+        message: "Error show all extensions:",
       });
     }
   }

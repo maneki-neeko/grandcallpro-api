@@ -27,7 +27,10 @@ export class ExtensionsRepository {
   }
 
   async delete(id: number): Promise<void> {
-
     this.repository.delete(id);
+  }
+
+  async getAll(): Promise<Extensions[]> {
+    return this.repository.find();
   }
 }
