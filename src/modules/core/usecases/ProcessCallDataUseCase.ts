@@ -28,10 +28,7 @@ export class ProcessCallDataUseCase {
       const savedRecord = await this.callRecordRepository.save(data);
       
       return {
-        message: `
-        Dados de chamada processados e salvos com sucesso.
-        ID: ${savedRecord.id}
-        uniqueID: ${savedRecord.uniqueid}`
+        message: `id: ${savedRecord.id} - unique_id: ${savedRecord.uniqueid}`
       };
     } catch (error) {
       console.error('Erro ao processar dados de chamada:', error);
