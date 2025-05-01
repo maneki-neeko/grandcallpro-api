@@ -20,9 +20,11 @@ export class ProcessCallDataUseCase {
    */
   async perform(data: UcmCallData): Promise<{ message: string }> {
     try {
-      console.log('Dados de chamada recebidos:', data);
-      
-      // Nota: Não verificamos duplicação de uniqueid, pois este pode se repetir
+      const now = new Date();
+      const readableTime = now.toISOString();
+
+      console.log(`\n[${readableTime}] Received data:`);
+      console.log(JSON.stringify(data, null, 2));
       
       // Salva os dados no banco de dados
       const savedRecord = await this.callRecordRepository.save(data);
