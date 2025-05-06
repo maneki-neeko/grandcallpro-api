@@ -1,4 +1,4 @@
-import type { ExtensionsCretionRequest } from "../controllers/dtos/ExtensionsCretionRequest";
+import type { ExtensionsCreationRequest } from "../controllers/dtos/ExtensionsCreationRequest";
 import { ExtensionsRepository } from "../repositories/ExtensionsRepository";
 import { AppDataSource } from "../../../database";
 import { Extensions } from "../entities/Extensions";
@@ -18,7 +18,7 @@ export class ProcessExtensionsCreationUseCase {
    * @param data Dados do ramal
    * @returns Dados processados ou mensagem de sucesso
    */
-  async perform(data: ExtensionsCretionRequest): Promise<Extensions> {
+  async perform(data: ExtensionsCreationRequest): Promise<Extensions> {
     return this.extensionsRepository.save(data);
   }
 }

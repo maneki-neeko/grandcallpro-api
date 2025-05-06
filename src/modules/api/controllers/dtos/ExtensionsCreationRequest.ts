@@ -1,8 +1,7 @@
 /**
  * Interface que representa o objeto de criação dos ramais
  */
-
-export interface ExtensionsCretionRequest {
+export interface ExtensionsCreationRequest {
   number: number;
   departament: string;
   sector: string;

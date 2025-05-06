@@ -1,6 +1,6 @@
 import { ExtensionsRepository } from "../repositories/ExtensionsRepository";
 import { AppDataSource } from "../../../database";
-import type { ExtensionsUpdateRequest } from "../controllers/dtos/ExtensionsEditRequest";
+import type { ExtensionsUpdateRequest } from "../controllers/dtos/ExtensionsUpdateRequest";
 
 /**
  * Caso de uso responsável por processar a edição do ramal

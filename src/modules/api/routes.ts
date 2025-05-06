@@ -6,6 +6,7 @@ import { ProcessExtensionsGetAllUseCase } from "./usecases/ProcessExtensionsGetA
 import { ProcessExtensionsUpdateUseCase } from "./usecases/ProcessExtensionsUpdateUseCase";
 
 const router = Router();
+const BASE_PATH = "/v1/extensions";
 
 const processExtensionsCreationUseCase = new ProcessExtensionsCreationUseCase();
 const processExtensionsDeleteUseCase = new ProcessExtensionsDeleteUseCase();
@@ -19,20 +20,14 @@ const extensionsController = new ExtensionsController(
   processExtensionsEditUseCase
 );
 
-router.post("/v1/extensions", (req, res) =>
-  extensionsController.createExtension(req, res)
+router.post(BASE_PATH, (req, res) => extensionsController.create(req, res));
+
+router.delete(`${BASE_PATH}/:id`, (req, res) =>
+  extensionsController.delete(req, res)
 );
 
-router.delete("/v1/extensions/:id", (req, res) =>
-  extensionsController.deleteExtension(req, res)
-);
+router.get(BASE_PATH, (req, res) => extensionsController.getAll(req, res));
 
-router.get("/v1/extensions", (req, res) =>
-  extensionsController.getAllExtension(req, res)
-);
-
-router.put("/v1/extensions", (req, res) =>
-  extensionsController.editExtension(req, res)
-);
+router.put(BASE_PATH, (req, res) => extensionsController.update(req, res));
 
 export default router;

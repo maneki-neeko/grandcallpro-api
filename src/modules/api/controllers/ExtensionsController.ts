@@ -1,10 +1,12 @@
 import type { Request, Response } from "express";
-import type { ExtensionsCretionRequest } from "./dtos/ExtensionsCretionRequest.ts";
-import type { ExtensionsUpdateRequest } from "./dtos/ExtensionsEditRequest.ts";
+import type { ExtensionsCreationRequest } from "./dtos/ExtensionsCreationRequest.ts";
+import type { ExtensionsUpdateRequest } from "./dtos/ExtensionsUpdateRequest.ts";
+import type { ExtensionsDeleteRequest } from "./dtos/ExtensionsDeleteRequest.ts";
 import { ProcessExtensionsCreationUseCase } from "./../usecases/ProcessExtensionsCreationUseCase";
 import { ProcessExtensionsDeleteUseCase } from "./../usecases/ProcessExtensionsDeleteUseCase";
 import { ProcessExtensionsGetAllUseCase } from "../usecases/ProcessExtensionsGetAllUseCase.ts";
 import { ProcessExtensionsUpdateUseCase } from "../usecases/ProcessExtensionsUpdateUseCase.ts";
+import { ExtensionMessages } from "../../../shared/constants/messages.ts";
 
 export class ExtensionsController {
   private processExtensionsCreationUseCase: ProcessExtensionsCreationUseCase;
@@ -16,12 +18,12 @@ export class ExtensionsController {
     processExtensionsCreationUseCase: ProcessExtensionsCreationUseCase,
     processExtensionsDeleteUseCase: ProcessExtensionsDeleteUseCase,
     processExtensionsGetAllUseCase: ProcessExtensionsGetAllUseCase,
-    processExtensionsEditUseCase: ProcessExtensionsUpdateUseCase
+    processExtensionsUpdateUseCase: ProcessExtensionsUpdateUseCase
   ) {
     this.processExtensionsCreationUseCase = processExtensionsCreationUseCase;
     this.processExtensionsDeleteUseCase = processExtensionsDeleteUseCase;
     this.processExtensionsGetAllUseCase = processExtensionsGetAllUseCase;
-    this.processExtensionsUpdateUseCase = processExtensionsEditUseCase;
+    this.processExtensionsUpdateUseCase = processExtensionsUpdateUseCase;
   }
 
   /**
@@ -29,12 +31,13 @@ export class ExtensionsController {
    * @param req Requisição Express
    * @param res Resposta Express
    */
-  async createExtension(req: Request, res: Response): Promise<void> {
+  async create(
+    req: Request<unknown, unknown, ExtensionsCreationRequest>,
+    res: Response
+  ): Promise<void> {
     try {
-      const extensions = req.body as ExtensionsCretionRequest;
-
+      const extensions = req.body;
       // TODO: Validar dados recebidos, está faltando o enum de departamento
-
       // Processa os dados
       const result = await this.processExtensionsCreationUseCase.perform(
         extensions
@@ -43,16 +46,19 @@ export class ExtensionsController {
       // Responde com sucesso
       res.status(201).json(result);
     } catch (error) {
-      console.error("Error creating extension:", error);
+      console.error(ExtensionMessages.CREATE_ERROR, error);
       res.status(500).json({
-        message: "Error creating extension",
+        message: ExtensionMessages.CREATE_ERROR,
       });
     }
   }
 
-  async deleteExtension(req: Request, res: Response): Promise<void> {
+  async delete(
+    req: Request<ExtensionsDeleteRequest, unknown, unknown>,
+    res: Response
+  ): Promise<void> {
     try {
-      const id = req.params.id as unknown as number;
+      const { id } = req.params;
 
       // Processa os dados
       const result = await this.processExtensionsDeleteUseCase.perform(id);
@@ -60,14 +66,14 @@ export class ExtensionsController {
       // Responde com sucesso
       res.status(204).json(result);
     } catch (error) {
-      console.error("Error delete extension:", error);
+      console.error(ExtensionMessages.DELETE_ERROR, error);
       res.status(500).json({
-        message: "Error delete extension",
+        message: ExtensionMessages.DELETE_ERROR,
       });
     }
   }
 
-  async getAllExtension(req: Request, res: Response): Promise<void> {
+  async getAll(req: Request, res: Response): Promise<void> {
     try {
       // Processa os dados
       const result = await this.processExtensionsGetAllUseCase.perform();
@@ -75,19 +81,20 @@ export class ExtensionsController {
       // Responde com sucesso
       res.status(200).json(result);
     } catch (error) {
-      console.error("Error show all extensions:", error);
+      console.error(ExtensionMessages.GET_ALL_ERROR, error);
       res.status(500).json({
-        message: "Error show all extensions:",
+        message: ExtensionMessages.GET_ALL_ERROR,
       });
     }
   }
 
-  async editExtension(req: Request, res: Response): Promise<void> {
+  async update(
+    req: Request<unknown, unknown, ExtensionsUpdateRequest>,
+    res: Response
+  ): Promise<void> {
     try {
       const extensions = req.body as ExtensionsUpdateRequest;
-
       // TODO: Validar dados recebidos, está faltando o enum de departamento
-
       // Processa os dados
       const result = await this.processExtensionsUpdateUseCase.perform(
         extensions
@@ -96,9 +103,9 @@ export class ExtensionsController {
       // Responde com sucesso
       res.status(200).json(result);
     } catch (error) {
-      console.error("Error update extension:", error);
+      console.error(ExtensionMessages.UPDATE_ERROR, error);
       res.status(500).json({
-        message: "Error update extension",
+        message: ExtensionMessages.UPDATE_ERROR,
       });
     }
   }
