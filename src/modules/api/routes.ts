@@ -4,6 +4,7 @@ import { ProcessExtensionsCreationUseCase } from "./usecases/ProcessExtensionsCr
 import { ProcessExtensionsDeleteUseCase } from "./usecases/ProcessExtensionsDeleteUseCase";
 import { ProcessExtensionsGetAllUseCase } from "./usecases/ProcessExtensionsGetAllUseCase";
 import { ProcessExtensionsUpdateUseCase } from "./usecases/ProcessExtensionsUpdateUseCase";
+import { ProcessExtensionsGetByIdUseCase } from './usecases/ProcessExtensionsGetByIdUseCase';
 
 const router = Router();
 
@@ -11,12 +12,14 @@ const processExtensionsCreationUseCase = new ProcessExtensionsCreationUseCase();
 const processExtensionsDeleteUseCase = new ProcessExtensionsDeleteUseCase();
 const processExtensionsGetAllUseCase = new ProcessExtensionsGetAllUseCase();
 const processExtensionsEditUseCase = new ProcessExtensionsUpdateUseCase();
+const processExtensionsGetByIdUseCase = new ProcessExtensionsGetByIdUseCase();
 
 const extensionsController = new ExtensionsController(
   processExtensionsCreationUseCase,
   processExtensionsDeleteUseCase,
   processExtensionsGetAllUseCase,
-  processExtensionsEditUseCase
+  processExtensionsEditUseCase,
+  processExtensionsGetByIdUseCase
 );
 
 router.post("/v1/extensions", (req, res) =>
@@ -30,6 +33,10 @@ router.delete("/v1/extensions/:id", (req, res) =>
 router.get("/v1/extensions", (req, res) =>
   extensionsController.getAllExtension(req, res)
 );
+
+router.get("/v1/extensions/:id", (req, res) => {
+  extensionsController.getById(req, res)
+});
 
 router.put("/v1/extensions", (req, res) =>
   extensionsController.editExtension(req, res)
