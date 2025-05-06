@@ -5,6 +5,7 @@ export const ExtensionMessages = {
   GET_ALL_ERROR: "Error listing extensions",
   NOT_FOUND: "Extension not found",
   INVALID_DATA: "Invalid data for extension",
+  GET_BY_ID_ERROR: "Error show extension by id:",
 };
 
 export const CallRecordMessages = {

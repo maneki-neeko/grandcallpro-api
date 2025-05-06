@@ -122,9 +122,9 @@ export class ExtensionsController {
 
       res.status(200).json(result);
     } catch (error) {
-      console.error("Error show extension by id:", error);
+      console.error(ExtensionMessages.GET_BY_ID_ERROR, error);
       res.status(500).json({
-        message: "Error show extension by id",
+        message: ExtensionMessages.GET_BY_ID_ERROR,
       });
     }
   }
