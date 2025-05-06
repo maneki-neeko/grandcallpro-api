@@ -35,6 +35,14 @@ export class ExtensionsRepository {
     return this.repository.find();
   }
 
+  async getById(id: number): Promise<Extensions | null> {
+    const extension = await this.repository.findOne({ where: { id } });
+
+    if (!extension) return null
+
+    return extension;
+  }
+
   async update(extensionsData: ExtensionsUpdateRequest): Promise<void> {
     this.repository.update(
       { id: extensionsData.id },
