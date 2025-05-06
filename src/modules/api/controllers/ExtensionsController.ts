@@ -5,23 +5,27 @@ import { ProcessExtensionsCreationUseCase } from "./../usecases/ProcessExtension
 import { ProcessExtensionsDeleteUseCase } from "./../usecases/ProcessExtensionsDeleteUseCase";
 import { ProcessExtensionsGetAllUseCase } from "../usecases/ProcessExtensionsGetAllUseCase.ts";
 import { ProcessExtensionsUpdateUseCase } from "../usecases/ProcessExtensionsUpdateUseCase.ts";
+import { ProcessExtensionsGetByIdUseCase } from "../usecases/ProcessExtensionsGetByIdUseCase.ts";
 
 export class ExtensionsController {
   private processExtensionsCreationUseCase: ProcessExtensionsCreationUseCase;
   private processExtensionsDeleteUseCase: ProcessExtensionsDeleteUseCase;
   private processExtensionsGetAllUseCase: ProcessExtensionsGetAllUseCase;
   private processExtensionsUpdateUseCase: ProcessExtensionsUpdateUseCase;
+  private processExtensionsGetByIdUseCase: ProcessExtensionsGetByIdUseCase;
 
   constructor(
     processExtensionsCreationUseCase: ProcessExtensionsCreationUseCase,
     processExtensionsDeleteUseCase: ProcessExtensionsDeleteUseCase,
     processExtensionsGetAllUseCase: ProcessExtensionsGetAllUseCase,
-    processExtensionsEditUseCase: ProcessExtensionsUpdateUseCase
+    processExtensionsEditUseCase: ProcessExtensionsUpdateUseCase,
+    processExtensionsGetByIdUseCase: ProcessExtensionsGetByIdUseCase
   ) {
     this.processExtensionsCreationUseCase = processExtensionsCreationUseCase;
     this.processExtensionsDeleteUseCase = processExtensionsDeleteUseCase;
     this.processExtensionsGetAllUseCase = processExtensionsGetAllUseCase;
     this.processExtensionsUpdateUseCase = processExtensionsEditUseCase;
+    this.processExtensionsGetByIdUseCase = processExtensionsGetByIdUseCase;
   }
 
   /**
@@ -78,6 +82,21 @@ export class ExtensionsController {
       console.error("Error show all extensions:", error);
       res.status(500).json({
         message: "Error show all extensions:",
+      });
+    }
+  }
+
+  async getById(req: Request, res: Response): Promise<void> {
+    try {
+      const id = req.params.id as unknown as number;
+
+      const result = await this.processExtensionsGetByIdUseCase.perform(id);
+
+      res.status(200).json(result);
+    } catch (error) {
+      console.error("Error show extension by id:", error);
+      res.status(500).json({
+        message: "Error show extension by id",
       });
     }
   }
