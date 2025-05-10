@@ -15,11 +15,18 @@ export class ProcessExtensionsDeleteUseCase {
 
   /**
    * Processa os dados da exclusão do ramal
-   * @param data Dados do ramal
-   * @returns Dados processados ou mensagem de sucesso
+   * @param id ID do ramal a ser excluído
+   * @returns true se o ramal foi encontrado e excluído, false se não foi encontrado
    */
-  async perform(id: string): Promise<void> {
+  async perform(id: string): Promise<boolean> {
     // TO-DO: Validar que usuário tenha permissão para exclusão de ramal
-    this.extensionsRepository.delete(id);
+    const extension = await this.extensionsRepository.getById(Number(id));
+    
+    if (!extension) {
+      return false;
+    }
+    
+    await this.extensionsRepository.delete(id);
+    return true;
   }
 }

@@ -44,7 +44,7 @@ export class ExtensionsRepository {
   }
 
   async update(extensionsData: ExtensionsUpdateRequest): Promise<void> {
-    this.repository.update(
+    await this.repository.update(
       { id: extensionsData.id },
       {
         number: extensionsData.number,

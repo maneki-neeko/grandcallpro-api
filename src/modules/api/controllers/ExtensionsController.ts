@@ -65,8 +65,16 @@ export class ExtensionsController {
       // Processa os dados
       const result = await this.processExtensionsDeleteUseCase.perform(id);
 
+      // Se o ramal não foi encontrado, retorna 404
+      if (!result) {
+        res.status(404).json({
+          message: ExtensionMessages.NOT_FOUND
+        });
+        return;
+      }
+
       // Responde com sucesso
-      res.status(204).json(result);
+      res.status(204).json();
     } catch (error) {
       console.error(ExtensionMessages.DELETE_ERROR, error);
       res.status(500).json({
@@ -100,8 +108,19 @@ export class ExtensionsController {
       // Processa os dados
       const result = await this.processExtensionsUpdateUseCase.perform(extensions);
 
+      // Se o ramal não foi encontrado, retorna 404
+      if (!result) {
+        res.status(404).json({
+          message: ExtensionMessages.NOT_FOUND
+        });
+        return;
+      }
+
+      // Busca o ramal atualizado para retornar
+      const updatedExtension = await this.processExtensionsGetByIdUseCase.perform(extensions.id);
+
       // Responde com sucesso
-      res.status(200).json(result);
+      res.status(200).json(updatedExtension);
     } catch (error) {
       console.error(ExtensionMessages.UPDATE_ERROR, error);
       res.status(500).json({
@@ -115,6 +134,13 @@ export class ExtensionsController {
       const id = req.params.id as unknown as number;
 
       const result = await this.processExtensionsGetByIdUseCase.perform(id);
+
+      if (!result) {
+        res.status(404).json({
+          message: ExtensionMessages.NOT_FOUND
+        });
+        return;
+      }
 
       res.status(200).json(result);
     } catch (error) {

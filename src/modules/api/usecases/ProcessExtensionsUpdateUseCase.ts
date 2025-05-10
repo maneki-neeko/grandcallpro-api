@@ -17,7 +17,15 @@ export class ProcessExtensionsUpdateUseCase {
    * @param data Dados do ramal
    * @returns Dados processados ou mensagem de sucesso
    */
-  async perform(data: ExtensionsUpdateRequest): Promise<void> {
-    this.extensionsRepository.update(data);
+  async perform(data: ExtensionsUpdateRequest): Promise<boolean> {
+    // Verifica se o ramal existe
+    const extension = await this.extensionsRepository.getById(data.id);
+    
+    if (!extension) {
+      return false;
+    }
+    
+    await this.extensionsRepository.update(data);
+    return true;
   }
 }
