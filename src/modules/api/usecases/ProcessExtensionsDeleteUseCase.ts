@@ -21,11 +21,11 @@ export class ProcessExtensionsDeleteUseCase {
   async perform(id: string): Promise<boolean> {
     // TO-DO: Validar que usuário tenha permissão para exclusão de ramal
     const extension = await this.extensionsRepository.getById(Number(id));
-    
+
     if (!extension) {
       return false;
     }
-    
+
     await this.extensionsRepository.delete(id);
     return true;
   }

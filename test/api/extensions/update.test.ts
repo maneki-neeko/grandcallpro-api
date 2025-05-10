@@ -1,6 +1,12 @@
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'bun:test';
 import { Extensions } from '../../../src/modules/api/entities/Extensions';
-import { setupSupertestApp, teardownTestApp, clearDatabase, type TestContext, type ExtensionResponse } from './supertest-setup';
+import {
+  setupSupertestApp,
+  teardownTestApp,
+  clearDatabase,
+  type TestContext,
+  type ExtensionResponse,
+} from './supertest-setup';
 
 describe('Extensions API - Update (PUT /v1/extensions)', () => {
   let testContext: TestContext;
@@ -26,7 +32,7 @@ describe('Extensions API - Update (PUT /v1/extensions)', () => {
       number: 1004,
       departament: 'Marketing',
       sector: 'Digital',
-      employee: 'Ana Souza'
+      employee: 'Ana Souza',
     };
 
     const savedExtension = await testContext.repository.save(extensionData);
@@ -37,14 +43,11 @@ describe('Extensions API - Update (PUT /v1/extensions)', () => {
       number: 1005,
       department: 'Marketing',
       sector: 'Tradicional',
-      employee: 'Ana Souza Silva'
+      employee: 'Ana Souza Silva',
     };
 
-    const response = await testContext.request
-      .put('/v1/extensions')
-      .send(updatedData)
-      .expect(200);
-    
+    const response = await testContext.request.put('/v1/extensions').send(updatedData).expect(200);
+
     // Verifica se o ramal foi atualizado no banco
     const updatedExtension = await testContext.repository.getById(savedExtension.id);
     expect(updatedExtension).not.toBeNull();
@@ -52,19 +55,16 @@ describe('Extensions API - Update (PUT /v1/extensions)', () => {
     expect(updatedExtension?.sector).toBe(updatedData.sector);
     expect(updatedExtension?.employee).toBe(updatedData.employee);
   });
-  
+
   it('deve retornar erro ao tentar atualizar um ramal inexistente', async () => {
     const nonExistentData = {
       id: 999,
       number: 1006,
       department: 'Vendas',
       sector: 'Interno',
-      employee: 'Pedro Costa'
+      employee: 'Pedro Costa',
     };
 
-    await testContext.request
-      .put('/v1/extensions')
-      .send(nonExistentData)
-      .expect(404);
+    await testContext.request.put('/v1/extensions').send(nonExistentData).expect(404);
   });
 });

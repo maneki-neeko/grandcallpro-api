@@ -20,11 +20,11 @@ export class ProcessExtensionsUpdateUseCase {
   async perform(data: ExtensionsUpdateRequest): Promise<boolean> {
     // Verifica se o ramal existe
     const extension = await this.extensionsRepository.getById(data.id);
-    
+
     if (!extension) {
       return false;
     }
-    
+
     await this.extensionsRepository.update(data);
     return true;
   }

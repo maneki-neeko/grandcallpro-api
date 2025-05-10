@@ -68,7 +68,7 @@ export class ExtensionsController {
       // Se o ramal não foi encontrado, retorna 404
       if (!result) {
         res.status(404).json({
-          message: ExtensionMessages.NOT_FOUND
+          message: ExtensionMessages.NOT_FOUND,
         });
         return;
       }
@@ -111,7 +111,7 @@ export class ExtensionsController {
       // Se o ramal não foi encontrado, retorna 404
       if (!result) {
         res.status(404).json({
-          message: ExtensionMessages.NOT_FOUND
+          message: ExtensionMessages.NOT_FOUND,
         });
         return;
       }
@@ -137,7 +137,7 @@ export class ExtensionsController {
 
       if (!result) {
         res.status(404).json({
-          message: ExtensionMessages.NOT_FOUND
+          message: ExtensionMessages.NOT_FOUND,
         });
         return;
       }

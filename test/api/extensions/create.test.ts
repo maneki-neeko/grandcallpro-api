@@ -1,6 +1,12 @@
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'bun:test';
 import { Extensions } from '../../../src/modules/api/entities/Extensions';
-import { setupSupertestApp, teardownTestApp, clearDatabase, type TestContext, type ExtensionResponse } from './supertest-setup';
+import {
+  setupSupertestApp,
+  teardownTestApp,
+  clearDatabase,
+  type TestContext,
+  type ExtensionResponse,
+} from './supertest-setup';
 
 describe('Extensions API - Create (POST /v1/extensions)', () => {
   let testContext: TestContext;
@@ -25,14 +31,14 @@ describe('Extensions API - Create (POST /v1/extensions)', () => {
       number: 1001,
       departament: 'TI',
       sector: 'Desenvolvimento',
-      employee: 'João Silva'
+      employee: 'João Silva',
     };
 
     const response = await testContext.request
       .post('/v1/extensions')
       .send(extensionData)
       .expect(201);
-    
+
     const result = response.body as ExtensionResponse;
     expect(result.id).toBeDefined();
     expect(result.number).toBe(extensionData.number);
@@ -46,12 +52,9 @@ describe('Extensions API - Create (POST /v1/extensions)', () => {
       // Número ausente
       departament: 'TI',
       sector: 'Desenvolvimento',
-      employee: 'João Silva'
+      employee: 'João Silva',
     };
 
-    await testContext.request
-      .post('/v1/extensions')
-      .send(invalidData)
-      .expect(500);
+    await testContext.request.post('/v1/extensions').send(invalidData).expect(500);
   });
 });

@@ -1,6 +1,12 @@
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'bun:test';
 import { Extensions } from '../../../src/modules/api/entities/Extensions';
-import { setupSupertestApp, teardownTestApp, clearDatabase, type TestContext, type ExtensionResponse } from './supertest-setup';
+import {
+  setupSupertestApp,
+  teardownTestApp,
+  clearDatabase,
+  type TestContext,
+  type ExtensionResponse,
+} from './supertest-setup';
 
 describe('Extensions API - Get By ID (GET /v1/extensions/:id)', () => {
   let testContext: TestContext;
@@ -26,7 +32,7 @@ describe('Extensions API - Get By ID (GET /v1/extensions/:id)', () => {
       number: 1003,
       departament: 'Financeiro',
       sector: 'Contabilidade',
-      employee: 'Carlos Oliveira'
+      employee: 'Carlos Oliveira',
     };
 
     const savedExtension = await testContext.repository.save(extensionData);
@@ -34,7 +40,7 @@ describe('Extensions API - Get By ID (GET /v1/extensions/:id)', () => {
     const response = await testContext.request
       .get(`/v1/extensions/${savedExtension.id}`)
       .expect(200);
-    
+
     const result = response.body as ExtensionResponse;
     expect(result.id).toBe(savedExtension.id);
     expect(result.number).toBe(extensionData.number);
@@ -44,8 +50,6 @@ describe('Extensions API - Get By ID (GET /v1/extensions/:id)', () => {
   });
 
   it('deve retornar erro ao buscar um ramal inexistente', async () => {
-    await testContext.request
-      .get('/v1/extensions/999')
-      .expect(404);
+    await testContext.request.get('/v1/extensions/999').expect(404);
   });
 });
