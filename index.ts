@@ -29,7 +29,7 @@ async function bootstrap() {
     // Inicializa o banco de dados
     await initializeDatabase();
     console.log('Banco de dados inicializado com sucesso');
-    
+
     // Inicia o servidor
     app.listen(PORT, () => {
       console.log(`Servidor rodando na porta ${PORT}`);

@@ -1,7 +1,7 @@
-import type { ExtensionsCreationRequest } from "../controllers/dtos/ExtensionsCreationRequest";
-import { ExtensionsRepository } from "../repositories/ExtensionsRepository";
-import { AppDataSource } from "../../../database";
-import { Extensions } from "../entities/Extensions";
+import type { ExtensionsCreationRequest } from '../controllers/dtos/ExtensionsCreationRequest';
+import { ExtensionsRepository } from '../repositories/ExtensionsRepository';
+import { AppDataSource } from '../../../database';
+import { Extensions } from '../entities/Extensions';
 
 /**
  * Caso de uso responsável por processar a criação do ramal

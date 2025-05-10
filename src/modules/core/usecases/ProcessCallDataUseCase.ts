@@ -25,12 +25,12 @@ export class ProcessCallDataUseCase {
 
       console.log(`\n[${readableTime}] Received data:`);
       console.log(JSON.stringify(data, null, 2));
-      
+
       // Salva os dados no banco de dados
       const savedRecord = await this.callRecordRepository.save(data);
-      
+
       return {
-        message: `id: ${savedRecord.id} - unique_id: ${savedRecord.uniqueid}`
+        message: `id: ${savedRecord.id} - unique_id: ${savedRecord.uniqueid}`,
       };
     } catch (error) {
       console.error('Erro ao processar dados de chamada:', error);
