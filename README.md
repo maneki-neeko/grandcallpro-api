@@ -52,13 +52,13 @@ docker run -p 3000:3000 grandcallpro-api
 Iniciar a aplicação em modo de produção:
 
 ```bash
-docker-compose up api
+docker-compose up api -d
 ```
 
 Iniciar a aplicação em modo de desenvolvimento (com hot-reload):
 
 ```bash
-docker-compose up api-dev
+docker-compose up api-dev -d
 ```
 
 ## Endpoints
