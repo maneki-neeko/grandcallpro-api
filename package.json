@@ -10,7 +10,10 @@
     "docker:build": "docker build -t grandcallpro-api .",
     "docker:run": "docker run -p 8081:8081 grandcallpro-api",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "test": "bun test",
+    "test:watch": "bun test --watch",
+    "test:coverage": "bun test --coverage"
   },
   "devDependencies": {
     "@types/bun": "latest",
