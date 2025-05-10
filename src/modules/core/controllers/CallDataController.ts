@@ -1,6 +1,6 @@
-import type { Request, Response } from "express";
-import type { UcmCallData } from "./dtos/UcmCallData";
-import { ProcessCallDataUseCase } from "../usecases/ProcessCallDataUseCase";
+import type { Request, Response } from 'express';
+import type { UcmCallData } from './dtos/UcmCallData';
+import { ProcessCallDataUseCase } from '../usecases/ProcessCallDataUseCase';
 
 /**
  * Controller responsável por gerenciar as rotas relacionadas aos dados de chamada
@@ -27,9 +27,9 @@ export class CallDataController {
       // Responde com sucesso
       res.status(201).json(result);
     } catch (error) {
-      console.error("Error receiving call data:", error);
+      console.error('Error receiving call data:', error);
       res.status(500).json({
-        message: "Internal error processing call data",
+        message: 'Internal error processing call data',
       });
     }
   }
@@ -42,12 +42,8 @@ export class CallDataController {
   async listAllCallData(req: Request, res: Response): Promise<void> {
     try {
       // Extrai parâmetros de paginação da query string
-      const limit = req.query.limit
-        ? parseInt(req.query.limit as string, 10)
-        : 100;
-      const offset = req.query.offset
-        ? parseInt(req.query.offset as string, 10)
-        : 0;
+      const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : 100;
+      const offset = req.query.offset ? parseInt(req.query.offset as string, 10) : 0;
 
       // Busca os registros
       const records = await this.processCalDataUseCase.findAll(limit, offset);
@@ -58,9 +54,9 @@ export class CallDataController {
         data: records,
       });
     } catch (error) {
-      console.error("Erro ao listar registros de chamada:", error);
+      console.error('Erro ao listar registros de chamada:', error);
       res.status(500).json({
-        message: "Erro interno ao listar registros de chamada",
+        message: 'Erro interno ao listar registros de chamada',
       });
     }
   }
@@ -78,7 +74,7 @@ export class CallDataController {
       if (!uniqueId) {
         res.status(400).json({
           success: false,
-          message: "Parâmetro uniqueId é obrigatório",
+          message: 'Parâmetro uniqueId é obrigatório',
         });
         return;
       }
@@ -92,9 +88,9 @@ export class CallDataController {
         data: records,
       });
     } catch (error) {
-      console.error("Erro ao buscar registros de chamada por uniqueId:", error);
+      console.error('Erro ao buscar registros de chamada por uniqueId:', error);
       res.status(500).json({
-        message: "Erro interno ao buscar registros de chamada",
+        message: 'Erro interno ao buscar registros de chamada',
       });
     }
   }

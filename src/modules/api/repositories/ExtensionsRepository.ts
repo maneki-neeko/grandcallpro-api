@@ -1,7 +1,7 @@
-import { Repository, DataSource } from "typeorm";
-import { Extensions } from "../entities/Extensions";
-import type { ExtensionsCreationRequest } from "../controllers/dtos/ExtensionsCreationRequest";
-import type { ExtensionsUpdateRequest } from "../controllers/dtos/ExtensionsUpdateRequest";
+import { Repository, DataSource } from 'typeorm';
+import { Extensions } from '../entities/Extensions';
+import type { ExtensionsCreationRequest } from '../controllers/dtos/ExtensionsCreationRequest';
+import type { ExtensionsUpdateRequest } from '../controllers/dtos/ExtensionsUpdateRequest';
 
 export class ExtensionsRepository {
   private repository: Repository<Extensions>;
@@ -38,7 +38,7 @@ export class ExtensionsRepository {
   async getById(id: number): Promise<Extensions | null> {
     const extension = await this.repository.findOne({ where: { id } });
 
-    if (!extension) return null
+    if (!extension) return null;
 
     return extension;
   }

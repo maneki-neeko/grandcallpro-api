@@ -19,7 +19,7 @@ export class CallRecordRepository {
    */
   async save(callData: UcmCallData): Promise<CallRecord> {
     const callRecord = new CallRecord();
-    
+
     callRecord.acct_id = callData.AcctId;
     callRecord.accountcode = callData.accountcode;
     callRecord.src = callData.src;
@@ -66,7 +66,10 @@ export class CallRecordRepository {
     return this.repository
       .createQueryBuilder('call_record')
       .where('call_record.uniqueid = :uniqueId', { uniqueId })
-      .orderBy('CASE WHEN call_record.end = \'\' THEN call_record.start ELSE call_record.end END', 'DESC')
+      .orderBy(
+        "CASE WHEN call_record.end = '' THEN call_record.start ELSE call_record.end END",
+        'DESC'
+      )
       .getMany();
   }
 
@@ -79,7 +82,10 @@ export class CallRecordRepository {
   async findAll(limit = 100, offset = 0): Promise<CallRecord[]> {
     return this.repository
       .createQueryBuilder('call_record')
-      .orderBy('CASE WHEN call_record.end = \'\' THEN call_record.start ELSE call_record.end END', 'DESC')
+      .orderBy(
+        "CASE WHEN call_record.end = '' THEN call_record.start ELSE call_record.end END",
+        'DESC'
+      )
       .skip(offset)
       .take(limit)
       .getMany();

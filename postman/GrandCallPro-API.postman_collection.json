@@ -27,13 +27,9 @@
             "url": {
               "raw": "http://localhost:8081/data",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "8081",
-              "path": [
-                "data"
-              ]
+              "path": ["data"]
             },
             "description": "Endpoint para receber dados de chamada da UCM"
           },
@@ -47,14 +43,9 @@
             "url": {
               "raw": "http://localhost:8081/troubleshooting/data?limit=50&offset=0",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "8081",
-              "path": [
-                "troubleshooting",
-                "data"
-              ],
+              "path": ["troubleshooting", "data"],
               "query": [
                 {
                   "key": "limit",
@@ -80,15 +71,9 @@
             "url": {
               "raw": "http://localhost:8081/troubleshooting/data/1619812800.1",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "8081",
-              "path": [
-                "troubleshooting",
-                "data",
-                "1619812800.1"
-              ]
+              "path": ["troubleshooting", "data", "1619812800.1"]
             },
             "description": "Busca registros de chamada pelo uniqueId, ordenados pelo tempo mais recente"
           },
@@ -108,13 +93,9 @@
             "url": {
               "raw": "http://localhost:8081/ping",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "8081",
-              "path": [
-                "ping"
-              ]
+              "path": ["ping"]
             },
             "description": "Verifica se a API está funcionando"
           },
@@ -128,18 +109,14 @@
       "listen": "prerequest",
       "script": {
         "type": "text/javascript",
-        "exec": [
-          ""
-        ]
+        "exec": [""]
       }
     },
     {
       "listen": "test",
       "script": {
         "type": "text/javascript",
-        "exec": [
-          ""
-        ]
+        "exec": [""]
       }
     }
   ],

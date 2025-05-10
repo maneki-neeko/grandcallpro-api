@@ -1,6 +1,6 @@
-import { ExtensionsRepository } from "../repositories/ExtensionsRepository";
-import { AppDataSource } from "../../../database";
-import { Extensions } from "../entities/Extensions";
+import { ExtensionsRepository } from '../repositories/ExtensionsRepository';
+import { AppDataSource } from '../../../database';
+import { Extensions } from '../entities/Extensions';
 
 /**
  * Caso de uso responsável por processar os dados de um ramal

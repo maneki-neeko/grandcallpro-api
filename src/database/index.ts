@@ -13,7 +13,7 @@ export const AppDataSource = new DataSource({
   database: dbPath,
   synchronize: true,
   logging: process.env.NODE_ENV === 'development',
-  entities: [CallRecord, Extensions]
+  entities: [CallRecord, Extensions],
 });
 
 // Função para inicializar a conexão com o banco de dados
@@ -22,9 +22,11 @@ export const initializeDatabase = async (): Promise<DataSource> => {
     // Verifica se o arquivo de banco de dados existe
     if (!fs.existsSync(dbPath)) {
       console.warn(`Arquivo de banco de dados não encontrado em: ${dbPath}`);
-      console.warn('Certifique-se de que o arquivo de banco de dados existe antes de iniciar a aplicação.');
+      console.warn(
+        'Certifique-se de que o arquivo de banco de dados existe antes de iniciar a aplicação.'
+      );
     }
-    
+
     if (!AppDataSource.isInitialized) {
       await AppDataSource.initialize();
       console.log('Conexão com o banco de dados inicializada com sucesso');
