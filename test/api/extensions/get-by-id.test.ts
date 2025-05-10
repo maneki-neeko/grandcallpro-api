@@ -1,27 +1,23 @@
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'bun:test';
-import { closeTestDatabase } from '../../setup';
 import { Extensions } from '../../../src/modules/api/entities/Extensions';
-import { setupTestServer, type TestContext, BASE_URL, type ExtensionResponse } from './test-setup';
+import { setupSupertestApp, teardownTestApp, clearDatabase, type TestContext, type ExtensionResponse } from './supertest-setup';
 
 describe('Extensions API - Get By ID (GET /v1/extensions/:id)', () => {
   let testContext: TestContext;
 
   // Configuração antes de todos os testes
   beforeAll(async () => {
-    testContext = await setupTestServer();
+    testContext = await setupSupertestApp();
   });
 
   // Limpeza após todos os testes
   afterAll(async () => {
-    // Fecha o servidor
-    testContext.server.close();
-    // Fecha a conexão com o banco de dados
-    await closeTestDatabase();
+    await teardownTestApp();
   });
 
   // Limpa o banco de dados antes de cada teste
   beforeEach(async () => {
-    await testContext.dataSource.getRepository(Extensions).clear();
+    await clearDatabase(testContext.dataSource);
   });
 
   it('deve retornar um ramal específico por ID', async () => {
@@ -35,10 +31,11 @@ describe('Extensions API - Get By ID (GET /v1/extensions/:id)', () => {
 
     const savedExtension = await testContext.repository.save(extensionData);
 
-    const response = await fetch(`${BASE_URL}/${savedExtension.id}`);
-    expect(response.status).toBe(200);
+    const response = await testContext.request
+      .get(`/v1/extensions/${savedExtension.id}`)
+      .expect(200);
     
-    const result = await response.json() as ExtensionResponse;
+    const result = response.body as ExtensionResponse;
     expect(result.id).toBe(savedExtension.id);
     expect(result.number).toBe(extensionData.number);
     expect(result.department).toBe(extensionData.departament);
@@ -47,8 +44,8 @@ describe('Extensions API - Get By ID (GET /v1/extensions/:id)', () => {
   });
 
   it('deve retornar erro ao buscar um ramal inexistente', async () => {
-    const response = await fetch(`${BASE_URL}/999`);
-    
-    expect(response.status).toBe(404);
+    await testContext.request
+      .get('/v1/extensions/999')
+      .expect(404);
   });
 });

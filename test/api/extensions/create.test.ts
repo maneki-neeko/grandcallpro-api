@@ -1,27 +1,23 @@
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'bun:test';
-import { closeTestDatabase } from '../../setup';
 import { Extensions } from '../../../src/modules/api/entities/Extensions';
-import { setupTestServer, type TestContext, BASE_URL, type ExtensionResponse } from './test-setup';
+import { setupSupertestApp, teardownTestApp, clearDatabase, type TestContext, type ExtensionResponse } from './supertest-setup';
 
 describe('Extensions API - Create (POST /v1/extensions)', () => {
   let testContext: TestContext;
 
   // Configuração antes de todos os testes
   beforeAll(async () => {
-    testContext = await setupTestServer();
+    testContext = await setupSupertestApp();
   });
 
   // Limpeza após todos os testes
   afterAll(async () => {
-    // Fecha o servidor
-    testContext.server.close();
-    // Fecha a conexão com o banco de dados
-    await closeTestDatabase();
+    await teardownTestApp();
   });
 
   // Limpa o banco de dados antes de cada teste
   beforeEach(async () => {
-    await testContext.dataSource.getRepository(Extensions).clear();
+    await clearDatabase(testContext.dataSource);
   });
 
   it('deve criar um novo ramal com sucesso', async () => {
@@ -32,17 +28,12 @@ describe('Extensions API - Create (POST /v1/extensions)', () => {
       employee: 'João Silva'
     };
 
-    const response = await fetch(BASE_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(extensionData)
-    });
-
-    expect(response.status).toBe(201);
+    const response = await testContext.request
+      .post('/v1/extensions')
+      .send(extensionData)
+      .expect(201);
     
-    const result = await response.json() as ExtensionResponse;
+    const result = response.body as ExtensionResponse;
     expect(result.id).toBeDefined();
     expect(result.number).toBe(extensionData.number);
     expect(result.department).toBe(extensionData.departament);
@@ -58,16 +49,9 @@ describe('Extensions API - Create (POST /v1/extensions)', () => {
       employee: 'João Silva'
     };
 
-    const response = await fetch(BASE_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(invalidData)
-    });
-
-    // Como não há validação implementada ainda, o teste espera status 500
-    // Quando a validação for implementada, este teste deve ser atualizado
-    expect(response.status).toBe(500);
+    await testContext.request
+      .post('/v1/extensions')
+      .send(invalidData)
+      .expect(500);
   });
 });

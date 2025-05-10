@@ -1,4 +1,8 @@
-import { TestDataSource, initializeTestDatabase } from '../../setup';
+import { DataSource } from 'typeorm';
+import type { Express } from 'express';
+import supertest from 'supertest';
+import express from 'express';
+import { initializeTestDatabase, closeTestDatabase } from '../../setup';
 import { Extensions } from '../../../src/modules/api/entities/Extensions';
 import { ExtensionsRepository } from '../../../src/modules/api/repositories/ExtensionsRepository';
 import { ProcessExtensionsCreationUseCase } from '../../../src/modules/api/usecases/ProcessExtensionsCreationUseCase';
@@ -7,21 +11,19 @@ import { ProcessExtensionsGetAllUseCase } from '../../../src/modules/api/usecase
 import { ProcessExtensionsUpdateUseCase } from '../../../src/modules/api/usecases/ProcessExtensionsUpdateUseCase';
 import { ProcessExtensionsGetByIdUseCase } from '../../../src/modules/api/usecases/ProcessExtensionsGetByIdUseCase';
 import { ExtensionsController } from '../../../src/modules/api/controllers/ExtensionsController';
-import express from 'express';
-import { Server } from 'http';
-
-export const PORT = 8082; // Porta diferente da aplicação principal
-export const BASE_URL = `http://localhost:${PORT}/v1/extensions`;
 
 export interface TestContext {
-  dataSource: typeof TestDataSource;
-  app: express.Application;
-  server: Server;
+  dataSource: DataSource;
+  app: Express;
+  request: ReturnType<typeof supertest>;
   repository: ExtensionsRepository;
 }
 
-export async function setupTestServer(): Promise<TestContext> {
-  // Inicializa o banco de dados de teste
+export interface ExtensionResponse extends Extensions {}
+export type ExtensionListResponse = ExtensionResponse[];
+
+export async function setupSupertestApp(): Promise<TestContext> {
+  // Inicializa o banco de dados de teste em memória
   const dataSource = await initializeTestDatabase();
   const repository = new ExtensionsRepository(dataSource);
 
@@ -62,14 +64,17 @@ export async function setupTestServer(): Promise<TestContext> {
 
   app.use('/v1/extensions', router);
 
-  // Inicia o servidor
-  const server = app.listen(PORT, () => {
-    console.log(`Servidor de teste rodando na porta ${PORT}`);
-  });
+  // Cria o cliente supertest
+  const request = supertest(app);
 
-  return { dataSource, app, server, repository };
+  return { dataSource, app, request, repository };
 }
 
-// Interface para tipagem das respostas
-export interface ExtensionResponse extends Extensions {}
-export type ExtensionListResponse = ExtensionResponse[];
+export async function teardownTestApp(): Promise<void> {
+  await closeTestDatabase();
+}
+
+// Função auxiliar para limpar o banco de dados entre os testes
+export async function clearDatabase(dataSource: DataSource): Promise<void> {
+  await dataSource.getRepository(Extensions).clear();
+}

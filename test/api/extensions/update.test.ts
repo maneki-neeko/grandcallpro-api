@@ -1,27 +1,23 @@
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'bun:test';
-import { closeTestDatabase } from '../../setup';
 import { Extensions } from '../../../src/modules/api/entities/Extensions';
-import { setupTestServer, type TestContext, BASE_URL } from './test-setup';
+import { setupSupertestApp, teardownTestApp, clearDatabase, type TestContext, type ExtensionResponse } from './supertest-setup';
 
 describe('Extensions API - Update (PUT /v1/extensions)', () => {
   let testContext: TestContext;
 
   // Configuração antes de todos os testes
   beforeAll(async () => {
-    testContext = await setupTestServer();
+    testContext = await setupSupertestApp();
   });
 
   // Limpeza após todos os testes
   afterAll(async () => {
-    // Fecha o servidor
-    testContext.server.close();
-    // Fecha a conexão com o banco de dados
-    await closeTestDatabase();
+    await teardownTestApp();
   });
 
   // Limpa o banco de dados antes de cada teste
   beforeEach(async () => {
-    await testContext.dataSource.getRepository(Extensions).clear();
+    await clearDatabase(testContext.dataSource);
   });
 
   it('deve atualizar um ramal existente', async () => {
@@ -44,15 +40,10 @@ describe('Extensions API - Update (PUT /v1/extensions)', () => {
       employee: 'Ana Souza Silva'
     };
 
-    const response = await fetch(BASE_URL, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(updatedData)
-    });
-
-    expect(response.status).toBe(200);
+    const response = await testContext.request
+      .put('/v1/extensions')
+      .send(updatedData)
+      .expect(200);
     
     // Verifica se o ramal foi atualizado no banco
     const updatedExtension = await testContext.repository.getById(savedExtension.id);
@@ -60,5 +51,20 @@ describe('Extensions API - Update (PUT /v1/extensions)', () => {
     expect(updatedExtension?.number).toBe(updatedData.number);
     expect(updatedExtension?.sector).toBe(updatedData.sector);
     expect(updatedExtension?.employee).toBe(updatedData.employee);
+  });
+  
+  it('deve retornar erro ao tentar atualizar um ramal inexistente', async () => {
+    const nonExistentData = {
+      id: 999,
+      number: 1006,
+      department: 'Vendas',
+      sector: 'Interno',
+      employee: 'Pedro Costa'
+    };
+
+    await testContext.request
+      .put('/v1/extensions')
+      .send(nonExistentData)
+      .expect(404);
   });
 });

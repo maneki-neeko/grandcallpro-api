@@ -1,27 +1,23 @@
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'bun:test';
-import { closeTestDatabase } from '../../setup';
 import { Extensions } from '../../../src/modules/api/entities/Extensions';
-import { setupTestServer, type TestContext, BASE_URL, type ExtensionListResponse } from './test-setup';
+import { setupSupertestApp, teardownTestApp, clearDatabase, type TestContext, type ExtensionListResponse } from './supertest-setup';
 
 describe('Extensions API - List (GET /v1/extensions)', () => {
   let testContext: TestContext;
 
   // Configuração antes de todos os testes
   beforeAll(async () => {
-    testContext = await setupTestServer();
+    testContext = await setupSupertestApp();
   });
 
   // Limpeza após todos os testes
   afterAll(async () => {
-    // Fecha o servidor
-    testContext.server.close();
-    // Fecha a conexão com o banco de dados
-    await closeTestDatabase();
+    await teardownTestApp();
   });
 
   // Limpa o banco de dados antes de cada teste
   beforeEach(async () => {
-    await testContext.dataSource.getRepository(Extensions).clear();
+    await clearDatabase(testContext.dataSource);
   });
 
   it('deve listar todos os ramais', async () => {
@@ -40,10 +36,11 @@ describe('Extensions API - List (GET /v1/extensions)', () => {
       });
     }
 
-    const response = await fetch(BASE_URL);
-    expect(response.status).toBe(200);
+    const response = await testContext.request
+      .get('/v1/extensions')
+      .expect(200);
     
-    const result = await response.json() as ExtensionListResponse;
+    const result = response.body as ExtensionListResponse;
     expect(Array.isArray(result)).toBe(true);
     expect(result.length).toBe(2);
     
@@ -54,10 +51,11 @@ describe('Extensions API - List (GET /v1/extensions)', () => {
   });
 
   it('deve retornar uma lista vazia quando não há ramais', async () => {
-    const response = await fetch(BASE_URL);
-    expect(response.status).toBe(200);
+    const response = await testContext.request
+      .get('/v1/extensions')
+      .expect(200);
     
-    const result = await response.json() as ExtensionListResponse;
+    const result = response.body as ExtensionListResponse;
     expect(Array.isArray(result)).toBe(true);
     expect(result.length).toBe(0);
   });
