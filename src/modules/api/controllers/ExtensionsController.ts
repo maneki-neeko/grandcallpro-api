@@ -10,25 +10,13 @@ import { ProcessExtensionsGetByIdUseCase } from '../usecases/ProcessExtensionsGe
 import { ExtensionMessages } from '../../../shared/constants/messages.ts';
 
 export class ExtensionsController {
-  private processExtensionsCreationUseCase: ProcessExtensionsCreationUseCase;
-  private processExtensionsDeleteUseCase: ProcessExtensionsDeleteUseCase;
-  private processExtensionsGetAllUseCase: ProcessExtensionsGetAllUseCase;
-  private processExtensionsUpdateUseCase: ProcessExtensionsUpdateUseCase;
-  private processExtensionsGetByIdUseCase: ProcessExtensionsGetByIdUseCase;
-
-  constructor(
-    processExtensionsCreationUseCase: ProcessExtensionsCreationUseCase,
-    processExtensionsDeleteUseCase: ProcessExtensionsDeleteUseCase,
-    processExtensionsGetAllUseCase: ProcessExtensionsGetAllUseCase,
-    processExtensionsUpdateUseCase: ProcessExtensionsUpdateUseCase,
-    processExtensionsGetByIdUseCase: ProcessExtensionsGetByIdUseCase
-  ) {
-    this.processExtensionsCreationUseCase = processExtensionsCreationUseCase;
-    this.processExtensionsDeleteUseCase = processExtensionsDeleteUseCase;
-    this.processExtensionsGetAllUseCase = processExtensionsGetAllUseCase;
-    this.processExtensionsUpdateUseCase = processExtensionsUpdateUseCase;
-    this.processExtensionsGetByIdUseCase = processExtensionsGetByIdUseCase;
-  }
+    constructor(
+      private processExtensionsCreationUseCase: ProcessExtensionsCreationUseCase,
+      private processExtensionsDeleteUseCase: ProcessExtensionsDeleteUseCase,
+      private processExtensionsGetAllUseCase: ProcessExtensionsGetAllUseCase,
+      private processExtensionsUpdateUseCase: ProcessExtensionsUpdateUseCase,
+      private processExtensionsGetByIdUseCase: ProcessExtensionsGetByIdUseCase
+    ) {}
 
   /**
    * Processa os dados de criação de ramal via POST
@@ -95,10 +83,10 @@ export class ExtensionsController {
     res: Response
   ): Promise<void> {
     try {
-      const extensions = req.body as ExtensionsUpdateRequest;
+      const extensionData = req.body;
       // TODO: Validar dados recebidos, está faltando o enum de departamento
       // Processa os dados
-      const result = await this.processExtensionsUpdateUseCase.perform(extensions);
+      const result = await this.processExtensionsUpdateUseCase.perform(extensionData);
 
       // Responde com sucesso
       res.status(200).json(result);
@@ -110,9 +98,12 @@ export class ExtensionsController {
     }
   }
 
-  async getById(req: Request, res: Response): Promise<void> {
+  async getById(
+      req: Request<{ id: number }>,
+      res: Response
+    ): Promise<void> {
     try {
-      const id = req.params.id as unknown as number;
+      const { id } = req.params;
 
       const result = await this.processExtensionsGetByIdUseCase.perform(id);
 

@@ -24,13 +24,9 @@ const extensionsController = new ExtensionsController(
 );
 
 router.post(BASE_PATH, (req, res) => extensionsController.create(req, res));
-
 router.delete(`${BASE_PATH}/:id`, (req, res) => extensionsController.delete(req, res));
-
 router.get(BASE_PATH, (req, res) => extensionsController.getAll(req, res));
-
 router.put(BASE_PATH, (req, res) => extensionsController.update(req, res));
-
 router.get(`${BASE_PATH}/:id`, (req, res) => {
   extensionsController.getById(req, res);
 });
