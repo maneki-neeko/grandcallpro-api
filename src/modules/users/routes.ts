@@ -1,14 +1,14 @@
-import { Router } from "express";
-import { UserController } from "./controllers/UserController";
-import { CreateUserUseCase } from "./usecases/CreateUserUseCase";
-import { DeleteUserUseCase } from "./usecases/DeleteUserUseCase";
-import { GetAllUsersUseCase } from "./usecases/GetAllUsersUseCase";
-import { UpdateUserUseCase } from "./usecases/UpdateUserUseCase";
-import { GetUserByIdUseCase } from "./usecases/GetUserByIdUseCase";
-import { AuthenticateUserUseCase } from "./usecases/AuthenticateUserUseCase";
+import { Router } from 'express';
+import { UserController } from './controllers/UserController';
+import { CreateUserUseCase } from './usecases/CreateUserUseCase';
+import { DeleteUserUseCase } from './usecases/DeleteUserUseCase';
+import { GetAllUsersUseCase } from './usecases/GetAllUsersUseCase';
+import { UpdateUserUseCase } from './usecases/UpdateUserUseCase';
+import { GetUserByIdUseCase } from './usecases/GetUserByIdUseCase';
+import { AuthenticateUserUseCase } from './usecases/AuthenticateUserUseCase';
 
 const router = Router();
-const BASE_PATH = "/v1/users";
+const BASE_PATH = '/v1/users';
 
 const createUserUseCase = new CreateUserUseCase();
 const deleteUserUseCase = new DeleteUserUseCase();

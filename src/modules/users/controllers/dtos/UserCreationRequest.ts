@@ -7,5 +7,5 @@ export type UserCreationRequest = {
   departament: string;
   password: string;
   role: string;
-  level: string
+  level: string;
 };

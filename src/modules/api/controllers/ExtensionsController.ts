@@ -10,13 +10,13 @@ import { ProcessExtensionsGetByIdUseCase } from '../usecases/ProcessExtensionsGe
 import { ExtensionMessages } from '../../../shared/constants/messages.ts';
 
 export class ExtensionsController {
-    constructor(
-      private processExtensionsCreationUseCase: ProcessExtensionsCreationUseCase,
-      private processExtensionsDeleteUseCase: ProcessExtensionsDeleteUseCase,
-      private processExtensionsGetAllUseCase: ProcessExtensionsGetAllUseCase,
-      private processExtensionsUpdateUseCase: ProcessExtensionsUpdateUseCase,
-      private processExtensionsGetByIdUseCase: ProcessExtensionsGetByIdUseCase
-    ) {}
+  constructor(
+    private processExtensionsCreationUseCase: ProcessExtensionsCreationUseCase,
+    private processExtensionsDeleteUseCase: ProcessExtensionsDeleteUseCase,
+    private processExtensionsGetAllUseCase: ProcessExtensionsGetAllUseCase,
+    private processExtensionsUpdateUseCase: ProcessExtensionsUpdateUseCase,
+    private processExtensionsGetByIdUseCase: ProcessExtensionsGetByIdUseCase
+  ) {}
 
   /**
    * Processa os dados de criação de ramal via POST
@@ -98,10 +98,7 @@ export class ExtensionsController {
     }
   }
 
-  async getById(
-      req: Request<{ id: number }>,
-      res: Response
-    ): Promise<void> {
+  async getById(req: Request<{ id: number }>, res: Response): Promise<void> {
     try {
       const { id } = req.params;
 

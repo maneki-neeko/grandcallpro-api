@@ -1,10 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
-import "reflect-metadata";
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import 'reflect-metadata';
 
 /**
  * Entidade que representa um usuário no banco de dados
  */
-@Entity("users")
+@Entity('users')
 export class User {
   @PrimaryGeneratedColumn()
   id!: number;
@@ -16,7 +16,7 @@ export class User {
   email!: string;
 
   @Column()
-  departament!: string
+  departament!: string;
 
   @Column()
   password!: string;

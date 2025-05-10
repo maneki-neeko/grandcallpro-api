@@ -8,5 +8,5 @@ export type UserUpdateRequest = {
   departament?: string;
   password?: string;
   role?: string;
-  level?: string
+  level?: string;
 };

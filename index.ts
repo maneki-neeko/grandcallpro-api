@@ -19,7 +19,7 @@ app.use('/', coreRoutes);
 // Rotas dos ramais
 app.use('/', extensionsRoutes);
 
-app.use('/', usersRoutes )
+app.use('/', usersRoutes);
 
 // Rota raiz
 app.get('/ping', (req: Request, res: Response) => {

@@ -1,5 +1,5 @@
-import { Repository, DataSource } from "typeorm";
-import { User } from "../entities/User";
+import { Repository, DataSource } from 'typeorm';
+import { User } from '../entities/User';
 
 /**
  * Repositório para manipulação dos usuários no banco de dados
