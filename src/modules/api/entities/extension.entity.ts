@@ -5,7 +5,7 @@ import 'reflect-metadata';
  * Entidade que representa um registro dos ramais
  */
 @Entity('extensions')
-export class Extensions {
+export class Extension {
   @PrimaryGeneratedColumn()
   id!: number;
 
