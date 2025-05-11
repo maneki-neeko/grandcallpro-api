@@ -8,6 +8,6 @@ import { ExtensionService } from './services/extension.service';
   imports: [TypeOrmModule.forFeature([Extension])],
   controllers: [ExtensionController],
   providers: [ExtensionService],
-  exports: [ExtensionService]
+  exports: [ExtensionService],
 })
 export class ApiModule {}

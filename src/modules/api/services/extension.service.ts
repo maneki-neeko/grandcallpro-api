@@ -9,7 +9,7 @@ import { UpdateExtensionDto } from '../dto/update-extension.dto';
 export class ExtensionService {
   constructor(
     @InjectRepository(Extension)
-    private extensionRepository: Repository<Extension>,
+    private extensionRepository: Repository<Extension>
   ) {}
 
   async create(createExtensionDto: CreateExtensionDto): Promise<Extension> {
@@ -31,14 +31,14 @@ export class ExtensionService {
   }
 
   async update(updateExtensionDto: UpdateExtensionDto): Promise<Extension> {
-    const extension = await this.extensionRepository.findOne({ 
-      where: { id: updateExtensionDto.id } 
+    const extension = await this.extensionRepository.findOne({
+      where: { id: updateExtensionDto.id },
     });
-    
+
     if (!extension) {
       throw new NotFoundException(`Extension with ID ${updateExtensionDto.id} not found`);
     }
-    
+
     await this.extensionRepository.save(updateExtensionDto);
     return this.findOne(updateExtensionDto.id);
   }

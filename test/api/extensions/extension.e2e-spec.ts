@@ -1,7 +1,12 @@
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'bun:test';
 import supertest from 'supertest';
 import { Extension } from '../../../src/modules/api/entities/extension.entity';
-import { createTestingModule, cleanupTestingModule, clearDatabase, type TestContext } from '../../setup';
+import {
+  createTestingModule,
+  cleanupTestingModule,
+  clearDatabase,
+  type TestContext,
+} from '../../setup';
 import { Repository } from 'typeorm';
 
 describe('Extension Controller (e2e)', () => {
@@ -43,7 +48,7 @@ describe('Extension Controller (e2e)', () => {
 
       // Verifica se foi salvo no banco
       const savedExtension = await extensionRepository.findOne({
-        where: { id: response.body.id }
+        where: { id: response.body.id },
       });
       expect(savedExtension).toBeDefined();
     });
@@ -56,10 +61,7 @@ describe('Extension Controller (e2e)', () => {
         employee: '',
       };
 
-      await supertest(context.httpServer)
-        .post('/v1/extensions')
-        .send(invalidData)
-        .expect(400);
+      await supertest(context.httpServer).post('/v1/extensions').send(invalidData).expect(400);
     });
   });
 
@@ -73,18 +75,14 @@ describe('Extension Controller (e2e)', () => {
 
       await extensionRepository.save(extensions);
 
-      const response = await supertest(context.httpServer)
-        .get('/v1/extensions')
-        .expect(200);
+      const response = await supertest(context.httpServer).get('/v1/extensions').expect(200);
 
       expect(Array.isArray(response.body)).toBe(true);
       expect(response.body.length).toBe(2);
     });
 
     it('deve retornar uma lista vazia quando não há ramais', async () => {
-      const response = await supertest(context.httpServer)
-        .get('/v1/extensions')
-        .expect(200);
+      const response = await supertest(context.httpServer).get('/v1/extensions').expect(200);
 
       expect(Array.isArray(response.body)).toBe(true);
       expect(response.body.length).toBe(0);
@@ -112,9 +110,7 @@ describe('Extension Controller (e2e)', () => {
     });
 
     it('deve retornar erro ao buscar um ramal inexistente', async () => {
-      await supertest(context.httpServer)
-        .get('/v1/extensions/999')
-        .expect(404);
+      await supertest(context.httpServer).get('/v1/extensions/999').expect(404);
     });
   });
 
@@ -148,7 +144,7 @@ describe('Extension Controller (e2e)', () => {
 
       // Verifica se foi atualizado no banco
       const updatedExtension = await extensionRepository.findOne({
-        where: { id: extension.id }
+        where: { id: extension.id },
       });
       expect(updatedExtension).toBeDefined();
       expect(updatedExtension?.number).toBe(updatedData.number);
@@ -163,10 +159,7 @@ describe('Extension Controller (e2e)', () => {
         employee: 'Ana Souza Silva',
       };
 
-      await supertest(context.httpServer)
-        .put('/v1/extensions')
-        .send(updatedData)
-        .expect(404);
+      await supertest(context.httpServer).put('/v1/extensions').send(updatedData).expect(404);
     });
   });
 
@@ -179,21 +172,17 @@ describe('Extension Controller (e2e)', () => {
         employee: 'Pedro Costa',
       });
 
-      await supertest(context.httpServer)
-        .delete(`/v1/extensions/${extension.id}`)
-        .expect(204);
+      await supertest(context.httpServer).delete(`/v1/extensions/${extension.id}`).expect(204);
 
       // Verifica se foi removido do banco
       const deletedExtension = await extensionRepository.findOne({
-        where: { id: extension.id }
+        where: { id: extension.id },
       });
       expect(deletedExtension).toBeNull();
     });
 
     it('deve retornar erro ao tentar excluir um ramal inexistente', async () => {
-      await supertest(context.httpServer)
-        .delete('/v1/extensions/999')
-        .expect(404);
+      await supertest(context.httpServer).delete('/v1/extensions/999').expect(404);
     });
   });
 });

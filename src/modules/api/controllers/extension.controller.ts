@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Put, Delete, Param, Body, HttpStatus, HttpCode } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Param,
+  Body,
+  HttpStatus,
+  HttpCode,
+} from '@nestjs/common';
 import { Extension } from '../entities/extension.entity';
 import { ExtensionService } from '../services/extension.service';
 import { CreateExtensionDto } from '../dto/create-extension.dto';
@@ -6,9 +16,7 @@ import { UpdateExtensionDto } from '../dto/update-extension.dto';
 
 @Controller('v1/extensions')
 export class ExtensionController {
-  constructor(
-    private readonly extensionService: ExtensionService
-  ) {}
+  constructor(private readonly extensionService: ExtensionService) {}
 
   @Post()
   @HttpCode(HttpStatus.CREATED)

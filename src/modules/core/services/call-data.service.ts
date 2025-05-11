@@ -10,7 +10,7 @@ export class CallDataService {
 
   constructor(
     @InjectRepository(CallRecord)
-    private repository: Repository<CallRecord>,
+    private repository: Repository<CallRecord>
   ) {}
 
   /**
@@ -84,7 +84,7 @@ export class CallDataService {
       return await this.repository.find({
         skip: offset,
         take: limit,
-        order: { id: 'DESC' }
+        order: { id: 'DESC' },
       });
     } catch (error) {
       this.logger.error(`Erro ao listar registros de chamada: ${error.message}`, error.stack);
@@ -100,13 +100,13 @@ export class CallDataService {
   async findByUniqueId(uniqueId: string): Promise<CallRecord[]> {
     try {
       return await this.repository
-      .createQueryBuilder('call_record')
-      .where('call_record.uniqueid = :uniqueId', { uniqueId })
-      .orderBy(
-        "CASE WHEN call_record.end = '' THEN call_record.start ELSE call_record.end END",
-        'DESC'
-      )
-      .getMany();
+        .createQueryBuilder('call_record')
+        .where('call_record.uniqueid = :uniqueId', { uniqueId })
+        .orderBy(
+          "CASE WHEN call_record.end = '' THEN call_record.start ELSE call_record.end END",
+          'DESC'
+        )
+        .getMany();
     } catch (error) {
       this.logger.error(`Erro ao buscar registro por uniqueId: ${error.message}`, error.stack);
       throw error;

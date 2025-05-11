@@ -31,13 +31,15 @@ export async function createTestingModule(): Promise<TestContext> {
   }).compile();
 
   const app = moduleRef.createNestApplication();
-  
+
   // Configurar pipes globais como na aplicação real
-  app.useGlobalPipes(new ValidationPipe({
-    whitelist: true,
-    transform: true,
-    forbidNonWhitelisted: true,
-  }));
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+      forbidNonWhitelisted: true,
+    })
+  );
 
   await app.init();
   const httpServer = app.getHttpServer();

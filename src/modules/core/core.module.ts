@@ -8,6 +8,6 @@ import { CallDataService } from './services/call-data.service';
   imports: [TypeOrmModule.forFeature([CallRecord])],
   controllers: [CallDataController],
   providers: [CallDataService],
-  exports: [CallDataService]
+  exports: [CallDataService],
 })
 export class CoreModule {}

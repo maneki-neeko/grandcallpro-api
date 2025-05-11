@@ -1,4 +1,14 @@
-import { Controller, Post, Get, Body, Param, Query, HttpStatus, HttpCode, NotFoundException } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Get,
+  Body,
+  Param,
+  Query,
+  HttpStatus,
+  HttpCode,
+  NotFoundException,
+} from '@nestjs/common';
 import { CallDataService } from '../services/call-data.service';
 import { UcmCallDataDto } from '../dto/ucm-call-data.dto';
 import { CallRecord } from '../entities/call-record.entity';
@@ -27,7 +37,7 @@ export class CallDataController {
   ): Promise<CallRecord[]> {
     const limitNum = limit ? parseInt(limit, 10) : 100;
     const offsetNum = offset ? parseInt(offset, 10) : 0;
-    
+
     return this.callDataService.findAll(limitNum, offsetNum);
   }
 
@@ -38,11 +48,11 @@ export class CallDataController {
   @HttpCode(HttpStatus.OK)
   async findCallDataByUniqueId(@Param('uniqueId') uniqueId: string): Promise<CallRecord[]> {
     const records = await this.callDataService.findByUniqueId(uniqueId);
-    
+
     if (!records) {
       throw new NotFoundException(`Call record with uniqueId ${uniqueId} not found`);
     }
-    
+
     return records;
   }
 }
