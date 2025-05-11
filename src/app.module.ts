@@ -9,7 +9,7 @@ import { CallRecord } from './modules/core/entities/call-record.entity';
   imports: [
     TypeOrmModule.forRoot({
       type: 'sqlite',
-      database: 'database.sqlite',
+      database: 'src/database/database.sqlite',
       entities: [Extension, CallRecord],
       synchronize: true, // Não usar em produção
     }),

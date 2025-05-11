@@ -1,24 +1,23 @@
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'bun:test';
-import { Extensions } from '../../../src/modules/api/entities/Extensions';
+import { Extension } from '../../../src/modules/api/entities/extension.entity';
 import {
-  setupSupertestApp,
+  setupTestApp,
   teardownTestApp,
   clearDatabase,
   type TestContext,
-  type ExtensionResponse,
-} from './supertest-setup';
+} from './test-setup';
 
 describe('Extensions API - Create (POST /v1/extensions)', () => {
   let testContext: TestContext;
 
   // Configuração antes de todos os testes
   beforeAll(async () => {
-    testContext = await setupSupertestApp();
+    testContext = await setupTestApp();
   });
 
   // Limpeza após todos os testes
   afterAll(async () => {
-    await teardownTestApp();
+    await teardownTestApp(testContext);
   });
 
   // Limpa o banco de dados antes de cada teste
@@ -29,7 +28,7 @@ describe('Extensions API - Create (POST /v1/extensions)', () => {
   it('deve criar um novo ramal com sucesso', async () => {
     const extensionData = {
       number: 1001,
-      departament: 'TI',
+      department: 'TI',
       sector: 'Desenvolvimento',
       employee: 'João Silva',
     };
@@ -39,10 +38,10 @@ describe('Extensions API - Create (POST /v1/extensions)', () => {
       .send(extensionData)
       .expect(201);
 
-    const result = response.body as ExtensionResponse;
+    const result = response.body as Extension;
     expect(result.id).toBeDefined();
     expect(result.number).toBe(extensionData.number);
-    expect(result.department).toBe(extensionData.departament);
+    expect(result.department).toBe(extensionData.department);
     expect(result.sector).toBe(extensionData.sector);
     expect(result.employee).toBe(extensionData.employee);
   });

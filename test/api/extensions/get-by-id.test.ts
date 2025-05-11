@@ -1,24 +1,23 @@
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'bun:test';
-import { Extensions } from '../../../src/modules/api/entities/Extensions';
+import { Extension } from '../../../src/modules/api/entities/extension.entity';
 import {
-  setupSupertestApp,
+  setupTestApp,
   teardownTestApp,
   clearDatabase,
   type TestContext,
-  type ExtensionResponse,
-} from './supertest-setup';
+} from './test-setup';
 
 describe('Extensions API - Get By ID (GET /v1/extensions/:id)', () => {
   let testContext: TestContext;
 
   // Configuração antes de todos os testes
   beforeAll(async () => {
-    testContext = await setupSupertestApp();
+    testContext = await setupTestApp();
   });
 
   // Limpeza após todos os testes
   afterAll(async () => {
-    await teardownTestApp();
+    await teardownTestApp(testContext);
   });
 
   // Limpa o banco de dados antes de cada teste
@@ -28,25 +27,25 @@ describe('Extensions API - Get By ID (GET /v1/extensions/:id)', () => {
 
   it('deve retornar um ramal específico por ID', async () => {
     // Cria um ramal para teste
-    const extensionData = {
-      number: 1003,
-      departament: 'Financeiro',
-      sector: 'Contabilidade',
-      employee: 'Carlos Oliveira',
-    };
+    const extension = new Extension();
+    extension.number = 1003;
+    extension.department = 'Financeiro';
+    extension.sector = 'Contabilidade';
+    extension.employee = 'Carlos Oliveira';
 
-    const savedExtension = await testContext.repository.save(extensionData);
+    const entityManager = testContext.dataSource.manager;
+    const savedExtension = await entityManager.save(extension);
 
     const response = await testContext.request
       .get(`/v1/extensions/${savedExtension.id}`)
       .expect(200);
 
-    const result = response.body as ExtensionResponse;
+    const result = response.body as Extension;
     expect(result.id).toBe(savedExtension.id);
-    expect(result.number).toBe(extensionData.number);
-    expect(result.department).toBe(extensionData.departament);
-    expect(result.sector).toBe(extensionData.sector);
-    expect(result.employee).toBe(extensionData.employee);
+    expect(result.number).toBe(extension.number);
+    expect(result.department).toBe(extension.department);
+    expect(result.sector).toBe(extension.sector);
+    expect(result.employee).toBe(extension.employee);
   });
 
   it('deve retornar erro ao buscar um ramal inexistente', async () => {

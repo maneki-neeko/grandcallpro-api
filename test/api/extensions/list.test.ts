@@ -1,24 +1,23 @@
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'bun:test';
-import { Extensions } from '../../../src/modules/api/entities/Extensions';
+import { Extension } from '../../../src/modules/api/entities/extension.entity';
 import {
-  setupSupertestApp,
+  setupTestApp,
   teardownTestApp,
   clearDatabase,
   type TestContext,
-  type ExtensionListResponse,
-} from './supertest-setup';
+} from './test-setup';
 
 describe('Extensions API - List (GET /v1/extensions)', () => {
   let testContext: TestContext;
 
   // Configuração antes de todos os testes
   beforeAll(async () => {
-    testContext = await setupSupertestApp();
+    testContext = await setupTestApp();
   });
 
   // Limpeza após todos os testes
   afterAll(async () => {
-    await teardownTestApp();
+    await teardownTestApp(testContext);
   });
 
   // Limpa o banco de dados antes de cada teste
@@ -33,18 +32,20 @@ describe('Extensions API - List (GET /v1/extensions)', () => {
       { number: 1002, department: 'RH', sector: 'Recrutamento', employee: 'Maria Santos' },
     ];
 
+    const entityManager = testContext.dataSource.manager;
+
     for (const ext of extensions) {
-      await testContext.repository.save({
-        number: ext.number,
-        departament: ext.department,
-        sector: ext.sector,
-        employee: ext.employee,
-      });
+      const extension = new Extension();
+      extension.number = ext.number;
+      extension.department = ext.department;
+      extension.sector = ext.sector;
+      extension.employee = ext.employee;
+      await entityManager.save(extension);
     }
 
     const response = await testContext.request.get('/v1/extensions').expect(200);
 
-    const result = response.body as ExtensionListResponse;
+    const result = response.body as Extension[];
     expect(Array.isArray(result)).toBe(true);
     expect(result.length).toBe(2);
 
@@ -57,7 +58,7 @@ describe('Extensions API - List (GET /v1/extensions)', () => {
   it('deve retornar uma lista vazia quando não há ramais', async () => {
     const response = await testContext.request.get('/v1/extensions').expect(200);
 
-    const result = response.body as ExtensionListResponse;
+    const result = response.body as Extension[];
     expect(Array.isArray(result)).toBe(true);
     expect(result.length).toBe(0);
   });

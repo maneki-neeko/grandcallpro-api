@@ -1,24 +1,23 @@
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'bun:test';
-import { Extensions } from '../../../src/modules/api/entities/Extensions';
+import { Extension } from '../../../src/modules/api/entities/extension.entity';
 import {
-  setupSupertestApp,
+  setupTestApp,
   teardownTestApp,
   clearDatabase,
   type TestContext,
-  type ExtensionResponse,
-} from './supertest-setup';
+} from './test-setup';
 
 describe('Extensions API - Update (PUT /v1/extensions)', () => {
   let testContext: TestContext;
 
   // Configuração antes de todos os testes
   beforeAll(async () => {
-    testContext = await setupSupertestApp();
+    testContext = await setupTestApp();
   });
 
   // Limpeza após todos os testes
   afterAll(async () => {
-    await teardownTestApp();
+    await teardownTestApp(testContext);
   });
 
   // Limpa o banco de dados antes de cada teste
@@ -27,15 +26,16 @@ describe('Extensions API - Update (PUT /v1/extensions)', () => {
   });
 
   it('deve atualizar um ramal existente', async () => {
-    // Cria um ramal para teste
-    const extensionData = {
-      number: 1004,
-      departament: 'Marketing',
-      sector: 'Digital',
-      employee: 'Ana Souza',
-    };
+    const entityManager = testContext.dataSource.manager;
 
-    const savedExtension = await testContext.repository.save(extensionData);
+    // Cria um ramal para teste
+    const extension = new Extension();
+    extension.number = 1004;
+    extension.department = 'Marketing';
+    extension.sector = 'Digital';
+    extension.employee = 'Ana Souza';
+
+    const savedExtension = await entityManager.save(extension);
 
     // Dados atualizados
     const updatedData = {
@@ -46,10 +46,15 @@ describe('Extensions API - Update (PUT /v1/extensions)', () => {
       employee: 'Ana Souza Silva',
     };
 
-    const response = await testContext.request.put('/v1/extensions').send(updatedData).expect(200);
+    const response = await testContext.request
+      .put('/v1/extensions')
+      .send(updatedData)
+      .expect(200);
 
     // Verifica se o ramal foi atualizado no banco
-    const updatedExtension = await testContext.repository.getById(savedExtension.id);
+    const updatedExtension = await entityManager.findOne(Extension, {
+      where: { id: savedExtension.id }
+    });
     expect(updatedExtension).not.toBeNull();
     expect(updatedExtension?.number).toBe(updatedData.number);
     expect(updatedExtension?.sector).toBe(updatedData.sector);
