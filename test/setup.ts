@@ -1,6 +1,6 @@
 import { DataSource } from 'typeorm';
-import { CallRecord } from '../src/modules/core/entities/CallRecord';
-import { Extensions } from '../src/modules/api/entities/Extensions';
+import { CallRecord } from '../src/modules/core/entities/call-record.entity';
+import { Extension } from '../src/modules/api/entities/extension.entity';
 
 // Configuração da conexão com o banco de dados SQLite em memória para testes
 export const TestDataSource = new DataSource({
@@ -9,7 +9,7 @@ export const TestDataSource = new DataSource({
   synchronize: true,
   dropSchema: true,
   logging: false,
-  entities: [CallRecord, Extensions],
+  entities: [CallRecord, Extension],
 });
 
 // Função para inicializar a conexão com o banco de dados de teste
