@@ -26,7 +26,7 @@ export class AuthenticateUserUseCase {
 
     // Verifica se a senha está correta
     // const passwordMatch = await bcrypt.compare(password, user.password);
-    const passwordMatch = password === user.password
+    const passwordMatch = password === user.password;
     if (!passwordMatch) {
       throw new Error(AuthenticateMessages.LOGIN_ERROR);
     }
