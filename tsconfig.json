@@ -27,6 +27,15 @@
     // Some stricter flags (disabled by default)
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "noPropertyAccessFromIndexSignature": false
+    "noPropertyAccessFromIndexSignature": false,
+
+    // Module resolution
+    "baseUrl": "./",
+    "paths": {
+      "@users/*": ["src/modules/users/*"],
+      "@api/*": ["src/modules/api/*"],
+      "@core/*": ["src/modules/core/*"],
+      "@shared/*": ["src/shared/*"]
+    }
   }
 }

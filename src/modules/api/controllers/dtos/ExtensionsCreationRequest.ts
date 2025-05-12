@@ -3,7 +3,7 @@
  */
 export interface ExtensionsCreationRequest {
   number: number;
-  departament: string;
+  department: string;
   sector: string;
   employee: string;
 }
