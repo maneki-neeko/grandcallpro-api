@@ -16,7 +16,7 @@ export class User {
   email!: string;
 
   @Column()
-  departament!: string;
+  department!: string;
 
   @Column()
   password!: string;

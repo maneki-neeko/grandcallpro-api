@@ -5,7 +5,7 @@ export type UserUpdateRequest = {
   id: string;
   name?: string;
   email?: string;
-  departament?: string;
+  department?: string;
   password?: string;
   role?: string;
   level?: string;

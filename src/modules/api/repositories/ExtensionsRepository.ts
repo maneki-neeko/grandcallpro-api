@@ -20,7 +20,7 @@ export class ExtensionsRepository {
     const extensions = new Extensions();
 
     extensions.number = extensionsData.number;
-    extensions.department = extensionsData.departament;
+    extensions.department = extensionsData.department;
     extensions.sector = extensionsData.sector;
     extensions.employee = extensionsData.employee;
 
