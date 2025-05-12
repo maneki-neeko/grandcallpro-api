@@ -2,11 +2,13 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
-import supertest from 'supertest';
 import { Extension } from '../src/modules/api/entities/extension.entity';
 import { CallRecord } from '../src/modules/core/entities/call-record.entity';
+import { User } from '../src/modules/users/entities/user.entity';
 import { ExtensionController } from '../src/modules/api/controllers/extension.controller';
 import { ExtensionService } from '../src/modules/api/services/extension.service';
+import { UsersController } from '../src/modules/users/controllers/users.controller';
+import { UsersService } from '../src/modules/users/services/users.service';
 
 export interface TestContext {
   app: INestApplication;
@@ -21,13 +23,13 @@ export async function createTestingModule(): Promise<TestContext> {
       TypeOrmModule.forRoot({
         type: 'sqlite',
         database: ':memory:',
-        entities: [Extension, CallRecord],
+        entities: [Extension, CallRecord, User],
         synchronize: true,
       }),
-      TypeOrmModule.forFeature([Extension]),
+      TypeOrmModule.forFeature([Extension, User]),
     ],
-    controllers: [ExtensionController],
-    providers: [ExtensionService],
+    controllers: [ExtensionController, UsersController],
+    providers: [ExtensionService, UsersService],
   }).compile();
 
   const app = moduleRef.createNestApplication();
