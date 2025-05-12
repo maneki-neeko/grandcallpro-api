@@ -9,6 +9,7 @@ import type { UserCreationRequest } from './dtos/UserCreationRequest';
 import type { UserUpdateRequest } from './dtos/UserUpdateRequest';
 import type { UserDeleteRequest } from './dtos/UserDeleteRequest';
 import type { UserAuthenticationRequest } from './dtos/UserAuthenticationRequest';
+import { UserMessages } from '@users/constants/messages';
 
 /**
  * Controlador responsável por gerenciar as requisições relacionadas a usuários
@@ -28,19 +29,19 @@ export class UserController {
       const user = await this.createUserUseCase.perform(req.body);
       res.status(201).json(user);
     } catch (error) {
-      console.error('Error creating user:', error);
-      res.status(500).json({ message: 'Error creating user' });
+      console.error(UserMessages.CREATE_ERROR, error);
+      res.status(500).json({ message: UserMessages.CREATE_ERROR });
     }
   }
 
-  async delete(req: Request<{ id: string }, unknown, unknown>, res: Response): Promise<void> {
+  async delete(req: Request<{ id: string }>, res: Response): Promise<void> {
     try {
       const { id } = req.params;
       await this.deleteUserUseCase.perform(id);
       res.status(204).send();
     } catch (error) {
-      console.error('Error deleting user:', error);
-      res.status(500).json({ message: 'Error deleting user' });
+      console.error(UserMessages.DELETE_ERROR, error);
+      res.status(500).json({ message: UserMessages.DELETE_ERROR });
     }
   }
 
@@ -49,8 +50,8 @@ export class UserController {
       const users = await this.getAllUsersUseCase.perform();
       res.status(200).json(users);
     } catch (error) {
-      console.error('Error fetching users:', error);
-      res.status(500).json({ message: 'Error fetching users' });
+      console.error(UserMessages.GET_ALL_ERROR, error);
+      res.status(500).json({ message: UserMessages.GET_ALL_ERROR });
     }
   }
 
@@ -60,8 +61,8 @@ export class UserController {
       await this.updateUserUseCase.perform(userData);
       res.status(200).send();
     } catch (error) {
-      console.error('Error updating user:', error);
-      res.status(500).json({ message: 'Error updating user' });
+      console.error(UserMessages.UPDATE_ERROR, error);
+      res.status(500).json({ message: UserMessages.UPDATE_ERROR });
     }
   }
 
@@ -70,13 +71,13 @@ export class UserController {
       const { id } = req.params;
       const user = await this.getUserByIdUseCase.perform(id);
       if (!user) {
-        res.status(404).json({ message: 'User not found' });
+        res.status(404).json({ message: UserMessages.NOT_FOUND });
         return;
       }
       res.status(200).json(user);
     } catch (error) {
-      console.error('Error fetching user:', error);
-      res.status(500).json({ message: 'Error fetching user' });
+      console.error(UserMessages.GET_BY_ID_ERROR, error);
+      res.status(500).json({ message: UserMessages.GET_BY_ID_ERROR });
     }
   }
 
@@ -85,18 +86,18 @@ export class UserController {
     res: Response
   ): Promise<void> {
     try {
-      const { email, password } = req.body;
-      const result = await this.authenticateUserUseCase.perform(email, password);
+      const credentials = req.body;
+      const result = await this.authenticateUserUseCase.perform(credentials);
 
       if (!result) {
-        res.status(401).json({ message: 'Invalid credentials' });
+        res.status(401).json({ message: UserMessages.INVALID_DATA });
         return;
       }
 
       res.status(200).json(result);
     } catch (error) {
-      console.error('Error authenticating user:', error);
-      res.status(500).json({ message: 'Error authenticating user' });
+      console.error(UserMessages.AUTHENTICATING_ERROR, error);
+      res.status(500).json({ message: UserMessages.AUTHENTICATING_ERROR });
     }
   }
 }

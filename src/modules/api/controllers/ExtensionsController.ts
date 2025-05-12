@@ -7,7 +7,7 @@ import { ProcessExtensionsDeleteUseCase } from './../usecases/ProcessExtensionsD
 import { ProcessExtensionsGetAllUseCase } from '../usecases/ProcessExtensionsGetAllUseCase.ts';
 import { ProcessExtensionsUpdateUseCase } from '../usecases/ProcessExtensionsUpdateUseCase.ts';
 import { ProcessExtensionsGetByIdUseCase } from '../usecases/ProcessExtensionsGetByIdUseCase.ts';
-import { ExtensionMessages } from '../../../shared/constants/messages.ts';
+import { ExtensionMessages } from '../constants/messages.ts';
 
 export class ExtensionsController {
   constructor(

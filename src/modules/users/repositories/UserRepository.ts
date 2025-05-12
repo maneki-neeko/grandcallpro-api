@@ -32,7 +32,7 @@ export class UserRepository {
     await this.repository.update(id, user);
   }
 
-  async findByName(name: string): Promise<User | null> {
-    return this.repository.findOne({ where: { name } });
+  async findByEmail(email: string): Promise<User | null> {
+    return this.repository.findOne({ where: { email } });
   }
 }

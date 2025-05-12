@@ -13,15 +13,19 @@
     "format:check": "prettier --check ."
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/bun": "latest",
     "@types/express": "^5.0.1",
+    "@types/jsonwebtoken": "^9.0.9",
     "prettier": "^3.5.3"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
     "reflect-metadata": "^0.2.2",
     "sqlite3": "^5.1.7",
     "typeorm": "^0.3.22"

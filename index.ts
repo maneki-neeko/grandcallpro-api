@@ -19,6 +19,7 @@ app.use('/', coreRoutes);
 // Rotas dos ramais
 app.use('/', extensionsRoutes);
 
+// Rotas dos usuários
 app.use('/', usersRoutes);
 
 // Rota raiz
