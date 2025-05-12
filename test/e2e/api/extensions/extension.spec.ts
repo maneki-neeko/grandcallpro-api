@@ -1,12 +1,12 @@
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'bun:test';
 import supertest from 'supertest';
-import { Extension } from '../../../src/modules/api/entities/extension.entity';
+import { Extension } from '../../../../src/modules/api/entities/extension.entity';
 import {
   createTestingModule,
   cleanupTestingModule,
   clearDatabase,
   type TestContext,
-} from '../../setup';
+} from '../../../setup';
 import { Repository } from 'typeorm';
 
 describe('Extension Controller (e2e)', () => {
