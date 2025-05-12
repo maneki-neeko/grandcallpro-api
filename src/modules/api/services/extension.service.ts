@@ -9,7 +9,7 @@ import { UpdateExtensionDto } from '../dto/update-extension.dto';
 export class ExtensionService {
   constructor(
     @InjectRepository(Extension)
-    private extensionRepository: Repository<Extension>
+    private readonly extensionRepository: Repository<Extension>
   ) {}
 
   async create(createExtensionDto: CreateExtensionDto): Promise<Extension> {
