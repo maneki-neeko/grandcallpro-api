@@ -9,6 +9,7 @@ import {
   HttpStatus,
   HttpCode,
   BadRequestException,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { Extension } from '../entities/extension.entity';
 import { ExtensionService } from '../services/extension.service';
@@ -33,7 +34,7 @@ export class ExtensionController {
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  async findOne(@Param('id') id: number): Promise<Extension> {
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<Extension> {
     if (id <= 0) {
       throw new BadRequestException('Id inválido');
     }
