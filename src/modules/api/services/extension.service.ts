@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Extension } from '../entities/extension.entity';
-import { CreateExtensionDto } from '../dto/create-extension.dto';
-import { UpdateExtensionDto } from '../dto/update-extension.dto';
+import { Extension } from '@api/entities/extension.entity';
+import { CreateExtensionDto } from '@api/dto/create-extension.dto';
+import { UpdateExtensionDto } from '@api/dto/update-extension.dto';
 
 @Injectable()
 export class ExtensionService {

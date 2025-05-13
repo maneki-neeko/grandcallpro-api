@@ -10,11 +10,11 @@ import {
   HttpStatus,
   ParseIntPipe,
 } from '@nestjs/common';
-import { UsersService } from '../services/users.service';
-import { CreateUserDto } from '../dto/create-user.dto';
-import { UpdateUserDto } from '../dto/update-user.dto';
-import { AuthUserDto } from '../dto/auth-user.dto';
-import { User } from '../entities/user.entity';
+import { UsersService } from '@users/services/users.service';
+import { CreateUserDto } from '@users/dto/create-user.dto';
+import { UpdateUserDto } from '@users/dto/update-user.dto';
+import { AuthUserDto } from '@users/dto/auth-user.dto';
+import { User } from '@users/entities/user.entity';
 
 @Controller('v1/users')
 export class UsersController {

@@ -11,10 +11,10 @@ import {
   BadRequestException,
   ParseIntPipe,
 } from '@nestjs/common';
-import { Extension } from '../entities/extension.entity';
-import { ExtensionService } from '../services/extension.service';
-import { CreateExtensionDto } from '../dto/create-extension.dto';
-import { UpdateExtensionDto } from '../dto/update-extension.dto';
+import { Extension } from '@api/entities/extension.entity';
+import { ExtensionService } from '@api/services/extension.service';
+import { CreateExtensionDto } from '@api/dto/create-extension.dto';
+import { UpdateExtensionDto } from '@api/dto/update-extension.dto';
 
 @Controller('v1/extensions')
 export class ExtensionController {

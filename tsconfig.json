@@ -13,6 +13,11 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
+    "paths": {
+      "@users/*": ["src/modules/users/*"],
+      "@api/*": ["src/modules/api/*"],
+      "@core/*": ["src/modules/core/*"]
+    },
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": false,

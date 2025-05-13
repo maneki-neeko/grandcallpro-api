@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CallRecord } from '../entities/call-record.entity';
-import { UcmCallDataDto } from '../dto/ucm-call-data.dto';
+import { CallRecord } from '@core/entities/call-record.entity';
+import { UcmCallDataDto } from '@core/dto/ucm-call-data.dto';
 
 @Injectable()
 export class CallDataService {

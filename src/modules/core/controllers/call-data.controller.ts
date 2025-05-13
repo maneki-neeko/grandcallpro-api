@@ -9,9 +9,9 @@ import {
   HttpCode,
   NotFoundException,
 } from '@nestjs/common';
-import { CallDataService } from '../services/call-data.service';
-import { UcmCallDataDto } from '../dto/ucm-call-data.dto';
-import { CallRecord } from '../entities/call-record.entity';
+import { CallDataService } from '@core/services/call-data.service';
+import { UcmCallDataDto } from '@core/dto/ucm-call-data.dto';
+import { CallRecord } from '@core/entities/call-record.entity';
 
 @Controller('core')
 export class CallDataController {

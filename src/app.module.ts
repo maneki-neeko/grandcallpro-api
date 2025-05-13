@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ApiModule } from './modules/api/api.module';
-import { CoreModule } from './modules/core/core.module';
-import { UsersModule } from './modules/users/users.module';
-import { Extension } from './modules/api/entities/extension.entity';
-import { CallRecord } from './modules/core/entities/call-record.entity';
-import { User } from './modules/users/entities/user.entity';
+import { ApiModule } from '@api/api.module';
+import { CoreModule } from '@core/core.module';
+import { UsersModule } from '@users/users.module';
+import { Extension } from '@api/entities/extension.entity';
+import { CallRecord } from '@core/entities/call-record.entity';
+import { User } from '@users/entities/user.entity';
 
 @Module({
   imports: [
