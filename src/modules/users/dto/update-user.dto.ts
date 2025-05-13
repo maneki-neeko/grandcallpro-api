@@ -1,3 +1,4 @@
+import UserLevel from '@users/entities/user-level';
 import { IsString, IsEmail, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 
 export class UpdateUserDto {
@@ -23,5 +24,5 @@ export class UpdateUserDto {
 
   @IsString()
   @IsOptional()
-  level?: string;
+  level?: UserLevel;
 }

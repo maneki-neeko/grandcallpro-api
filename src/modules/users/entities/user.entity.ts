@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { Exclude } from 'class-transformer';
+import UserLevel from './user-level';
 
 @Entity('users')
 export class User {
@@ -22,6 +23,12 @@ export class User {
   @Column()
   role: string;
 
-  @Column()
-  level: string;
+  @Column({ type: 'enum', enum: UserLevel })
+  level: UserLevel;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }
