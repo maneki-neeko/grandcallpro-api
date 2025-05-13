@@ -26,40 +26,41 @@ export class CallDataService {
       this.logger.log(`[${readableTime}] Received data: ${JSON.stringify(data, null, 2)}`);
 
       // Converte os dados do DTO para a entidade
-      const callRecord = new CallRecord();
-      callRecord.acct_id = data.AcctId;
-      callRecord.accountcode = data.accountcode;
-      callRecord.src = data.src;
-      callRecord.dst = data.dst;
-      callRecord.dcontext = data.dcontext;
-      callRecord.clid = data.clid;
-      callRecord.channel = data.channel;
-      callRecord.dstchannel = data.dstchannel;
-      callRecord.lastapp = data.lastapp;
-      callRecord.lastdata = data.lastdata;
-      callRecord.start = data.start;
-      callRecord.answer = data.answer;
-      callRecord.end = data.end;
-      callRecord.duration = parseInt(data.duration, 10);
-      callRecord.billsec = parseInt(data.billsec, 10);
-      callRecord.disposition = data.disposition;
-      callRecord.amaflags = data.amaflags;
-      callRecord.uniqueid = data.uniqueid;
-      callRecord.userfield = data.userfield;
-      callRecord.channel_ext = data.channel_ext;
-      callRecord.dstchannel_ext = data.dstchannel_ext;
-      callRecord.service = data.service;
-      callRecord.caller_name = data.caller_name;
-      callRecord.recordfiles = data.recordfiles;
-      callRecord.dstanswer = data.dstanswer;
-      callRecord.chanext = data.chanext;
-      callRecord.dstchanext = data.dstchanext;
-      callRecord.session = data.session;
-      callRecord.action_owner = data.action_owner;
-      callRecord.action_type = data.action_type;
-      callRecord.src_trunk_name = data.src_trunk_name;
-      callRecord.dst_trunk_name = data.dst_trunk_name;
-      callRecord.sn = data.sn;
+      const callRecord = Object.assign(new CallRecord(), {
+        acct_id: data.AcctId,
+        accountcode: data.accountcode,
+        src: data.src,
+        dst: data.dst,
+        dcontext: data.dcontext,
+        clid: data.clid,
+        channel: data.channel,
+        dstchannel: data.dstchannel,
+        lastapp: data.lastapp,
+        lastdata: data.lastdata,
+        start: data.start,
+        answer: data.answer,
+        end: data.end,
+        duration: parseInt(data.duration, 10),
+        billsec: parseInt(data.billsec, 10),
+        disposition: data.disposition,
+        amaflags: data.amaflags,
+        uniqueid: data.uniqueid,
+        userfield: data.userfield,
+        channel_ext: data.channel_ext,
+        dstchannel_ext: data.dstchannel_ext,
+        service: data.service,
+        caller_name: data.caller_name,
+        recordfiles: data.recordfiles,
+        dstanswer: data.dstanswer,
+        chanext: data.chanext,
+        dstchanext: data.dstchanext,
+        session: data.session,
+        action_owner: data.action_owner,
+        action_type: data.action_type,
+        src_trunk_name: data.src_trunk_name,
+        dst_trunk_name: data.dst_trunk_name,
+        sn: data.sn,
+      });
 
       // Salva os dados no banco de dados
       const savedRecord = await this.repository.save(callRecord);
