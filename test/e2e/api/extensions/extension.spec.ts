@@ -6,24 +6,40 @@ import {
   cleanupTestingModule,
   clearDatabase,
   type TestContext,
-} from '../../../setup';
+} from 'test/setup';
 import { Repository } from 'typeorm';
+import UserLevel from '@users/entities/user-level';
+import { AuthService } from '@users/services/auth.service';
 
 describe('Extension Controller (e2e)', () => {
   let context: TestContext;
   let extensionRepository: Repository<Extension>;
+  let loginToken: string;
+  let authService: AuthService;
 
   beforeAll(async () => {
     context = await createTestingModule();
     extensionRepository = context.dataSource.getRepository(Extension);
-  });
+    authService = context.module.get(AuthService);
 
-  afterAll(async () => {
-    await cleanupTestingModule(context);
+    const registerResponse = await authService.register({
+      name: 'Teste Usuario',
+      email: 'teste@example.com',
+      department: 'TI',
+      password: 'senha123',
+      role: 'developer',
+      level: UserLevel.ADMIN,
+    });
+
+    loginToken = registerResponse.accessToken;
   });
 
   beforeEach(async () => {
     await clearDatabase(context.dataSource);
+  });
+
+  afterAll(async () => {
+    await cleanupTestingModule(context);
   });
 
   describe('POST /v1/extensions', () => {
@@ -37,6 +53,7 @@ describe('Extension Controller (e2e)', () => {
 
       const response = await supertest(context.httpServer)
         .post('/v1/extensions')
+        .set('Authorization', `Bearer ${loginToken}`)
         .send(extensionData)
         .expect(201);
 
@@ -61,7 +78,11 @@ describe('Extension Controller (e2e)', () => {
         employee: '',
       };
 
-      await supertest(context.httpServer).post('/v1/extensions').send(invalidData).expect(400);
+      await supertest(context.httpServer)
+        .post('/v1/extensions')
+        .set('Authorization', `Bearer ${loginToken}`)
+        .send(invalidData)
+        .expect(400);
     });
   });
 
@@ -75,14 +96,20 @@ describe('Extension Controller (e2e)', () => {
 
       await extensionRepository.save(extensions);
 
-      const response = await supertest(context.httpServer).get('/v1/extensions').expect(200);
+      const response = await supertest(context.httpServer)
+      .get('/v1/extensions')
+      .set('Authorization', `Bearer ${loginToken}`)
+        .expect(200);
 
       expect(Array.isArray(response.body)).toBe(true);
       expect(response.body.length).toBe(2);
     });
 
     it('deve retornar uma lista vazia quando não há ramais', async () => {
-      const response = await supertest(context.httpServer).get('/v1/extensions').expect(200);
+      const response = await supertest(context.httpServer)
+      .get('/v1/extensions')
+      .set('Authorization', `Bearer ${loginToken}`)
+        .expect(200);
 
       expect(Array.isArray(response.body)).toBe(true);
       expect(response.body.length).toBe(0);
@@ -100,6 +127,7 @@ describe('Extension Controller (e2e)', () => {
 
       const response = await supertest(context.httpServer)
         .get(`/v1/extensions/${extension.id}`)
+        .set('Authorization', `Bearer ${loginToken}`)
         .expect(200);
 
       expect(response.body.id).toBe(extension.id);
@@ -133,6 +161,7 @@ describe('Extension Controller (e2e)', () => {
 
       const response = await supertest(context.httpServer)
         .put('/v1/extensions')
+        .set('Authorization', `Bearer ${loginToken}`)
         .send(updatedData)
         .expect(200);
 
@@ -159,7 +188,11 @@ describe('Extension Controller (e2e)', () => {
         employee: 'Ana Souza Silva',
       };
 
-      await supertest(context.httpServer).put('/v1/extensions').send(updatedData).expect(404);
+      await supertest(context.httpServer)
+        .put('/v1/extensions')
+        .set('Authorization', `Bearer ${loginToken}`)
+        .send(updatedData)
+        .expect(404);
     });
   });
 
@@ -172,7 +205,10 @@ describe('Extension Controller (e2e)', () => {
         employee: 'Pedro Costa',
       });
 
-      await supertest(context.httpServer).delete(`/v1/extensions/${extension.id}`).expect(204);
+      await supertest(context.httpServer)
+        .delete(`/v1/extensions/${extension.id}`)
+        .set('Authorization', `Bearer ${loginToken}`)
+        .expect(204);
 
       // Verifica se foi removido do banco
       const deletedExtension = await extensionRepository.findOne({
@@ -182,7 +218,10 @@ describe('Extension Controller (e2e)', () => {
     });
 
     it('deve retornar erro ao tentar excluir um ramal inexistente', async () => {
-      await supertest(context.httpServer).delete('/v1/extensions/999').expect(404);
+      await supertest(context.httpServer)
+      .delete('/v1/extensions/999')
+      .set('Authorization', `Bearer ${loginToken}`)
+        .expect(404);
     });
   });
 });
