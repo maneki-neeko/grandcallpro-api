@@ -16,7 +16,6 @@ import { RegisterUserDto } from '@users/dto/register-user.dto';
 import { UpdateUserDto } from '@users/dto/update-user.dto';
 import { User } from '@users/entities/user.entity';
 import { JwtAuthGuard } from '@users/guards/jwt-auth.guard';
-import { CurrentUser } from '@users/decorators/current-user.decorator';
 
 @Controller('v1/users')
 export class UsersController {
@@ -24,24 +23,28 @@ export class UsersController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
+  @UseGuards(JwtAuthGuard)
   async create(@Body() createUserDto: RegisterUserDto): Promise<User> {
     return this.usersService.create(createUserDto);
   }
 
   @Get()
   @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtAuthGuard)
   async findAll(): Promise<User[]> {
     return this.usersService.findAll();
   }
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtAuthGuard)
   async findOne(@Param('id', ParseIntPipe) id: number): Promise<User> {
     return this.usersService.findOne(id);
   }
 
   @Put(':id')
   @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtAuthGuard)
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserDto: UpdateUserDto
@@ -51,19 +54,8 @@ export class UsersController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(JwtAuthGuard)  
   async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
     return this.usersService.remove(id);
-  }
-
-  /**
-   * Retorna o perfil do usuário autenticado
-   * @param user Usuário autenticado (obtido do token JWT)
-   * @returns Dados do usuário autenticado
-   */
-  @UseGuards(JwtAuthGuard)
-  @Get('profile')
-  @HttpCode(HttpStatus.OK)
-  getProfile(@CurrentUser() user: User): User {
-    return user;
   }
 }

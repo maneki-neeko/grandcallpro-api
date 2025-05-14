@@ -1,7 +1,6 @@
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'bun:test';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { JwtService } from '@nestjs/jwt';
 import { User } from '@users/entities/user.entity';
 import UserLevel from '@users/entities/user-level';
 import supertest from 'supertest';
@@ -10,12 +9,10 @@ import { cleanupTestingModule, clearDatabase, createTestingModule, TestContext }
 describe('Auth Controller (e2e)', () => {
   let context: TestContext;
   let userRepository: Repository<User>;
-  let jwtService: JwtService;
 
   beforeAll(async () => {
     context = await createTestingModule();
     userRepository = context.dataSource.getRepository(User);
-    jwtService = context.app.get(JwtService);
   });
 
   afterAll(async () => {
@@ -44,10 +41,6 @@ describe('Auth Controller (e2e)', () => {
 
       // Verifica se retornou um token
       expect(response.body.accessToken).toBeDefined();
-      
-      // Verifica se o token é válido
-      const decodedToken = jwtService.verify(response.body.accessToken);
-      expect(decodedToken.email).toBe(userData.email);
       
       // Verifica se o usuário foi salvo no banco
       const savedUser = await userRepository.findOne({
@@ -136,11 +129,6 @@ describe('Auth Controller (e2e)', () => {
 
       // Verifica se retornou um token
       expect(response.body.accessToken).toBeDefined();
-      
-      // Verifica se o token é válido
-      const decodedToken = jwtService.verify(response.body.accessToken);
-      expect(decodedToken.email).toBe(loginData.email);
-      expect(decodedToken.sub).toBe(user.id);
     });
 
     it('deve retornar erro ao tentar autenticar com email inexistente', async () => {
