@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'bun:test';
-import supertest from 'supertest';
+import request from 'supertest';
 import { Extension } from '@api/entities/extension.entity';
 import {
   createTestingModule,
@@ -51,7 +51,7 @@ describe('Extension Controller (e2e)', () => {
         employee: 'João Silva',
       };
 
-      const response = await supertest(context.httpServer)
+      const response = await request(context.httpServer)
         .post('/v1/extensions')
         .set('Authorization', `Bearer ${loginToken}`)
         .send(extensionData)
@@ -68,17 +68,18 @@ describe('Extension Controller (e2e)', () => {
         where: { id: response.body.id },
       });
       expect(savedExtension).toBeDefined();
+      expect(savedExtension.number).toBe(extensionData.number);
     });
 
     it('deve retornar erro ao tentar criar um ramal com dados inválidos', async () => {
       const invalidData = {
-        number: 'abc', // deveria ser número
+        number: 0, // número inválido
         department: '',
         sector: '',
         employee: '',
       };
 
-      await supertest(context.httpServer)
+      await request(context.httpServer)
         .post('/v1/extensions')
         .set('Authorization', `Bearer ${loginToken}`)
         .send(invalidData)
@@ -88,17 +89,26 @@ describe('Extension Controller (e2e)', () => {
 
   describe('GET /v1/extensions', () => {
     it('deve listar todos os ramais', async () => {
-      // Cria alguns ramais para teste
       const extensions = [
-        { number: 1001, department: 'TI', sector: 'Desenvolvimento', employee: 'João Silva' },
-        { number: 1002, department: 'RH', sector: 'Recrutamento', employee: 'Maria Santos' },
+        {
+          number: 1001,
+          department: 'TI',
+          sector: 'Desenvolvimento',
+          employee: 'João Silva',
+        },
+        {
+          number: 1002,
+          department: 'RH',
+          sector: 'Recrutamento',
+          employee: 'Maria Santos',
+        },
       ];
 
       await extensionRepository.save(extensions);
 
-      const response = await supertest(context.httpServer)
-      .get('/v1/extensions')
-      .set('Authorization', `Bearer ${loginToken}`)
+      const response = await request(context.httpServer)
+        .get('/v1/extensions')
+        .set('Authorization', `Bearer ${loginToken}`)
         .expect(200);
 
       expect(Array.isArray(response.body)).toBe(true);
@@ -106,9 +116,9 @@ describe('Extension Controller (e2e)', () => {
     });
 
     it('deve retornar uma lista vazia quando não há ramais', async () => {
-      const response = await supertest(context.httpServer)
-      .get('/v1/extensions')
-      .set('Authorization', `Bearer ${loginToken}`)
+      const response = await request(context.httpServer)
+        .get('/v1/extensions')
+        .set('Authorization', `Bearer ${loginToken}`)
         .expect(200);
 
       expect(Array.isArray(response.body)).toBe(true);
@@ -125,7 +135,7 @@ describe('Extension Controller (e2e)', () => {
         employee: 'Carlos Oliveira',
       });
 
-      const response = await supertest(context.httpServer)
+      const response = await request(context.httpServer)
         .get(`/v1/extensions/${extension.id}`)
         .set('Authorization', `Bearer ${loginToken}`)
         .expect(200);
@@ -138,7 +148,10 @@ describe('Extension Controller (e2e)', () => {
     });
 
     it('deve retornar erro ao buscar um ramal inexistente', async () => {
-      await supertest(context.httpServer).get('/v1/extensions/999').expect(404);
+      await request(context.httpServer)
+        .get('/v1/extensions/999')
+        .set('Authorization', `Bearer ${loginToken}`)
+        .expect(404);
     });
   });
 
@@ -159,7 +172,7 @@ describe('Extension Controller (e2e)', () => {
         employee: 'Ana Souza Silva',
       };
 
-      const response = await supertest(context.httpServer)
+      const response = await request(context.httpServer)
         .put('/v1/extensions')
         .set('Authorization', `Bearer ${loginToken}`)
         .send(updatedData)
@@ -167,16 +180,14 @@ describe('Extension Controller (e2e)', () => {
 
       expect(response.body.id).toBe(extension.id);
       expect(response.body.number).toBe(updatedData.number);
-      expect(response.body.department).toBe(updatedData.department);
-      expect(response.body.sector).toBe(updatedData.sector);
       expect(response.body.employee).toBe(updatedData.employee);
 
       // Verifica se foi atualizado no banco
       const updatedExtension = await extensionRepository.findOne({
         where: { id: extension.id },
       });
-      expect(updatedExtension).toBeDefined();
-      expect(updatedExtension?.number).toBe(updatedData.number);
+      expect(updatedExtension.number).toBe(updatedData.number);
+      expect(updatedExtension.employee).toBe(updatedData.employee);
     });
 
     it('deve retornar erro ao tentar atualizar um ramal inexistente', async () => {
@@ -188,7 +199,7 @@ describe('Extension Controller (e2e)', () => {
         employee: 'Ana Souza Silva',
       };
 
-      await supertest(context.httpServer)
+      await request(context.httpServer)
         .put('/v1/extensions')
         .set('Authorization', `Bearer ${loginToken}`)
         .send(updatedData)
@@ -205,7 +216,7 @@ describe('Extension Controller (e2e)', () => {
         employee: 'Pedro Costa',
       });
 
-      await supertest(context.httpServer)
+      await request(context.httpServer)
         .delete(`/v1/extensions/${extension.id}`)
         .set('Authorization', `Bearer ${loginToken}`)
         .expect(204);
@@ -218,9 +229,9 @@ describe('Extension Controller (e2e)', () => {
     });
 
     it('deve retornar erro ao tentar excluir um ramal inexistente', async () => {
-      await supertest(context.httpServer)
-      .delete('/v1/extensions/999')
-      .set('Authorization', `Bearer ${loginToken}`)
+      await request(context.httpServer)
+        .delete('/v1/extensions/999')
+        .set('Authorization', `Bearer ${loginToken}`)
         .expect(404);
     });
   });

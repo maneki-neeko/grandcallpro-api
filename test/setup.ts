@@ -32,8 +32,8 @@ export async function createTestingModule(): Promise<TestContext> {
       }),
       TypeOrmModule.forFeature([Extension, User]),
       JwtModule.register({
-        secret: 'test-secret-key',
-        signOptions: { expiresIn: '1h' },
+        secret: 'grandcallpro-secret-key',
+        signOptions: { expiresIn: '5h' },
       }),
     ],
     controllers: [ExtensionController, UsersController, AuthController],
