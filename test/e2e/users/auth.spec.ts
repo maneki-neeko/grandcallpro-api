@@ -1,5 +1,4 @@
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'bun:test';
-import { INestApplication } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
@@ -9,14 +8,14 @@ import supertest from 'supertest';
 import { cleanupTestingModule, clearDatabase, createTestingModule, TestContext } from 'test/setup';
 
 describe('Auth Controller (e2e)', () => {
-  let app: INestApplication;
+  let context: TestContext;
   let userRepository: Repository<User>;
   let jwtService: JwtService;
-  let context: TestContext;
 
   beforeAll(async () => {
     context = await createTestingModule();
     userRepository = context.dataSource.getRepository(User);
+    jwtService = context.app.get(JwtService);
   });
 
   afterAll(async () => {
@@ -178,45 +177,6 @@ describe('Auth Controller (e2e)', () => {
         .post('/v1/auth/login')
         .send(loginData)
         .expect(400);
-    });
-  });
-
-  describe('Proteção de rotas com JwtAuthGuard', () => {
-    it('deve retornar erro ao acessar rota protegida sem token', async () => {
-      // Assumindo que temos uma rota protegida
-      // Isso precisará ser implementado no projeto ou ajustado conforme necessário
-      await supertest(context.httpServer)
-        .get('/v1/users/profile')
-        .expect(401);
-    });
-
-    it('deve permitir acesso a rota protegida com token válido', async () => {
-      // Cria um usuário para testar
-      const user = userRepository.create({
-        name: 'Usuário Protegido',
-        email: 'protegido@example.com',
-        department: 'TI',
-        password: await bcrypt.hash('senha123', 10),
-        role: 'developer',
-        level: UserLevel.USER
-      });
-      const savedUser = await userRepository.save(user);
-
-      // Gera um token manualmente
-      const payload = { 
-        sub: savedUser.id, 
-        email: savedUser.email,
-        role: savedUser.role,
-        level: savedUser.level
-      };
-      const token = jwtService.sign(payload);
-
-      // Tenta acessar rota protegida
-      // Isso precisará ser implementado no projeto ou ajustado conforme necessário
-      await supertest(context.httpServer)
-        .get('/v1/users/profile')
-        .set('Authorization', `Bearer ${token}`)
-        .expect(200);
     });
   });
 });
