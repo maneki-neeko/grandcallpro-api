@@ -1,7 +1,7 @@
 import UserLevel from '@users/entities/user-level';
 import { IsString, IsEmail, IsNotEmpty, MinLength } from 'class-validator';
 
-export class CreateUserDto {
+export class RegisterUserDto {
   @IsString()
   @IsNotEmpty()
   name: string;

@@ -11,9 +11,8 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 import { UsersService } from '@users/services/users.service';
-import { CreateUserDto } from '@users/dto/create-user.dto';
+import { CreateUserDto } from '@users/dto/register-user.dto';
 import { UpdateUserDto } from '@users/dto/update-user.dto';
-import { AuthUserDto } from '@users/dto/auth-user.dto';
 import { User } from '@users/entities/user.entity';
 
 @Controller('v1/users')
@@ -51,11 +50,5 @@ export class UsersController {
   @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
     return this.usersService.remove(id);
-  }
-
-  @Post('auth')
-  @HttpCode(HttpStatus.OK)
-  async authenticate(@Body() authUserDto: AuthUserDto): Promise<User> {
-    return this.usersService.authenticate(authUserDto);
   }
 }
