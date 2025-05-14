@@ -31,7 +31,7 @@ describe('Auth Controller (e2e)', () => {
         department: 'TI',
         password: 'senha123',
         role: 'developer',
-        level: UserLevel.USER
+        level: UserLevel.USER,
       };
 
       const response = await supertest(context.httpServer)
@@ -41,7 +41,7 @@ describe('Auth Controller (e2e)', () => {
 
       // Verifica se retornou um token
       expect(response.body.accessToken).toBeDefined();
-      
+
       // Verifica se o usuário foi salvo no banco
       const savedUser = await userRepository.findOne({
         where: { email: userData.email },
@@ -49,7 +49,7 @@ describe('Auth Controller (e2e)', () => {
       expect(savedUser).toBeDefined();
       expect(savedUser.name).toBe(userData.name);
       expect(savedUser.department).toBe(userData.department);
-      
+
       // Verifica se a senha foi hasheada
       const isPasswordValid = await bcrypt.compare(userData.password, savedUser.password);
       expect(isPasswordValid).toBe(true);
@@ -63,7 +63,7 @@ describe('Auth Controller (e2e)', () => {
         department: 'RH',
         password: await bcrypt.hash('senha123', 10),
         role: 'admin',
-        level: UserLevel.ADMIN
+        level: UserLevel.ADMIN,
       });
       await userRepository.save(existingUser);
 
@@ -74,13 +74,10 @@ describe('Auth Controller (e2e)', () => {
         department: 'TI',
         password: 'outrasenha',
         role: 'developer',
-        level: UserLevel.USER
+        level: UserLevel.USER,
       };
 
-      await supertest(context.httpServer)
-        .post('/v1/auth/register')
-        .send(userData)
-        .expect(409); // Conflict
+      await supertest(context.httpServer).post('/v1/auth/register').send(userData).expect(409); // Conflict
     });
 
     it('deve retornar erro ao tentar registrar com dados inválidos', async () => {
@@ -90,13 +87,10 @@ describe('Auth Controller (e2e)', () => {
         department: 'TI',
         password: '123', // senha muito curta
         role: 'developer',
-        level: UserLevel.USER
+        level: UserLevel.USER,
       };
 
-      await supertest(context.httpServer)
-        .post('/v1/auth/register')
-        .send(invalidData)
-        .expect(400);
+      await supertest(context.httpServer).post('/v1/auth/register').send(invalidData).expect(400);
     });
   });
 
@@ -105,21 +99,21 @@ describe('Auth Controller (e2e)', () => {
       // Cria um usuário para testar o login
       const password = 'senha123';
       const hashedPassword = await bcrypt.hash(password, 10);
-      
+
       const user = userRepository.create({
         name: 'Usuário Teste',
         email: 'login@example.com',
         department: 'TI',
         password: hashedPassword,
         role: 'developer',
-        level: UserLevel.USER
+        level: UserLevel.USER,
       });
       await userRepository.save(user);
 
       // Tenta fazer login
       const loginData = {
         email: 'login@example.com',
-        password: 'senha123'
+        password: 'senha123',
       };
 
       const response = await supertest(context.httpServer)
@@ -134,13 +128,10 @@ describe('Auth Controller (e2e)', () => {
     it('deve retornar erro ao tentar autenticar com email inexistente', async () => {
       const loginData = {
         email: 'naoexiste@example.com',
-        password: 'senha123'
+        password: 'senha123',
       };
 
-      await supertest(context.httpServer)
-        .post('/v1/auth/login')
-        .send(loginData)
-        .expect(400);
+      await supertest(context.httpServer).post('/v1/auth/login').send(loginData).expect(400);
     });
 
     it('deve retornar erro ao tentar autenticar com senha incorreta', async () => {
@@ -151,20 +142,17 @@ describe('Auth Controller (e2e)', () => {
         department: 'TI',
         password: await bcrypt.hash('senha123', 10),
         role: 'developer',
-        level: UserLevel.USER
+        level: UserLevel.USER,
       });
       await userRepository.save(user);
 
       // Tenta fazer login com senha errada
       const loginData = {
         email: 'senha@example.com',
-        password: 'senhaerrada'
+        password: 'senhaerrada',
       };
 
-      await supertest(context.httpServer)
-        .post('/v1/auth/login')
-        .send(loginData)
-        .expect(400);
+      await supertest(context.httpServer).post('/v1/auth/login').send(loginData).expect(400);
     });
   });
 });

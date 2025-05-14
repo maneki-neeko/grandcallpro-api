@@ -1,12 +1,12 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
-import { JwtService } from "@nestjs/jwt";
-import { UsersService } from "./users.service";
-import { AuthUserDto } from "@users/dto/auth-user.dto";
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { UsersService } from './users.service';
+import { AuthUserDto } from '@users/dto/auth-user.dto';
 import * as bcrypt from 'bcrypt';
-import { RegisterUserDto } from "@users/dto/register-user.dto";
-import { User } from "@users/entities/user.entity";
-import { AuthResponse } from "@users/dto/auth-response.interface";
-import { JwtPayload } from "@users/dto/jwt-payload.interface";
+import { RegisterUserDto } from '@users/dto/register-user.dto';
+import { User } from '@users/entities/user.entity';
+import { AuthResponse } from '@users/dto/auth-response.interface';
+import { JwtPayload } from '@users/dto/jwt-payload.interface';
 
 @Injectable()
 export class AuthService {
@@ -34,11 +34,11 @@ export class AuthService {
       sub: user.id,
       email: user.email,
       role: user.role,
-      level: user.level
+      level: user.level,
     };
-    
+
     return {
-      accessToken: this.jwtService.sign(payload)
+      accessToken: this.jwtService.sign(payload),
     };
   }
 
@@ -54,11 +54,11 @@ export class AuthService {
       sub: createdUser.id,
       email: createdUser.email,
       role: createdUser.role,
-      level: createdUser.level
+      level: createdUser.level,
     };
-    
+
     return {
-      accessToken: this.jwtService.sign(payload)
+      accessToken: this.jwtService.sign(payload),
     };
   }
 }

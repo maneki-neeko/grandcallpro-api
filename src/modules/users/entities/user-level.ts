@@ -1,4 +1,3 @@
-
 enum UserLevel {
   ADMIN = 'admin',
   SUPERVISOR = 'supervisor',
