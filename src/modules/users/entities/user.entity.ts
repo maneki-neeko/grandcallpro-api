@@ -23,7 +23,7 @@ export class User {
   @Column()
   role: string;
 
-  @Column({ type: 'enum', enum: UserLevel })
+  @Column({ type: 'text', enum: UserLevel })
   level: UserLevel;
 
   @CreateDateColumn()

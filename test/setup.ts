@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { JwtModule } from '@nestjs/jwt';
 import { DataSource } from 'typeorm';
 import { Extension } from '../src/modules/api/entities/extension.entity';
 import { CallRecord } from '../src/modules/core/entities/call-record.entity';
@@ -9,6 +10,9 @@ import { ExtensionController } from '../src/modules/api/controllers/extension.co
 import { ExtensionService } from '../src/modules/api/services/extension.service';
 import { UsersController } from '../src/modules/users/controllers/users.controller';
 import { UsersService } from '../src/modules/users/services/users.service';
+import { AuthController } from '../src/modules/users/controllers/auth.controller';
+import { AuthService } from '../src/modules/users/services/auth.service';
+import { JwtStrategy } from '../src/modules/users/strategies/jwt.strategy';
 
 export interface TestContext {
   app: INestApplication;
@@ -27,9 +31,13 @@ export async function createTestingModule(): Promise<TestContext> {
         synchronize: true,
       }),
       TypeOrmModule.forFeature([Extension, User]),
+      JwtModule.register({
+        secret: 'test-secret-key',
+        signOptions: { expiresIn: '1h' },
+      }),
     ],
-    controllers: [ExtensionController, UsersController],
-    providers: [ExtensionService, UsersService],
+    controllers: [ExtensionController, UsersController, AuthController],
+    providers: [ExtensionService, UsersService, AuthService, JwtStrategy],
   }).compile();
 
   const app = moduleRef.createNestApplication();

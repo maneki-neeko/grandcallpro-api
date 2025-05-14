@@ -2,18 +2,21 @@ import {
   Controller,
   Get,
   Post,
-  Put,
-  Delete,
   Body,
+  Put,
   Param,
+  Delete,
   HttpCode,
   HttpStatus,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from '@users/services/users.service';
-import { CreateUserDto } from '@users/dto/register-user.dto';
+import { RegisterUserDto } from '@users/dto/register-user.dto';
 import { UpdateUserDto } from '@users/dto/update-user.dto';
 import { User } from '@users/entities/user.entity';
+import { JwtAuthGuard } from '@users/guards/jwt-auth.guard';
+import { CurrentUser } from '@users/decorators/current-user.decorator';
 
 @Controller('v1/users')
 export class UsersController {
@@ -21,7 +24,7 @@ export class UsersController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  async create(@Body() createUserDto: CreateUserDto): Promise<User> {
+  async create(@Body() createUserDto: RegisterUserDto): Promise<User> {
     return this.usersService.create(createUserDto);
   }
 
@@ -50,5 +53,17 @@ export class UsersController {
   @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
     return this.usersService.remove(id);
+  }
+
+  /**
+   * Retorna o perfil do usuário autenticado
+   * @param user Usuário autenticado (obtido do token JWT)
+   * @returns Dados do usuário autenticado
+   */
+  @UseGuards(JwtAuthGuard)
+  @Get('profile')
+  @HttpCode(HttpStatus.OK)
+  getProfile(@CurrentUser() user: User): User {
+    return user;
   }
 }
