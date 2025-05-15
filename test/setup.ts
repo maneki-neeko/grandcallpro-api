@@ -1,14 +1,18 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { JwtModule } from '@nestjs/jwt';
 import { DataSource } from 'typeorm';
-import { Extension } from '../src/modules/api/entities/extension.entity';
-import { CallRecord } from '../src/modules/core/entities/call-record.entity';
-import { User } from '../src/modules/users/entities/user.entity';
-import { ExtensionController } from '../src/modules/api/controllers/extension.controller';
-import { ExtensionService } from '../src/modules/api/services/extension.service';
-import { UsersController } from '../src/modules/users/controllers/users.controller';
-import { UsersService } from '../src/modules/users/services/users.service';
+import { Extension } from '@api/entities/extension.entity';
+import { CallRecord } from '@core/entities/call-record.entity';
+import { User } from '@users/entities/user.entity';
+import { ExtensionController } from '@api/controllers/extension.controller';
+import { ExtensionService } from '@api/services/extension.service';
+import { UsersController } from '@users/controllers/users.controller';
+import { UsersService } from '@users/services/users.service';
+import { AuthController } from '@users/controllers/auth.controller';
+import { AuthService } from '@users/services/auth.service';
+import { JwtStrategy } from '@users/strategies/jwt.strategy';
 
 export interface TestContext {
   app: INestApplication;
@@ -27,9 +31,13 @@ export async function createTestingModule(): Promise<TestContext> {
         synchronize: true,
       }),
       TypeOrmModule.forFeature([Extension, User]),
+      JwtModule.register({
+        secret: 'grandcallpro-secret-key',
+        signOptions: { expiresIn: '5h' },
+      }),
     ],
-    controllers: [ExtensionController, UsersController],
-    providers: [ExtensionService, UsersService],
+    controllers: [ExtensionController, UsersController, AuthController],
+    providers: [ExtensionService, UsersService, AuthService, JwtStrategy],
   }).compile();
 
   const app = moduleRef.createNestApplication();

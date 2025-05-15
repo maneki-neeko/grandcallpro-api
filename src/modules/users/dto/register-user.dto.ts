@@ -1,6 +1,7 @@
-import { IsString, IsEmail, IsNotEmpty, MinLength } from 'class-validator';
+import UserLevel from '@users/entities/user-level';
+import { IsString, IsEmail, IsNotEmpty, MinLength, IsEnum } from 'class-validator';
 
-export class CreateUserDto {
+export class RegisterUserDto {
   @IsString()
   @IsNotEmpty()
   name: string;
@@ -24,5 +25,6 @@ export class CreateUserDto {
 
   @IsString()
   @IsNotEmpty()
-  level: string;
+  @IsEnum(UserLevel)
+  level: UserLevel;
 }

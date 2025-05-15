@@ -1,4 +1,4 @@
-FROM oven/bun:1.2 as base
+FROM oven/bun:1.2 AS base
 
 # Definir diretório de trabalho
 WORKDIR /app
