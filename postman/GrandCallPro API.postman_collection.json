@@ -1,0 +1,1315 @@
+{
+	"info": {
+		"_postman_id": "e2cff6c3-91c1-4bb8-b149-e9eac67b9c74",
+		"name": "GrandCallPro API",
+		"description": "Coleção completa de endpoints para a API GrandCallPro",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23718097"
+	},
+	"item": [
+		{
+			"name": "Autenticação",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"usuario@exemplo.com\",\n  \"password\": \"senha123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"auth",
+								"login"
+							]
+						},
+						"description": "Autentica um usuário e retorna um token JWT"
+					},
+					"response": [
+						{
+							"name": "Login",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"usuario@exemplo.com\",\n  \"password\": \"senha123\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/v1/auth/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "238"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"ee-Q2lpvD8xdeHceN2tqa7Y5plyAmM\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 15 May 2025 22:44:14 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXN1YXJpb0BleGVtcGxvLmNvbSIsInJvbGUiOiJhZG1pbiIsImxldmVsIjoiYWRtaW4iLCJpYXQiOjE3NDczNDkwNTQsImV4cCI6MTc0NzQzNTQ1NH0.mZnPMVI58qu0Cl2gQGdwy-k4bqqXwLYR-RHu9diw56M\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Registro",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Nome Completo\",\n  \"email\": \"usuario@exemplo.com\",\n  \"department\": \"TI\",\n  \"password\": \"senha123\",\n  \"role\": \"admin\",\n  \"level\": \"admin\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/auth/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"auth",
+								"register"
+							]
+						},
+						"description": "Registra um novo usuário e retorna um token JWT"
+					},
+					"response": [
+						{
+							"name": "Registro",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Nome Completo\",\n  \"email\": \"usuario@exemplo.com\",\n  \"department\": \"TI\",\n  \"password\": \"senha123\",\n  \"role\": \"admin\",\n  \"level\": \"admin\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/v1/auth/register",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"auth",
+										"register"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "238"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"ee-wTlq76/p8ZgEhJI1dYyKhjE1poA\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 15 May 2025 22:43:56 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXN1YXJpb0BleGVtcGxvLmNvbSIsInJvbGUiOiJhZG1pbiIsImxldmVsIjoiYWRtaW4iLCJpYXQiOjE3NDczNDkwMzYsImV4cCI6MTc0NzQzNTQzNn0.sy3TH4P6WT98hluSMlkaEC8aKvx5Usnm8_Mboa2l2uM\"\n}"
+						}
+					]
+				}
+			],
+			"description": "Endpoints para autenticação e registro de usuários"
+		},
+		{
+			"name": "Usuários",
+			"item": [
+				{
+					"name": "Listar Usuários",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/v1/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"users"
+							]
+						},
+						"description": "Lista todos os usuários cadastrados (requer autenticação)"
+					},
+					"response": [
+						{
+							"name": "Listar Usuários",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/v1/users",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"users"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "805"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"325-ER6+RrDixAGR19C4jQUz8MBGsw8\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 15 May 2025 22:44:39 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 1,\n        \"name\": \"Michael\",\n        \"email\": \"7michaeel7@gmail.com\",\n        \"department\": \"Saúde\",\n        \"password\": \"$2b$10$8Hvt.eDsj0klvARgOpbKEOpL.IKNMtQQcQAQTfyJVDV57GTsGZu7y\",\n        \"role\": \"Administrador\",\n        \"level\": \"admin\",\n        \"createdAt\": \"2025-05-14T01:48:57.000Z\",\n        \"updatedAt\": \"2025-05-14T01:48:57.000Z\"\n    },\n    {\n        \"id\": 2,\n        \"name\": \"Michael\",\n        \"email\": \"7michaeesl7@gmail.com\",\n        \"department\": \"Saúde\",\n        \"password\": \"$2b$10$I9bkAb7a8bYUm1ZQUxjKPuix997KYYuyigIj21fmisyutsq7SxDnK\",\n        \"role\": \"Administrador\",\n        \"level\": \"admin\",\n        \"createdAt\": \"2025-05-14T01:51:12.000Z\",\n        \"updatedAt\": \"2025-05-14T01:51:12.000Z\"\n    },\n    {\n        \"id\": 3,\n        \"name\": \"Nome Completo\",\n        \"email\": \"usuario@exemplo.com\",\n        \"department\": \"TI\",\n        \"password\": \"$2b$10$Bj9VKHSj.Vlr6KHw/Zm5AuWRQZ3afe39fYEhYZ6qWV7YWZJniZpcW\",\n        \"role\": \"admin\",\n        \"level\": \"admin\",\n        \"createdAt\": \"2025-05-15T22:43:56.000Z\",\n        \"updatedAt\": \"2025-05-15T22:43:56.000Z\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Buscar Usuário por ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/v1/users/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"users",
+								"1"
+							]
+						},
+						"description": "Busca um usuário pelo ID (requer autenticação)"
+					},
+					"response": [
+						{
+							"name": "Buscar Usuário por ID",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/v1/users/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"users",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "269"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"10d-kSbPkJc2W63fk0NynCPOm/tyO18\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 15 May 2025 22:45:32 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"name\": \"Michael\",\n    \"email\": \"7michaeel7@gmail.com\",\n    \"department\": \"Saúde\",\n    \"password\": \"$2b$10$8Hvt.eDsj0klvARgOpbKEOpL.IKNMtQQcQAQTfyJVDV57GTsGZu7y\",\n    \"role\": \"Administrador\",\n    \"level\": \"admin\",\n    \"createdAt\": \"2025-05-14T01:48:57.000Z\",\n    \"updatedAt\": \"2025-05-14T01:48:57.000Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Criar Usuário",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Nome Completo\",\n  \"email\": \"usuario2@exemplo.com\",\n  \"department\": \"TI\",\n  \"password\": \"senha123\",\n  \"role\": \"admin\",\n  \"level\": \"admin\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"users"
+							]
+						},
+						"description": "Cria um novo usuário (requer autenticação)"
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar Usuário",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 1,\n  \"name\": \"Nome Atualizado\",\n  \"email\": \"atualizado@exemplo.com\",\n  \"department\": \"Suporte\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/users/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"users",
+								"1"
+							]
+						},
+						"description": "Atualiza um usuário existente pelo ID (requer autenticação)"
+					},
+					"response": [
+						{
+							"name": "Atualizar Usuário",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": 1,\n  \"name\": \"Nome Atualizado\",\n  \"email\": \"atualizado@exemplo.com\",\n  \"department\": \"Suporte\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/v1/users/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"users",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "280"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"118-sofisaAxZgCQwgxh9mPCBUviddU\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 15 May 2025 22:46:56 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"name\": \"Nome Atualizado\",\n    \"email\": \"atualizado@exemplo.com\",\n    \"department\": \"Suporte\",\n    \"password\": \"$2b$10$8Hvt.eDsj0klvARgOpbKEOpL.IKNMtQQcQAQTfyJVDV57GTsGZu7y\",\n    \"role\": \"Administrador\",\n    \"level\": \"admin\",\n    \"createdAt\": \"2025-05-14T01:48:57.000Z\",\n    \"updatedAt\": \"2025-05-15T22:46:56.000Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Remover Usuário",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/v1/users/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"users",
+								"1"
+							]
+						},
+						"description": "Remove um usuário pelo ID (requer autenticação)"
+					},
+					"response": [
+						{
+							"name": "Remover Usuário",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/v1/users/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"users",
+										"1"
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 15 May 2025 22:47:17 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				}
+			],
+			"description": "Endpoints para gerenciamento de usuários"
+		},
+		{
+			"name": "Ramais",
+			"item": [
+				{
+					"name": "Listar Ramais",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/v1/extensions",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"extensions"
+							]
+						},
+						"description": "Lista todos os ramais cadastrados (requer autenticação)"
+					},
+					"response": [
+						{
+							"name": "Listar Ramais",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/v1/extensions",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"extensions"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "81"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"51-8/VSKJgcFyBMRisqxGNw7DO9qkE\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 15 May 2025 22:47:25 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 1,\n        \"number\": 100,\n        \"department\": \"123\",\n        \"sector\": \"Setor\",\n        \"employee\": \"jhenifer\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Buscar Ramal por ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/v1/extensions/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"extensions",
+								"1"
+							]
+						},
+						"description": "Busca um ramal pelo ID (requer autenticação)"
+					},
+					"response": [
+						{
+							"name": "Buscar Ramal por ID",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/v1/extensions/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"extensions",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "79"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"4f-PD9OSZxgFsq5wBXEW2jarS4KiXs\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 15 May 2025 22:47:40 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"number\": 100,\n    \"department\": \"123\",\n    \"sector\": \"Setor\",\n    \"employee\": \"jhenifer\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Criar Ramal",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"number\": 1002,\n  \"department\": \"Vendas\",\n  \"sector\": \"Comercial\",\n  \"employee\": \"Maria Souza\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/extensions",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"extensions"
+							]
+						},
+						"description": "Cria um novo ramal (requer autenticação)"
+					},
+					"response": [
+						{
+							"name": "Criar Ramal",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"number\": 1002,\n  \"department\": \"Vendas\",\n  \"sector\": \"Comercial\",\n  \"employee\": \"Maria Souza\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/v1/extensions",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"extensions"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "90"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"5a-cHk/TnFhhbWCjF/ykKWX8z7UA5Y\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 15 May 2025 22:47:49 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"number\": 1002,\n    \"department\": \"Vendas\",\n    \"sector\": \"Comercial\",\n    \"employee\": \"Maria Souza\",\n    \"id\": 2\n}"
+						}
+					]
+				},
+				{
+					"name": "Atualizar Ramal",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 1,\n  \"number\": 1001,\n  \"department\": \"TI\",\n  \"sector\": \"Infraestrutura\",\n  \"employee\": \"João Silva\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/extensions",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"extensions"
+							]
+						},
+						"description": "Atualiza um ramal existente (requer autenticação)"
+					},
+					"response": [
+						{
+							"name": "Atualizar Ramal",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": 1,\n  \"number\": 1001,\n  \"department\": \"TI\",\n  \"sector\": \"Infraestrutura\",\n  \"employee\": \"João Silva\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/v1/extensions",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"extensions"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "91"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"5b-TdpCdK3+W7GJ4QeTFjS9UTXZzM0\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 15 May 2025 22:48:00 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"number\": 1001,\n    \"department\": \"TI\",\n    \"sector\": \"Infraestrutura\",\n    \"employee\": \"João Silva\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Remover Ramal",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/v1/extensions/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"extensions",
+								"1"
+							]
+						},
+						"description": "Remove um ramal pelo ID (requer autenticação)"
+					},
+					"response": [
+						{
+							"name": "Sucesso",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/v1/extensions/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"extensions",
+										"1"
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			],
+			"description": "Endpoints para gerenciamento de ramais"
+		},
+		{
+			"name": "Core",
+			"item": [
+				{
+					"name": "Receber Dados de Chamada",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"AcctId\": \"12345\",\n  \"accountcode\": \"ACME\",\n  \"src\": \"11999998888\",\n  \"dst\": \"11988887777\",\n  \"dcontext\": \"from-internal\",\n  \"clid\": \"\\\"John Doe\\\" <11999998888>\",\n  \"channel\": \"SIP/trunk-00000001\",\n  \"dstchannel\": \"SIP/phone-00000002\",\n  \"lastapp\": \"Dial\",\n  \"lastdata\": \"SIP/phone-00000002,30,tT\",\n  \"start\": \"2025-04-30 21:00:00\",\n  \"answer\": \"2025-04-30 21:00:05\",\n  \"end\": \"2025-04-30 21:01:30\",\n  \"duration\": \"90\",\n  \"billsec\": \"85\",\n  \"disposition\": \"ANSWERED\",\n  \"amaflags\": \"DOCUMENTATION\",\n  \"uniqueid\": \"1619812800.1\",\n  \"userfield\": \"\",\n  \"channel_ext\": \"trunk\",\n  \"dstchannel_ext\": \"100\",\n  \"service\": \"call\",\n  \"caller_name\": \"John Doe\",\n  \"recordfiles\": \"/var/recordings/call-1619812800.1.wav\",\n  \"dstanswer\": \"2025-04-30 21:00:05\",\n  \"chanext\": \"trunk\",\n  \"dstchanext\": \"100\",\n  \"session\": \"session-1619812800\",\n  \"action_owner\": \"system\",\n  \"action_type\": \"outbound\",\n  \"src_trunk_name\": \"provider-a\",\n  \"dst_trunk_name\": \"\",\n  \"sn\": \"GCP-001\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/core/data",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"core",
+								"data"
+							]
+						},
+						"description": "Endpoint para receber dados de chamada da UCM"
+					},
+					"response": [
+						{
+							"name": "Sucesso",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"AcctId\": \"12345\",\n  \"accountcode\": \"ACME\",\n  \"src\": \"11999998888\",\n  \"dst\": \"11988887777\",\n  \"dcontext\": \"from-internal\",\n  \"clid\": \"\\\"John Doe\\\" <11999998888>\",\n  \"channel\": \"SIP/trunk-00000001\",\n  \"dstchannel\": \"SIP/phone-00000002\",\n  \"lastapp\": \"Dial\",\n  \"lastdata\": \"SIP/phone-00000002,30,tT\",\n  \"start\": \"2025-04-30 21:00:00\",\n  \"answer\": \"2025-04-30 21:00:05\",\n  \"end\": \"2025-04-30 21:01:30\",\n  \"duration\": \"90\",\n  \"billsec\": \"85\",\n  \"disposition\": \"ANSWERED\",\n  \"amaflags\": \"DOCUMENTATION\",\n  \"uniqueid\": \"1619812800.1\",\n  \"userfield\": \"\",\n  \"channel_ext\": \"trunk\",\n  \"dstchannel_ext\": \"100\",\n  \"service\": \"call\",\n  \"caller_name\": \"John Doe\",\n  \"recordfiles\": \"/var/recordings/call-1619812800.1.wav\",\n  \"dstanswer\": \"2025-04-30 21:00:05\",\n  \"chanext\": \"trunk\",\n  \"dstchanext\": \"100\",\n  \"session\": \"session-1619812800\",\n  \"action_owner\": \"system\",\n  \"action_type\": \"outbound\",\n  \"src_trunk_name\": \"provider-a\",\n  \"dst_trunk_name\": \"\",\n  \"sn\": \"GCP-001\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/core/data",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"core",
+										"data"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"message\": \"Dados de chamada processados com sucesso\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Listar Todos os Registros",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/core/troubleshooting/data?limit=50&offset=0",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"core",
+								"troubleshooting",
+								"data"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "50",
+									"description": "Limite de registros a serem retornados"
+								},
+								{
+									"key": "offset",
+									"value": "0",
+									"description": "Offset para paginação"
+								}
+							]
+						},
+						"description": "Lista todos os registros de chamada com paginação, ordenados pelo tempo mais recente"
+					},
+					"response": [
+						{
+							"name": "Sucesso",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/core/troubleshooting/data?limit=50&offset=0",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"core",
+										"troubleshooting",
+										"data"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "50"
+										},
+										{
+											"key": "offset",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"id\": 1,\n    \"uniqueId\": \"1619812800.1\",\n    \"callerId\": \"\\\"John Doe\\\" <11999998888>\",\n    \"source\": \"11999998888\",\n    \"destination\": \"11988887777\",\n    \"startTime\": \"2025-04-30T21:00:00.000Z\",\n    \"answerTime\": \"2025-04-30T21:00:05.000Z\",\n    \"endTime\": \"2025-04-30T21:01:30.000Z\",\n    \"duration\": 90,\n    \"billableSeconds\": 85,\n    \"disposition\": \"ANSWERED\",\n    \"recordingPath\": \"/var/recordings/call-1619812800.1.wav\",\n    \"rawData\": { ... },\n    \"createdAt\": \"2025-04-30T21:01:35.000Z\",\n    \"updatedAt\": \"2025-04-30T21:01:35.000Z\"\n  }\n]"
+						}
+					]
+				},
+				{
+					"name": "Buscar por UniqueID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/core/troubleshooting/data/1619812800.1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"core",
+								"troubleshooting",
+								"data",
+								"1619812800.1"
+							]
+						},
+						"description": "Busca registros de chamada pelo uniqueId, ordenados pelo tempo mais recente"
+					},
+					"response": [
+						{
+							"name": "Sucesso",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/core/troubleshooting/data/1619812800.1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"core",
+										"troubleshooting",
+										"data",
+										"1619812800.1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"id\": 1,\n    \"uniqueId\": \"1619812800.1\",\n    \"callerId\": \"\\\"John Doe\\\" <11999998888>\",\n    \"source\": \"11999998888\",\n    \"destination\": \"11988887777\",\n    \"startTime\": \"2025-04-30T21:00:00.000Z\",\n    \"answerTime\": \"2025-04-30T21:00:05.000Z\",\n    \"endTime\": \"2025-04-30T21:01:30.000Z\",\n    \"duration\": 90,\n    \"billableSeconds\": 85,\n    \"disposition\": \"ANSWERED\",\n    \"recordingPath\": \"/var/recordings/call-1619812800.1.wav\",\n    \"rawData\": { ... },\n    \"createdAt\": \"2025-04-30T21:01:35.000Z\",\n    \"updatedAt\": \"2025-04-30T21:01:35.000Z\"\n  }\n]"
+						}
+					]
+				}
+			],
+			"description": "Endpoints do módulo core para gerenciamento de dados de chamadas"
+		},
+		{
+			"name": "Sistema",
+			"item": [
+				{
+					"name": "Ping",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/ping",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"ping"
+							]
+						},
+						"description": "Verifica se a API está funcionando"
+					},
+					"response": [
+						{
+							"name": "Sucesso",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/ping",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"ping"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": "pong"
+						}
+					]
+				}
+			],
+			"description": "Endpoints do sistema para verificação de status"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8081",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "seu-token-jwt-aqui",
+			"type": "string"
+		}
+	]
+}
