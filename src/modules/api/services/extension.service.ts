@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Extension } from '@api/entities/extension.entity';
@@ -13,6 +13,13 @@ export class ExtensionService {
   ) {}
 
   async create(createExtensionDto: CreateExtensionDto): Promise<Extension> {
+    const extension = await this.extensionRepository
+    .findOne({ where: { number: createExtensionDto.number } });
+
+    if (extension) {
+      throw new ConflictException("Extension already exists")
+    }
+
     return this.extensionRepository.save(createExtensionDto);
   }
 
