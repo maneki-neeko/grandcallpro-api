@@ -27,50 +27,50 @@ describe('Extensions Controller (e2e)', () => {
 
   describe('POST /v1/extensions', () => {
     it('Deve criar um novo ramal com sucesso', async () => {
-        const token = await getToken(context)
+      const token = await getToken(context);
 
-        const payload = {
-            number: 302,
-            department: "Departamento",
-            sector: "Setor",
-            employee: "Ana Clara"
-        }
+      const payload = {
+        number: 302,
+        department: 'Departamento',
+        sector: 'Setor',
+        employee: 'Ana Clara',
+      };
 
-        const response = await supertest(context.httpServer)
+      const response = await supertest(context.httpServer)
         .post('/v1/extensions')
         .set({ authorization: token })
         .send(payload)
         .expect(HttpStatus.CREATED);
 
-        expect(response.body).toMatchObject({
-          id: 1,
-          number: 302,
-          department: "Departamento",
-          sector: "Setor",
-          employee: "Ana Clara"
-      })
-    })
+      expect(response.body).toMatchObject({
+        id: 1,
+        number: 302,
+        department: 'Departamento',
+        sector: 'Setor',
+        employee: 'Ana Clara',
+      });
+    });
 
     it('Não deve ser possível criar um ramal já existente', async () => {
-        const token = await getToken(context)
+      const token = await getToken(context);
 
-        const payload = {
-            number: 302,
-            department: "Departamento",
-            sector: "Setor",
-            employee: "Ana Clara"
-        }
+      const payload = {
+        number: 302,
+        department: 'Departamento',
+        sector: 'Setor',
+        employee: 'Ana Clara',
+      };
 
-        await supertest(context.httpServer)
+      await supertest(context.httpServer)
+        .post('/v1/extensions')
+        .set({ authorization: token })
+        .send(payload);
+
+      await supertest(context.httpServer)
         .post('/v1/extensions')
         .set({ authorization: token })
         .send(payload)
-
-        await supertest(context.httpServer)
-        .post('/v1/extensions')
-        .set({ authorization: token })
-        .send(payload)
-        .expect(HttpStatus.CONFLICT)
-    })
-  })
-})
+        .expect(HttpStatus.CONFLICT);
+    });
+  });
+});

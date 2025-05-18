@@ -26,51 +26,51 @@ describe('Users Controller (e2e)', () => {
 
   describe('POST /v1/users', () => {
     it('Deve criar um novo usuário com sucesso', async () => {
-        const token = await getToken(context)
+      const token = await getToken(context);
 
-        const payload = {
-            name: 'Nome',
-            email: 'teste2@example.com',
-            department: 'TI',
-            password: 'senha123',
-            role: 'developer',
-            level: UserLevel.USER,
-        }
+      const payload = {
+        name: 'Nome',
+        email: 'teste2@example.com',
+        department: 'TI',
+        password: 'senha123',
+        role: 'developer',
+        level: UserLevel.USER,
+      };
 
-        const response = await supertest(context.httpServer)
+      const response = await supertest(context.httpServer)
         .post('/v1/users')
         .set({ authorization: token })
         .send(payload)
         .expect(HttpStatus.CREATED);
 
-        expect(response.body).toMatchObject({
-            id: 2,
-            name: 'Nome',
-            email: 'teste2@example.com',
-            department: 'TI',
-            password: 'senha123',
-            role: 'developer',
-            level: UserLevel.USER
-        })
-    })
+      expect(response.body).toMatchObject({
+        id: 2,
+        name: 'Nome',
+        email: 'teste2@example.com',
+        department: 'TI',
+        password: 'senha123',
+        role: 'developer',
+        level: UserLevel.USER,
+      });
+    });
 
     it('Não deve ser possível criar um usuário já existente', async () => {
-        const token = await getToken(context)
+      const token = await getToken(context);
 
-        const payload = {
-            name: 'Teste Usuario',
-            email: 'teste@example.com',
-            department: 'TI',
-            password: 'senha123',
-            role: 'developer',
-            level: UserLevel.USER,
-          };
+      const payload = {
+        name: 'Teste Usuario',
+        email: 'teste@example.com',
+        department: 'TI',
+        password: 'senha123',
+        role: 'developer',
+        level: UserLevel.USER,
+      };
 
-        await supertest(context.httpServer)
+      await supertest(context.httpServer)
         .post('/v1/users')
         .set({ authorization: token })
         .send(payload)
-        .expect(HttpStatus.CONFLICT)
-    })
-  })
-})
+        .expect(HttpStatus.CONFLICT);
+    });
+  });
+});

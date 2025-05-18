@@ -13,11 +13,12 @@ export class ExtensionService {
   ) {}
 
   async create(createExtensionDto: CreateExtensionDto): Promise<Extension> {
-    const extension = await this.extensionRepository
-    .findOne({ where: { number: createExtensionDto.number } });
+    const extension = await this.extensionRepository.findOne({
+      where: { number: createExtensionDto.number },
+    });
 
     if (extension) {
-      throw new ConflictException("Extension already exists")
+      throw new ConflictException('Extension already exists');
     }
 
     return this.extensionRepository.save(createExtensionDto);

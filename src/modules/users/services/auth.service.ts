@@ -41,7 +41,7 @@ export class AuthService {
         id: user.id,
         name: user.name,
         email: user.email,
-        level: user.level
+        level: user.level,
       },
       accessToken: this.jwtService.sign(payload),
     };
@@ -66,7 +66,7 @@ export class AuthService {
         id: user.id,
         name: user.name,
         email: user.email,
-        level: user.level
+        level: user.level,
       },
       accessToken: this.jwtService.sign(payload),
     };
