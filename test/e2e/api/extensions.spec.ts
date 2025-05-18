@@ -42,11 +42,13 @@ describe('Extensions Controller (e2e)', () => {
         .send(payload)
         .expect(HttpStatus.CREATED);
 
-        expect(response.body.number).toBe(302)
-        expect(response.body.department).toBe("Departamento")
-        expect(response.body.sector).toBe("Setor")
-        expect(response.body.employee).toBe("Ana Clara")
-        expect(response.body.id).toBe(1)
+        expect(response.body).toMatchObject({
+          id: 1,
+          number: 302,
+          department: "Departamento",
+          sector: "Setor",
+          employee: "Ana Clara"
+      })
     })
 
     it('Não deve ser possível criar um ramal já existente', async () => {

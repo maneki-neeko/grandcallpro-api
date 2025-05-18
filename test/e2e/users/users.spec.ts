@@ -43,10 +43,15 @@ describe('Users Controller (e2e)', () => {
         .send(payload)
         .expect(HttpStatus.CREATED);
 
-        expect(response.body.id).toBe(2)
-        expect(response.body.email).toBe('teste2@example.com')
-        expect(response.body.name).toBe('Nome')
-        expect(response.body.level).toBe('user')
+        expect(response.body).toMatchObject({
+            id: 2,
+            name: 'Nome',
+            email: 'teste2@example.com',
+            department: 'TI',
+            password: 'senha123',
+            role: 'developer',
+            level: UserLevel.USER
+        })
     })
 
     it('Não deve ser possível criar um usuário já existente', async () => {
