@@ -70,3 +70,11 @@ docker-compose up api-dev -d
 ## Banco de Dados
 
 A aplicação utiliza SQLite como banco de dados, com o arquivo localizado em `src/database/call_records.db`.
+
+## Documentação da API (Swagger)
+
+Após iniciar a aplicação, acesse a documentação automática e interativa dos endpoints em:
+
+    http://localhost:8081/docs
+
+Você pode testar os endpoints diretamente pela interface web do Swagger.
