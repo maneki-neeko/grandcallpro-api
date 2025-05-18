@@ -4,7 +4,6 @@ import { User } from '@users/entities/user.entity';
 import { cleanupTestingModule, clearDatabase, createTestingModule, TestContext } from 'test/setup';
 import UserLevel from '@users/entities/user-level';
 import supertest from 'supertest';
-import { log } from 'console';
 import { HttpStatus } from '@nestjs/common';
 import { getToken } from '../utils';
 
