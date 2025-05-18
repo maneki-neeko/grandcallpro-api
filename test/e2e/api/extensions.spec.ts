@@ -6,6 +6,7 @@ import UserLevel from '@users/entities/user-level';
 import supertest from 'supertest';
 import { log } from 'console';
 import { HttpStatus } from '@nestjs/common';
+import { getToken } from '../utils';
 
 describe('Extensions Controller (e2e)', () => {
   let context: TestContext;
@@ -24,27 +25,9 @@ describe('Extensions Controller (e2e)', () => {
     await clearDatabase(context.dataSource);
   });
 
-  const getToken = async () => {
-    const userData = {
-        name: 'Teste Usuario',
-        email: 'teste@example.com',
-        department: 'TI',
-        password: 'senha123',
-        role: 'developer',
-        level: UserLevel.USER,
-      };
-
-      const response = await supertest(context.httpServer)
-        .post('/v1/auth/register')
-        .send(userData)
-        .expect(201);
-
-    return `Bearer ${response.body.accessToken}`
-  }
-
   describe('POST /v1/extensions', () => {
     it('Deve criar um novo ramal com sucesso', async () => {
-        const token = await getToken()
+        const token = await getToken(context)
 
         const payload = {
             number: 302,
@@ -67,7 +50,7 @@ describe('Extensions Controller (e2e)', () => {
     })
 
     it('Não deve ser possível criar um ramal já existente', async () => {
-        const token = await getToken()
+        const token = await getToken(context)
 
         const payload = {
             number: 302,

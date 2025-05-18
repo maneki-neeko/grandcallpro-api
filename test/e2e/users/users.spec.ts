@@ -5,6 +5,7 @@ import { cleanupTestingModule, clearDatabase, createTestingModule, TestContext }
 import UserLevel from '@users/entities/user-level';
 import supertest from 'supertest';
 import { HttpStatus } from '@nestjs/common';
+import { getToken } from '../utils';
 
 describe('Users Controller (e2e)', () => {
   let context: TestContext;
@@ -23,27 +24,9 @@ describe('Users Controller (e2e)', () => {
     await clearDatabase(context.dataSource);
   });
 
-  const getToken = async () => {
-    const userData = {
-        name: 'Teste Usuario',
-        email: 'teste@example.com',
-        department: 'TI',
-        password: 'senha123',
-        role: 'developer',
-        level: UserLevel.USER,
-      };
-
-      const response = await supertest(context.httpServer)
-        .post('/v1/auth/register')
-        .send(userData)
-        .expect(201);
-
-    return `Bearer ${response.body.accessToken}`
-  }
-
   describe('POST /v1/users', () => {
     it('Deve criar um novo usuário com sucesso', async () => {
-        const token = await getToken()
+        const token = await getToken(context)
 
         const payload = {
             name: 'Nome',
@@ -67,7 +50,7 @@ describe('Users Controller (e2e)', () => {
     })
 
     it('Não deve ser possível criar um usuário já existente', async () => {
-        const token = await getToken()
+        const token = await getToken(context)
 
         const payload = {
             name: 'Teste Usuario',
