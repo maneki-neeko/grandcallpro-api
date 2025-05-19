@@ -26,6 +26,7 @@ describe('Auth Controller (e2e)', () => {
   describe('POST /v1/auth/register', () => {
     it('deve registrar um novo usuário com sucesso e retornar um token', async () => {
       const userData = {
+        username: 'testeuser',
         name: 'Teste Usuario',
         email: 'teste@example.com',
         department: 'TI',

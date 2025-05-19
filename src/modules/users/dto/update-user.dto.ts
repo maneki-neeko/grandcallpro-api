@@ -1,6 +1,5 @@
 import UserLevel from '@users/entities/user-level';
-import { IsString, IsEmail, IsNotEmpty, IsNumber, IsOptional, Matches } from 'class-validator';
-import { USERNAME_REGEX, USERNAME_REGEX_MESSAGE } from '../constants';
+import { IsString, IsEmail, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 
 export class UpdateUserDto {
   @IsNumber()
@@ -17,6 +16,10 @@ export class UpdateUserDto {
 
   @IsString()
   @IsOptional()
+  username?: string;
+
+  @IsString()
+  @IsOptional()
   department?: string;
 
   @IsString()
@@ -26,11 +29,4 @@ export class UpdateUserDto {
   @IsString()
   @IsOptional()
   level?: UserLevel;
-
-  @IsString()
-  @IsOptional()
-  @Matches(USERNAME_REGEX, {
-    message: USERNAME_REGEX_MESSAGE,
-  })
-  username?: string;
 }

@@ -1,6 +1,5 @@
 import UserLevel from '@users/entities/user-level';
-import { IsString, IsEmail, IsNotEmpty, MinLength, IsEnum, Matches } from 'class-validator';
-import { USERNAME_REGEX, USERNAME_REGEX_MESSAGE } from '../constants';
+import { IsString, IsEmail, IsNotEmpty, MinLength, IsEnum } from 'class-validator';
 
 export class RegisterUserDto {
   @IsString()
@@ -10,6 +9,10 @@ export class RegisterUserDto {
   @IsEmail()
   @IsNotEmpty()
   email: string;
+
+  @IsString()
+  @IsNotEmpty()
+  username: string;
 
   @IsString()
   @IsNotEmpty()
@@ -28,11 +31,4 @@ export class RegisterUserDto {
   @IsNotEmpty()
   @IsEnum(UserLevel)
   level: UserLevel;
-
-  @IsString()
-  @IsNotEmpty()
-  @Matches(USERNAME_REGEX, {
-    message: USERNAME_REGEX_MESSAGE,
-  })
-  username: string;
 }
