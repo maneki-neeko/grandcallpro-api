@@ -103,6 +103,7 @@ describe('Auth Controller (e2e)', () => {
       const user = userRepository.create({
         name: 'Usuário Teste',
         email: 'login@example.com',
+        username: 'login@example.com',
         department: 'TI',
         password: hashedPassword,
         role: 'developer',
@@ -112,7 +113,7 @@ describe('Auth Controller (e2e)', () => {
 
       // Tenta fazer login
       const loginData = {
-        email: 'login@example.com',
+        username: 'login@example.com',
         password: 'senha123',
       };
 
@@ -127,7 +128,7 @@ describe('Auth Controller (e2e)', () => {
 
     it('deve retornar erro ao tentar autenticar com email inexistente', async () => {
       const loginData = {
-        email: 'naoexiste@example.com',
+        username: 'naoexiste@example.com',
         password: 'senha123',
       };
 
@@ -139,6 +140,7 @@ describe('Auth Controller (e2e)', () => {
       const user = userRepository.create({
         name: 'Usuário Teste',
         email: 'senha@example.com',
+        username: 'senha@example.com',
         department: 'TI',
         password: await bcrypt.hash('senha123', 10),
         role: 'developer',
@@ -148,7 +150,7 @@ describe('Auth Controller (e2e)', () => {
 
       // Tenta fazer login com senha errada
       const loginData = {
-        email: 'senha@example.com',
+        username: 'senha@example.com',
         password: 'senhaerrada',
       };
 

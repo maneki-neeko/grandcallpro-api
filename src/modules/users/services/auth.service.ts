@@ -7,6 +7,7 @@ import { RegisterUserDto } from '@users/dto/register-user.dto';
 import { User } from '@users/entities/user.entity';
 import { AuthResponse } from '@users/dto/auth-response.interface';
 import { JwtPayload } from '@users/dto/jwt-payload.interface';
+import { USER_OR_PASSWORD_MISMATCH } from '../constants';
 
 @Injectable()
 export class AuthService {
@@ -15,7 +16,7 @@ export class AuthService {
     private readonly jwtService: JwtService
   ) {}
 
-  private static readonly USER_OR_PASSWORD_MISMATCH = 'Login or password does not match';
+  private static readonly USER_OR_PASSWORD_MISMATCH = USER_OR_PASSWORD_MISMATCH;
 
   async login(authUserDto: AuthUserDto): Promise<AuthResponse> {
     // Permitir login com username OU email

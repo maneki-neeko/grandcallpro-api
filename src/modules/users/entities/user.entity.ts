@@ -20,7 +20,7 @@ export class User {
   email: string;
 
   @Column({ unique: true })
-  username: string;
+  username: string; // deve ser minúsculo, sem espaços
 
   @Column()
   department: string;
