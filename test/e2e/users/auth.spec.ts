@@ -60,6 +60,7 @@ describe('Auth Controller (e2e)', () => {
       // Cria um usuário primeiro
       const existingUser = userRepository.create({
         name: 'Usuário Existente',
+        username: 'userexample',
         email: 'existente@example.com',
         department: 'RH',
         password: await bcrypt.hash('senha123', 10),
@@ -71,6 +72,7 @@ describe('Auth Controller (e2e)', () => {
       // Tenta criar outro usuário com o mesmo email
       const userData = {
         name: 'Outro Usuário',
+        username: 'userexample',
         email: 'existente@example.com', // mesmo email
         department: 'TI',
         password: 'outrasenha',
@@ -84,6 +86,7 @@ describe('Auth Controller (e2e)', () => {
     it('deve retornar erro ao tentar registrar com dados inválidos', async () => {
       const invalidData = {
         name: 'Teste',
+        username: 'userexample',
         email: 'email-invalido', // email inválido
         department: 'TI',
         password: '123', // senha muito curta
