@@ -15,10 +15,10 @@ export class AuthService {
     private readonly jwtService: JwtService
   ) {}
 
-  private static readonly USER_OR_PASSWORD_MISMATCH = 'Email or password does not match';
+  private static readonly USER_OR_PASSWORD_MISMATCH = 'Login or password does not match';
 
   async login(authUserDto: AuthUserDto): Promise<AuthResponse> {
-    const user = await this.usersService.findByEmail(authUserDto.email);
+    const user = await this.usersService.findByLogin(authUserDto.login);
 
     if (!user) {
       throw new BadRequestException(AuthService.USER_OR_PASSWORD_MISMATCH);

@@ -25,4 +25,8 @@ export class UpdateUserDto {
   @IsString()
   @IsOptional()
   level?: UserLevel;
+
+  @IsString()
+  @IsOptional()
+  login?: string;
 }

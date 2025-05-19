@@ -15,11 +15,11 @@ export class UsersService {
 
   async create(user: RegisterUserDto): Promise<User> {
     const existingUser = await this.userRepository.findOne({
-      where: [{ email: user.email }, { name: ILike(user.name) }],
+      where: [{ email: user.email }, { name: ILike(user.name) }, { login: user.login }],
     });
 
     if (existingUser) {
-      throw new ConflictException('User with Email or Name already exists');
+      throw new ConflictException('User with Email, Name, or Login already exists');
     }
 
     return this.userRepository.save(user);
@@ -37,8 +37,8 @@ export class UsersService {
     return user;
   }
 
-  async findByEmail(email: string): Promise<User> {
-    return this.userRepository.findOne({ where: { email } });
+  async findByLogin(login: string): Promise<User> {
+    return this.userRepository.findOne({ where: { login } });
   }
 
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
@@ -48,12 +48,26 @@ export class UsersService {
       const existingUser = await this.userRepository.findOne({
         where: { email: updateUserDto.email },
       });
-
       if (existingUser) {
         throw new ConflictException('Email already exists');
       }
     }
-
+    if (updateUserDto.login && updateUserDto.login !== user.login) {
+      const existingUser = await this.userRepository.findOne({
+        where: { login: updateUserDto.login },
+      });
+      if (existingUser) {
+        throw new ConflictException('Login already exists');
+      }
+    }
+    if (updateUserDto.name && updateUserDto.name !== user.name) {
+      const existingUser = await this.userRepository.findOne({
+        where: { name: ILike(updateUserDto.name) },
+      });
+      if (existingUser) {
+        throw new ConflictException('Name already exists');
+      }
+    }
     Object.assign(user, updateUserDto);
     return this.userRepository.save(user);
   }

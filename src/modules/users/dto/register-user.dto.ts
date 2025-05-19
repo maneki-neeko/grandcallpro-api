@@ -27,4 +27,8 @@ export class RegisterUserDto {
   @IsNotEmpty()
   @IsEnum(UserLevel)
   level: UserLevel;
+
+  @IsString()
+  @IsNotEmpty()
+  login: string;
 }
