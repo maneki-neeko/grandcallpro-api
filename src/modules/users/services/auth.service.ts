@@ -18,7 +18,7 @@ export class AuthService {
   private static readonly USER_OR_PASSWORD_MISMATCH = 'Login or password does not match';
 
   async login(authUserDto: AuthUserDto): Promise<AuthResponse> {
-    const user = await this.usersService.findByLogin(authUserDto.login);
+    const user = await this.usersService.findByLogin(authUserDto.username);
 
     if (!user) {
       throw new BadRequestException(AuthService.USER_OR_PASSWORD_MISMATCH);

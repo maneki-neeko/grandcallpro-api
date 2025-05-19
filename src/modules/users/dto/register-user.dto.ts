@@ -30,5 +30,5 @@ export class RegisterUserDto {
 
   @IsString()
   @IsNotEmpty()
-  login: string;
+  username: string;
 }

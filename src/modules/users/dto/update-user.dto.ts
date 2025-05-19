@@ -28,5 +28,5 @@ export class UpdateUserDto {
 
   @IsString()
   @IsOptional()
-  login?: string;
+  username?: string;
 }
