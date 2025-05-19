@@ -34,6 +34,7 @@ export class AuthService {
 
     const payload: JwtPayload = {
       sub: user.id,
+      username: user.username,
       email: user.email,
       role: user.role,
       level: user.level,
@@ -54,6 +55,7 @@ export class AuthService {
 
     const payload: JwtPayload = {
       sub: createdUser.id,
+      username: createdUser.username,
       email: createdUser.email,
       role: createdUser.role,
       level: createdUser.level,
