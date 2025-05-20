@@ -26,6 +26,7 @@ describe('Auth Controller (e2e)', () => {
   describe('POST /v1/auth/register', () => {
     it('deve registrar um novo usuário com sucesso e retornar um token', async () => {
       const userData = {
+        username: 'userexample',
         name: 'Teste Usuario',
         email: 'teste@example.com',
         department: 'TI',
@@ -59,6 +60,7 @@ describe('Auth Controller (e2e)', () => {
       // Cria um usuário primeiro
       const existingUser = userRepository.create({
         name: 'Usuário Existente',
+        username: 'userexample',
         email: 'existente@example.com',
         department: 'RH',
         password: await bcrypt.hash('senha123', 10),
@@ -70,6 +72,7 @@ describe('Auth Controller (e2e)', () => {
       // Tenta criar outro usuário com o mesmo email
       const userData = {
         name: 'Outro Usuário',
+        username: 'userexample',
         email: 'existente@example.com', // mesmo email
         department: 'TI',
         password: 'outrasenha',
@@ -83,6 +86,7 @@ describe('Auth Controller (e2e)', () => {
     it('deve retornar erro ao tentar registrar com dados inválidos', async () => {
       const invalidData = {
         name: 'Teste',
+        username: 'userexample',
         email: 'email-invalido', // email inválido
         department: 'TI',
         password: '123', // senha muito curta
@@ -91,6 +95,19 @@ describe('Auth Controller (e2e)', () => {
       };
 
       await supertest(context.httpServer).post('/v1/auth/register').send(invalidData).expect(400);
+    });
+
+    it('deve retornar erro de validação ao tentar registrar username com espaço', async () => {
+      const userData = {
+        username: 'user name',
+        name: 'Usuário Espaço',
+        email: 'espaco@example.com',
+        department: 'TI',
+        password: 'senha123',
+        role: 'developer',
+        level: UserLevel.USER,
+      };
+      await supertest(context.httpServer).post('/v1/auth/register').send(userData).expect(400);
     });
   });
 
@@ -103,6 +120,7 @@ describe('Auth Controller (e2e)', () => {
       const user = userRepository.create({
         name: 'Usuário Teste',
         email: 'login@example.com',
+        username: 'login@example.com',
         department: 'TI',
         password: hashedPassword,
         role: 'developer',
@@ -112,7 +130,7 @@ describe('Auth Controller (e2e)', () => {
 
       // Tenta fazer login
       const loginData = {
-        email: 'login@example.com',
+        login: 'login@example.com',
         password: 'senha123',
       };
 
@@ -125,9 +143,56 @@ describe('Auth Controller (e2e)', () => {
       expect(response.body.accessToken).toBeDefined();
     });
 
+    it('deve autenticar com sucesso usando o username', async () => {
+      const password = 'senha123';
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const user = userRepository.create({
+        name: 'Usuário Username',
+        email: 'username@example.com',
+        username: 'user.name',
+        department: 'TI',
+        password: hashedPassword,
+        role: 'developer',
+        level: UserLevel.USER,
+      });
+      await userRepository.save(user);
+      const loginData = { login: 'user.name', password: 'senha123' };
+      const response = await supertest(context.httpServer)
+        .post('/v1/auth/login')
+        .send(loginData)
+        .expect(200);
+      expect(response.body.accessToken).toBeDefined();
+    });
+
+    it('deve autenticar com sucesso usando o email', async () => {
+      const password = 'senha123';
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const user = userRepository.create({
+        name: 'Usuário Email',
+        email: 'emailuser@example.com',
+        username: 'emailuser',
+        department: 'TI',
+        password: hashedPassword,
+        role: 'developer',
+        level: UserLevel.USER,
+      });
+      await userRepository.save(user);
+      const loginData = { login: 'emailuser@example.com', password: 'senha123' };
+      const response = await supertest(context.httpServer)
+        .post('/v1/auth/login')
+        .send(loginData)
+        .expect(200);
+      expect(response.body.accessToken).toBeDefined();
+    });
+
+    it('deve retornar erro ao tentar autenticar com campo de login inválido', async () => {
+      const loginData = { login: ' ', password: 'senha123' };
+      await supertest(context.httpServer).post('/v1/auth/login').send(loginData).expect(400);
+    });
+
     it('deve retornar erro ao tentar autenticar com email inexistente', async () => {
       const loginData = {
-        email: 'naoexiste@example.com',
+        login: 'naoexiste@example.com',
         password: 'senha123',
       };
 
@@ -139,6 +204,7 @@ describe('Auth Controller (e2e)', () => {
       const user = userRepository.create({
         name: 'Usuário Teste',
         email: 'senha@example.com',
+        username: 'senha@example.com',
         department: 'TI',
         password: await bcrypt.hash('senha123', 10),
         role: 'developer',
@@ -148,7 +214,7 @@ describe('Auth Controller (e2e)', () => {
 
       // Tenta fazer login com senha errada
       const loginData = {
-        email: 'senha@example.com',
+        login: 'senha@example.com',
         password: 'senhaerrada',
       };
 

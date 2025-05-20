@@ -7,6 +7,7 @@ import { RegisterUserDto } from '@users/dto/register-user.dto';
 import { User } from '@users/entities/user.entity';
 import { AuthResponse } from '@users/dto/auth-response.interface';
 import { JwtPayload } from '@users/dto/jwt-payload.interface';
+import { USER_OR_PASSWORD_MISMATCH } from '../constants';
 
 @Injectable()
 export class AuthService {
@@ -15,23 +16,23 @@ export class AuthService {
     private readonly jwtService: JwtService
   ) {}
 
-  private static readonly USER_OR_PASSWORD_MISMATCH = 'Email or password does not match';
-
   async login(authUserDto: AuthUserDto): Promise<AuthResponse> {
-    const user = await this.usersService.findByEmail(authUserDto.email);
+    // Permitir login com username OU email
+    const user = await this.usersService.findByLogin(authUserDto.login);
 
     if (!user) {
-      throw new BadRequestException(AuthService.USER_OR_PASSWORD_MISMATCH);
+      throw new BadRequestException(USER_OR_PASSWORD_MISMATCH);
     }
 
     const isPasswordMatch = await bcrypt.compare(authUserDto.password, user.password);
 
     if (!isPasswordMatch) {
-      throw new BadRequestException(AuthService.USER_OR_PASSWORD_MISMATCH);
+      throw new BadRequestException(USER_OR_PASSWORD_MISMATCH);
     }
 
     const payload: JwtPayload = {
       sub: user.id,
+      username: user.username,
       email: user.email,
       level: user.level,
     };
@@ -57,6 +58,7 @@ export class AuthService {
 
     const payload: JwtPayload = {
       sub: createdUser.id,
+      username: createdUser.username,
       email: createdUser.email,
       level: createdUser.level,
     };

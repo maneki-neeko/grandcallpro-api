@@ -5,6 +5,7 @@ import { TestContext } from 'test/setup';
 export const getToken = async (context: TestContext) => {
   const userData = {
     name: 'Teste Usuario',
+    username: 'userexample',
     email: 'teste@example.com',
     department: 'TI',
     password: 'senha123',
