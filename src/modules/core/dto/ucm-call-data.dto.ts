@@ -6,7 +6,7 @@ import { IsNotEmpty, IsString } from 'class-validator';
 export class UcmCallDataDto {
   @IsString()
   @IsNotEmpty()
-  AcctId: string;
+  acctId: string;
 
   @IsString()
   @IsNotEmpty()

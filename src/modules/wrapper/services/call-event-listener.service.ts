@@ -1,23 +1,20 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 import { DashboardService } from './dashboard.service';
+import { DashboardGateway } from '../gateways/dashboard.gateway';
 
 @Injectable()
 export class CallEventListenerService {
   private readonly logger = new Logger(CallEventListenerService.name);
 
   constructor(
-    private dashboardService: DashboardService
+    private dashboardGateway: DashboardGateway
   ) {}
 
   @OnEvent('call.recorded')
-  async handleCallRecordedEvent(callId: number) {
-    this.logger.log(`Novo registro de chamada recebido: ${callId}`);
-    
+  async handleCallRecordedEvent() {
     try {
-      await this.dashboardService.view();
-
-      // TODO: Enviar dados via WebSocket
+      await this.dashboardGateway.broadcastDashboardUpdate();
     } catch (error) {
       this.logger.error(`Erro ao processar evento de chamada: ${error.message}`, error.stack);
     }
