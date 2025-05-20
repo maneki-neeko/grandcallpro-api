@@ -3,7 +3,7 @@
   "type": "commonjs",
   "private": true,
   "scripts": {
-    "build": "nest build",
+    "build": "nest build --exclude script",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "format:check": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
