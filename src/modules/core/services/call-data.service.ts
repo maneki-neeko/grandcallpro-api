@@ -105,13 +105,13 @@ export class CallDataService {
     try {
       const todayStart = new Date();
       todayStart.setHours(0, 0, 0, 0);
-      
+
       const tomorrowStart = new Date(todayStart);
       tomorrowStart.setDate(tomorrowStart.getDate() + 1);
-      
+
       return await this.repository.count({
         where: {
-          start: Between(todayStart.toISOString(), tomorrowStart.toISOString())
+          start: Between(todayStart.toISOString(), tomorrowStart.toISOString()),
         },
       });
     } catch (error) {
@@ -119,18 +119,18 @@ export class CallDataService {
       throw error;
     }
   }
-  
+
   async findTotalCallsOfYesterday(): Promise<number> {
     try {
       const todayStart = new Date();
       todayStart.setHours(0, 0, 0, 0);
-      
+
       const yesterdayStart = new Date(todayStart);
       yesterdayStart.setDate(yesterdayStart.getDate() - 1);
-      
+
       return await this.repository.count({
         where: {
-          start: Between(yesterdayStart.toISOString(), todayStart.toISOString())
+          start: Between(yesterdayStart.toISOString(), todayStart.toISOString()),
         },
       });
     } catch (error) {
@@ -143,10 +143,10 @@ export class CallDataService {
     try {
       const todayStart = new Date();
       todayStart.setHours(0, 0, 0, 0);
-      
+
       const tomorrowStart = new Date(todayStart);
       tomorrowStart.setDate(tomorrowStart.getDate() + 1);
-      
+
       return await this.repository.count({
         where: {
           start: Between(todayStart.toISOString(), tomorrowStart.toISOString()),
@@ -163,10 +163,10 @@ export class CallDataService {
     try {
       const todayStart = new Date();
       todayStart.setHours(0, 0, 0, 0);
-      
+
       const yesterdayStart = new Date(todayStart);
       yesterdayStart.setDate(yesterdayStart.getDate() - 1);
-      
+
       return await this.repository.count({
         where: {
           start: Between(yesterdayStart.toISOString(), todayStart.toISOString()),
