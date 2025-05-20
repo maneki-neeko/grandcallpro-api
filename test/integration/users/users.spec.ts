@@ -9,11 +9,9 @@ import { getToken } from '../utils';
 
 describe('Users Controller (e2e)', () => {
   let context: TestContext;
-  let userRepository: Repository<User>;
 
   beforeAll(async () => {
     context = await createTestingModule();
-    userRepository = context.dataSource.getRepository(User);
   });
 
   afterAll(async () => {
@@ -29,8 +27,9 @@ describe('Users Controller (e2e)', () => {
       const token = await getToken(context);
 
       const payload = {
-        name: 'Nome',
-        email: 'teste2@example.com',
+        name: 'Teste Usuario Dois',
+        username: 'userexample22',
+        email: 'teste22@example.com',
         department: 'TI',
         password: 'senha123',
         role: 'developer',
@@ -45,8 +44,8 @@ describe('Users Controller (e2e)', () => {
 
       expect(response.body).toMatchObject({
         id: 2,
-        name: 'Nome',
-        email: 'teste2@example.com',
+        name: 'Teste Usuario Dois',
+        email: 'teste22@example.com',
         department: 'TI',
         password: 'senha123',
         role: 'developer',
@@ -59,6 +58,7 @@ describe('Users Controller (e2e)', () => {
 
       const payload = {
         name: 'Teste Usuario',
+        username: 'userexample',
         email: 'teste@example.com',
         department: 'TI',
         password: 'senha123',

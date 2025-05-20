@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { User } from '@users/entities/user.entity';
 import { UpdateUserDto } from '@users/dto/update-user.dto';
 import { RegisterUserDto } from '@users/dto/register-user.dto';
+import { ILike } from 'typeorm';
 
 @Injectable()
 export class UsersService {
@@ -13,14 +14,9 @@ export class UsersService {
   ) {}
 
   async create(user: RegisterUserDto): Promise<User> {
-    const existingUser = await this.userRepository.findOne({
-      where: { email: user.email },
-    });
-
-    if (existingUser) {
-      throw new ConflictException('User with Email already exists');
-    }
-
+    await this.validateEmail(user.email, '');
+    await this.validateUsername(user.username, '');
+    await this.validateName(user.name, '');
     return this.userRepository.save(user);
   }
 
@@ -36,23 +32,17 @@ export class UsersService {
     return user;
   }
 
-  async findByEmail(email: string): Promise<User> {
-    return this.userRepository.findOne({ where: { email } });
+  async findByLogin(login: string): Promise<User | undefined> {
+    return this.userRepository.findOne({
+      where: [{ username: login }, { email: login }],
+    });
   }
 
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     const user = await this.findOne(id);
-
-    if (updateUserDto.email && updateUserDto.email !== user.email) {
-      const existingUser = await this.userRepository.findOne({
-        where: { email: updateUserDto.email },
-      });
-
-      if (existingUser) {
-        throw new ConflictException('Email already exists');
-      }
-    }
-
+    await this.validateEmail(updateUserDto.email, user.email);
+    await this.validateUsername(updateUserDto.username, user.username);
+    await this.validateName(updateUserDto.name, user.name);
     Object.assign(user, updateUserDto);
     return this.userRepository.save(user);
   }
@@ -60,5 +50,29 @@ export class UsersService {
   async remove(id: number): Promise<void> {
     const user = await this.findOne(id);
     await this.userRepository.remove(user);
+  }
+
+  private async validateEmail(newEmail: string | undefined, currentEmail: string): Promise<void> {
+    if (newEmail && newEmail !== currentEmail) {
+      const existingUser = await this.userRepository.findOne({ where: { email: newEmail } });
+      if (existingUser) throw new ConflictException('Email already exists');
+    }
+  }
+
+  private async validateUsername(
+    newUsername: string | undefined,
+    currentUsername: string
+  ): Promise<void> {
+    if (newUsername && newUsername !== currentUsername) {
+      const existingUser = await this.userRepository.findOne({ where: { username: newUsername } });
+      if (existingUser) throw new ConflictException('Username already exists');
+    }
+  }
+
+  private async validateName(newName: string | undefined, currentName: string): Promise<void> {
+    if (newName && newName !== currentName) {
+      const existingUser = await this.userRepository.findOne({ where: { name: ILike(newName) } });
+      if (existingUser) throw new ConflictException('Name already exists');
+    }
   }
 }

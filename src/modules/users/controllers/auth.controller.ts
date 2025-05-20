@@ -10,7 +10,7 @@ export class AuthController {
 
   /**
    * Autentica um usuário e retorna um token JWT
-   * @param authUserDto Credenciais do usuário (email e senha)
+   * @param authUserDto Credenciais do usuário (username ou email e senha)
    * @returns Token JWT de acesso
    */
   @Post('login')
