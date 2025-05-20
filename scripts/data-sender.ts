@@ -4,12 +4,12 @@ import path from 'path';
 
 // Configuração
 const API_URL = process.env.API_URL || 'http://api-dev:8081';
-const DATA_FILE = path.join(__dirname, 'call-data.json');
-const INTERVAL_MS = 30000; // 30 segundos
+const DATA_FILE = process.env.DATA_FILE || path.join(__dirname, 'call_data.json');
+const INTERVAL_MS = parseInt(process.env.INTERVAL_MS || '30000', 10); // 30 segundos
 
 // Interface para os dados de chamada
 interface CallData {
-  acctId: string;
+  AcctId: string;
   accountcode: string;
   src: string;
   dst: string;
@@ -27,21 +27,21 @@ interface CallData {
   disposition: string;
   amaflags: string;
   uniqueid: string;
-  userfield?: string;
-  channel_ext?: string;
-  dstchannel_ext?: string;
-  service?: string;
-  caller_name?: string;
-  recordfiles?: string;
-  dstanswer?: string;
-  chanext?: string;
-  dstchanext?: string;
-  session?: string;
-  action_owner?: string;
-  action_type?: string;
-  src_trunk_name?: string;
-  dst_trunk_name?: string;
-  sn?: string;
+  userfield: string;
+  channel_ext: string;
+  dstchannel_ext: string;
+  service: string;
+  caller_name: string;
+  recordfiles: string;
+  dstanswer: string;
+  chanext: string;
+  dstchanext: string;
+  session: string;
+  action_owner: string;
+  action_type: string;
+  src_trunk_name: string;
+  dst_trunk_name: string;
+  sn: string;
 }
 
 /**
@@ -67,9 +67,9 @@ async function sendCallData(callData: CallData): Promise<void> {
     };
 
     await axios.post(`${API_URL}/core/data`, callData, { headers });
-    console.log(`✅ Dados enviados com sucesso: ${callData.uniqueid}`);
+    console.log(`✅ Dados enviados com sucesso: ${callData.uniqueid} (AcctId: ${callData.AcctId})`);
   } catch (error) {
-    console.error(`❌ Erro ao enviar dados ${callData.uniqueid}:`, error.message);
+    console.error(`❌ Erro ao enviar dados ${callData.uniqueid} (AcctId: ${callData.AcctId}):`, error.message);
   }
 }
 
