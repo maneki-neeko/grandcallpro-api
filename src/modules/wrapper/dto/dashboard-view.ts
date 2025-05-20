@@ -7,8 +7,18 @@ export interface ExtensionInfo {
   };
 }
 
+export enum CallStatus {
+  ATENDIDA = 'ATENDIDA',
+  NAO_ATENDIDA = 'NÃO ATENDIDA',
+}
+
+export interface Status {
+  value: CallStatus;
+  answered: boolean;
+}
+
 export interface Calls {
-  status: 'ATENDIDA' | 'NÃO ATENDIDA';
+  status: Status;
   timestamp: string;
   duration: string;
   origin: ExtensionInfo;

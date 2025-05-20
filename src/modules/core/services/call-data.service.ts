@@ -100,4 +100,68 @@ export class CallDataService {
       throw error;
     }
   }
+
+  async findTotalCallsOfToday(): Promise<number> {
+    try {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      return await this.repository.count({
+        where: {
+          start: today.toISOString(),
+        },
+      });
+    } catch (error) {
+      this.logger.error(`Erro ao buscar chamadas: ${error.message}`, error.stack);
+      throw error;
+    }
+  }
+
+  async findTotalCallsOfYesterday(): Promise<number> {
+    try {
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      yesterday.setHours(0, 0, 0, 0);
+      return await this.repository.count({
+        where: {
+          start: yesterday.toISOString(),
+        },
+      });
+    } catch (error) {
+      this.logger.error(`Erro ao buscar chamadas: ${error.message}`, error.stack);
+      throw error;
+    }
+  }
+
+  async findTotalLostCallsOfToday(): Promise<number> {
+    try {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      return await this.repository.count({
+        where: {
+          start: today.toISOString(),
+          disposition: 'NO ANSWER',
+        },
+      });
+    } catch (error) {
+      this.logger.error(`Erro ao buscar chamadas: ${error.message}`, error.stack);
+      throw error;
+    }
+  }
+
+  async findTotalLostCallsOfYesterday(): Promise<number> {
+    try {
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      yesterday.setHours(0, 0, 0, 0);
+      return await this.repository.count({
+        where: {
+          start: yesterday.toISOString(),
+          disposition: 'NO ANSWER',
+        },
+      });
+    } catch (error) {
+      this.logger.error(`Erro ao buscar chamadas: ${error.message}`, error.stack);
+      throw error;
+    }
+  }
 }
