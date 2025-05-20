@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 
 // Configuração
-const API_URL = process.env.API_URL || 'http://api-dev:8081';
+const API_URL = process.env.API_URL || 'http://localhost:8081';
 const DATA_FILE = process.env.DATA_FILE || path.join(__dirname, 'call_data.json');
 const INTERVAL_MS = parseInt(process.env.INTERVAL_MS || '30000', 10); // 30 segundos
 
@@ -70,6 +70,7 @@ async function sendCallData(callData: CallData): Promise<void> {
     console.log(`✅ Dados enviados com sucesso: ${callData.uniqueid} (AcctId: ${callData.AcctId})`);
   } catch (error) {
     console.error(`❌ Erro ao enviar dados ${callData.uniqueid} (AcctId: ${callData.AcctId}):`, error.message);
+    console.log(error)
   }
 }
 

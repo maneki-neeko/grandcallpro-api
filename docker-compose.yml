@@ -1,21 +1,22 @@
 version: '3.8'
 
 services:
-  # api:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   container_name: grandcallpro-api
-  #   ports:
-  #     - '8081:8081'
-  #   volumes:
-  #     # Montando o banco de dados SQLite para persistência
-  #     - ./src/database:/app/src/database
-  #   restart: unless-stopped
-  #   environment:
-  #     - NODE_ENV=production
-  #     - PORT=8081
-  #   command: bun start
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: grandcallpro-api
+    profiles: [prod]
+    ports:
+      - '8081:8081'
+    volumes:
+      # Montando o banco de dados SQLite para persistência
+      - ./src/database:/app/src/database
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=8081
+    command: bun start
 
   # Serviço para desenvolvimento com hot-reload
   api-dev:
@@ -23,6 +24,7 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: grandcallpro-api-dev
+    profiles: [dev]
     ports:
       - '8081:8081'
     volumes:
@@ -43,13 +45,13 @@ services:
       context: .
       dockerfile: scripts/Dockerfile
     container_name: grandcallpro-data-sender
+    profiles: [dev]
     volumes:
       - ./scripts:/app/scripts
     environment:
       - API_URL=http://api-dev:8081
       - DATA_FILE=/app/call_data.json
-      - INTERVAL_MS=60000
-      - AUTH_ENABLED=false
+      - INTERVAL_MS=30000
     depends_on:
       - api-dev
     restart: unless-stopped

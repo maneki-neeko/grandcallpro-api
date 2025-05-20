@@ -30,7 +30,6 @@ export class CallDataService {
       // Converte os dados do DTO para a entidade
       const callRecord = Object.assign(new CallRecord(), {
         ...data,
-        acct_id: data.acctId,
         duration: parseInt(data.duration, 10),
         billsec: parseInt(data.billsec, 10),
       });

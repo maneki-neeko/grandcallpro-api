@@ -1,16 +1,19 @@
 export interface ExtensionInfo {
-  department: string;
-  sector: string;
-  subsector: string;
-  employee: string;
+  value: string;
+  options?: {
+    department: string;
+    sector: string;
+    subsector: string;
+    employee: string;
+  };
 }
 
 export interface Calls {
   status: 'ATENDIDA' | 'NÃO ATENDIDA';
   timestamp: string;
   duration: string;
-  origin?: ExtensionInfo;
-  destiny?: ExtensionInfo;
+  origin: ExtensionInfo;
+  destiny: ExtensionInfo;
 }
 
 export interface DashboardView {

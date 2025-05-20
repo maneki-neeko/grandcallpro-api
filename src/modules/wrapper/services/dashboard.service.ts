@@ -7,21 +7,22 @@ export class DashboardService {
     // 1. Consultar ultimas 5 chamadas
     // 2. Coletar o número do ramal de cada uma
     // 3. Fazer uma chamada para a API de ramais consultando informações de cada ramal (em massa)
+    // 4. Montar o objeto DashboardView
 
     return {
       calls: [
         {
           origin: {
-            department: 'Depto. Financeiro',
-            sector: 'Contabilidade',
-            subsector: 'Pagamentos',
-            employee: 'Ana Clara',
+            value: '1001',
+            options: {
+              department: 'Depto. Financeiro',
+              sector: 'Contabilidade',
+              subsector: 'Pagamentos',
+              employee: 'Ana Clara',
+            },
           },
           destiny: {
-            department: '-',
-            sector: '-',
-            subsector: '-',
-            employee: '-',
+            value: '-',
           },
           status: 'ATENDIDA',
           timestamp: '15-04-25 10:32:04',
@@ -29,16 +30,16 @@ export class DashboardService {
         },
         {
           origin: {
-            department: 'Depto. Financeiro',
-            sector: 'Contabilidade',
-            subsector: 'Pagamentos',
-            employee: 'Ana Clara',
+            value: '1001',
+            options: {
+              department: 'Depto. Financeiro',
+              sector: 'Contabilidade',
+              subsector: 'Pagamentos',
+              employee: 'Ana Clara',
+            },
           },
           destiny: {
-            department: '-',
-            sector: '-',
-            subsector: '-',
-            employee: '-',
+            value: '-',
           },
           status: 'ATENDIDA',
           timestamp: '15-04-25 10:32:01',

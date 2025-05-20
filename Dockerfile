@@ -7,7 +7,7 @@ WORKDIR /app
 COPY package.json bun.lock ./
 
 # Instalar dependências
-RUN bun install --frozen-lockfile
+RUN bun install --registry=https://registry.npmjs.org
 
 # Copiar o restante dos arquivos
 COPY . .
