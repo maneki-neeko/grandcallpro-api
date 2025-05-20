@@ -16,20 +16,18 @@ export class AuthService {
     private readonly jwtService: JwtService
   ) {}
 
-  private static readonly USER_OR_PASSWORD_MISMATCH = USER_OR_PASSWORD_MISMATCH;
-
   async login(authUserDto: AuthUserDto): Promise<AuthResponse> {
     // Permitir login com username OU email
-    const user = await this.usersService.findByLoginOrEmail(authUserDto.username);
+    const user = await this.usersService.findByLogin(authUserDto.login);
 
     if (!user) {
-      throw new BadRequestException(AuthService.USER_OR_PASSWORD_MISMATCH);
+      throw new BadRequestException(USER_OR_PASSWORD_MISMATCH);
     }
 
     const isPasswordMatch = await bcrypt.compare(authUserDto.password, user.password);
 
     if (!isPasswordMatch) {
-      throw new BadRequestException(AuthService.USER_OR_PASSWORD_MISMATCH);
+      throw new BadRequestException(USER_OR_PASSWORD_MISMATCH);
     }
 
     const payload: JwtPayload = {
