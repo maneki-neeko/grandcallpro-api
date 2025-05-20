@@ -40,10 +40,6 @@ export class ExtensionController {
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtAuthGuard)
   async findOne(@Param('id', ParseIntPipe) id: number): Promise<Extension> {
-    if (id <= 0) {
-      throw new BadRequestException('Id inválido');
-    }
-
     return this.extensionService.findOne(id);
   }
 
