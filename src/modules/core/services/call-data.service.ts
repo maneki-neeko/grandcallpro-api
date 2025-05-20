@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Between } from 'typeorm';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { CallRecord } from '@core/entities/call-record.entity';
 import { UcmCallDataDto } from '@core/dto/ucm-call-data.dto';
@@ -103,11 +103,15 @@ export class CallDataService {
 
   async findTotalCallsOfToday(): Promise<number> {
     try {
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
+      const todayStart = new Date();
+      todayStart.setHours(0, 0, 0, 0);
+      
+      const tomorrowStart = new Date(todayStart);
+      tomorrowStart.setDate(tomorrowStart.getDate() + 1);
+      
       return await this.repository.count({
         where: {
-          start: today.toISOString(),
+          start: Between(todayStart.toISOString(), tomorrowStart.toISOString())
         },
       });
     } catch (error) {
@@ -115,15 +119,18 @@ export class CallDataService {
       throw error;
     }
   }
-
+  
   async findTotalCallsOfYesterday(): Promise<number> {
     try {
-      const yesterday = new Date();
-      yesterday.setDate(yesterday.getDate() - 1);
-      yesterday.setHours(0, 0, 0, 0);
+      const todayStart = new Date();
+      todayStart.setHours(0, 0, 0, 0);
+      
+      const yesterdayStart = new Date(todayStart);
+      yesterdayStart.setDate(yesterdayStart.getDate() - 1);
+      
       return await this.repository.count({
         where: {
-          start: yesterday.toISOString(),
+          start: Between(yesterdayStart.toISOString(), todayStart.toISOString())
         },
       });
     } catch (error) {
@@ -134,11 +141,15 @@ export class CallDataService {
 
   async findTotalLostCallsOfToday(): Promise<number> {
     try {
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
+      const todayStart = new Date();
+      todayStart.setHours(0, 0, 0, 0);
+      
+      const tomorrowStart = new Date(todayStart);
+      tomorrowStart.setDate(tomorrowStart.getDate() + 1);
+      
       return await this.repository.count({
         where: {
-          start: today.toISOString(),
+          start: Between(todayStart.toISOString(), tomorrowStart.toISOString()),
           disposition: 'NO ANSWER',
         },
       });
@@ -150,12 +161,15 @@ export class CallDataService {
 
   async findTotalLostCallsOfYesterday(): Promise<number> {
     try {
-      const yesterday = new Date();
-      yesterday.setDate(yesterday.getDate() - 1);
-      yesterday.setHours(0, 0, 0, 0);
+      const todayStart = new Date();
+      todayStart.setHours(0, 0, 0, 0);
+      
+      const yesterdayStart = new Date(todayStart);
+      yesterdayStart.setDate(yesterdayStart.getDate() - 1);
+      
       return await this.repository.count({
         where: {
-          start: yesterday.toISOString(),
+          start: Between(yesterdayStart.toISOString(), todayStart.toISOString()),
           disposition: 'NO ANSWER',
         },
       });
