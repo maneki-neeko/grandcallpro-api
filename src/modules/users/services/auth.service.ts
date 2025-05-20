@@ -34,11 +34,16 @@ export class AuthService {
       sub: user.id,
       username: user.username,
       email: user.email,
-      role: user.role,
       level: user.level,
     };
 
     return {
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        level: user.level,
+      },
       accessToken: this.jwtService.sign(payload),
     };
   }
@@ -55,11 +60,16 @@ export class AuthService {
       sub: createdUser.id,
       username: createdUser.username,
       email: createdUser.email,
-      role: createdUser.role,
       level: createdUser.level,
     };
 
     return {
+      user: {
+        id: createdUser.id,
+        name: createdUser.name,
+        email: createdUser.email,
+        level: createdUser.level,
+      },
       accessToken: this.jwtService.sign(payload),
     };
   }
