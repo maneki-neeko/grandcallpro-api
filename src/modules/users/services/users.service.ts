@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { User } from '@users/entities/user.entity';
 import { UpdateUserDto } from '@users/dto/update-user.dto';
 import { RegisterUserDto } from '@users/dto/register-user.dto';
+import { ILike } from 'typeorm';
 
 @Injectable()
 export class UsersService {
@@ -14,11 +15,11 @@ export class UsersService {
 
   async create(user: RegisterUserDto): Promise<User> {
     const existingUser = await this.userRepository.findOne({
-      where: { email: user.email },
+      where: [{ email: user.email }, { name: ILike(user.name) }],
     });
 
     if (existingUser) {
-      throw new ConflictException('User with Email already exists');
+      throw new ConflictException('User with Email or Name already exists');
     }
 
     return this.userRepository.save(user);
