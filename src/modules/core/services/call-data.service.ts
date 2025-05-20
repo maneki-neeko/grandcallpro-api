@@ -88,4 +88,16 @@ export class CallDataService {
       throw error;
     }
   }
+
+  async findLastFiveCalls(): Promise<CallRecord[]> {
+    try {
+      return await this.repository.find({
+        order: { id: 'DESC' },
+        take: 5,
+      });
+    } catch (error) {
+      this.logger.error(`Erro ao buscar chamadas: ${error.message}`, error.stack);
+      throw error;
+    }
+  }
 }

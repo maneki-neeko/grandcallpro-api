@@ -1,6 +1,6 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Extension } from '@api/entities/extension.entity';
 import { CreateExtensionDto } from '@api/dto/create-extension.dto';
 import { UpdateExtensionDto } from '@api/dto/update-extension.dto';
@@ -36,6 +36,10 @@ export class ExtensionService {
     }
 
     return extension;
+  }
+
+  async findByNumbers(numbers: number[]): Promise<Extension[]> {
+    return this.extensionRepository.find({ where: { number: In(numbers) } });
   }
 
   async update(updateExtensionDto: UpdateExtensionDto): Promise<Extension> {

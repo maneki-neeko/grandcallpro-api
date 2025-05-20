@@ -5,10 +5,14 @@ import { DashboardService } from './services/dashboard.service';
 import { CallEventListenerService } from './services/call-event-listener.service';
 import { DashboardGateway } from './gateways/dashboard.gateway';
 import { DashboardController } from './controllers/dashboard.controller';
+import { CoreModule } from '@core/core.module';
+import { ApiModule } from '@api/api.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([CallRecord]),
+    CoreModule,
+    ApiModule,
   ],
   controllers: [
     DashboardController,

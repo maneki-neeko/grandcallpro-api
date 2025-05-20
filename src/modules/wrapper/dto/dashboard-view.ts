@@ -3,7 +3,6 @@ export interface ExtensionInfo {
   options?: {
     department: string;
     sector: string;
-    subsector: string;
     employee: string;
   };
 }
@@ -16,6 +15,13 @@ export interface Calls {
   destiny: ExtensionInfo;
 }
 
+export interface Card {
+  title: string;
+  content: string;
+  percentualDifference: string;
+}
+
 export interface DashboardView {
+  cards: Card[];
   calls: Calls[];
 }
