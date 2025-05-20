@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { CallRecord } from '@core/entities/call-record.entity';
 import { UcmCallDataDto } from '@core/dto/ucm-call-data.dto';
 
@@ -10,7 +11,8 @@ export class CallDataService {
 
   constructor(
     @InjectRepository(CallRecord)
-    private repository: Repository<CallRecord>
+    private repository: Repository<CallRecord>,
+    private eventEmitter: EventEmitter2
   ) {}
 
   /**
@@ -34,6 +36,9 @@ export class CallDataService {
 
       // Salva os dados no banco de dados
       const savedRecord = await this.repository.save(callRecord);
+      
+      // Emite o evento de forma assíncrona
+      this.eventEmitter.emit('call.recorded', savedRecord.id);
 
       return {
         message: `id: ${savedRecord.id} - unique_id: ${savedRecord.uniqueid}`,
