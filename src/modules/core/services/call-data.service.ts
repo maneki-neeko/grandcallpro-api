@@ -36,7 +36,7 @@ export class CallDataService {
 
       // Salva os dados no banco de dados
       const savedRecord = await this.repository.save(callRecord);
-      
+
       // Emite o evento de forma assíncrona
       this.eventEmitter.emit('call.recorded', savedRecord.id);
 

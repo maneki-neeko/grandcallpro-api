@@ -11,9 +11,8 @@ export class DashboardService {
 
   constructor(
     private readonly callDataService: CallDataService,
-    private readonly extensionService: ExtensionService,
-  ) {
-  }
+    private readonly extensionService: ExtensionService
+  ) {}
 
   async view(): Promise<DashboardView> {
     const lastFiveCalls = await this.callDataService.findLastFiveCalls();
@@ -34,10 +33,10 @@ export class DashboardService {
       title: 'Total de Chamadas Hoje',
       content: totalCallsOfToday.toString(),
       percentualDifference: 'Sem dados',
-    }
+    };
 
     if (totalCallsOfYesterday > 0) {
-      const percentual = `${((totalCallsOfToday - totalCallsOfYesterday) / totalCallsOfYesterday) * 100}%`
+      const percentual = `${((totalCallsOfToday - totalCallsOfYesterday) / totalCallsOfYesterday) * 100}%`;
       totalCallsToday.percentualDifference = `${percentual} em relação a ontem`;
     }
 
@@ -52,10 +51,10 @@ export class DashboardService {
       title: 'Chamadas Perdidas',
       content: totalLostCallsOfToday.toString(),
       percentualDifference: 'Sem dados',
-    }
+    };
 
     if (totalLostCallsOfYesterday > 0) {
-      const percentual = `${((totalLostCallsOfToday - totalLostCallsOfYesterday) / totalLostCallsOfYesterday) * 100}%`
+      const percentual = `${((totalLostCallsOfToday - totalLostCallsOfYesterday) / totalLostCallsOfYesterday) * 100}%`;
       totalLostCalls.percentualDifference = `${percentual} em relação a ontem`;
     }
 
@@ -66,10 +65,7 @@ export class DashboardService {
     const totalCallsToday = await this.buildCallsDifferenceCard();
     const totalLostCalls = await this.buildLostCallsDifferenceCard();
 
-    return [
-      totalCallsToday,
-      totalLostCalls,
-    ];
+    return [totalCallsToday, totalLostCalls];
   }
 
   private async buildLastCalls(lastFiveCalls: CallRecord[]): Promise<Calls[]> {
@@ -85,14 +81,14 @@ export class DashboardService {
 
       const answered = call.disposition === 'ANSWERED';
       const status = answered ? CallStatus.ATENDIDA : CallStatus.NAO_ATENDIDA;
-      
-      return ({
+
+      return {
         origin: this.buildExtensionInfo(Number(call.src), origin),
         destiny: this.buildExtensionInfo(Number(call.dst), destiny),
         status: { value: status, answered },
         timestamp: call.start,
         duration: this.formatDuration(call.duration),
-      });
+      };
     });
   }
 

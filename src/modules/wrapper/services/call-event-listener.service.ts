@@ -5,15 +5,13 @@ import { DashboardGateway } from '../gateways/dashboard.gateway';
 @Injectable()
 export class CallEventListenerService {
   private readonly logger = new Logger(CallEventListenerService.name);
-  
+
   // Configurações para o mecanismo de retry
   private readonly maxRetries = 3;
   private readonly initialDelayMs = 1000; // 1 segundo
   private readonly maxDelayMs = 10000; // 10 segundos
 
-  constructor(
-    private dashboardGateway: DashboardGateway
-  ) {}
+  constructor(private dashboardGateway: DashboardGateway) {}
 
   @OnEvent('call.recorded')
   async handleCallRecordedEvent() {
@@ -41,10 +39,7 @@ export class CallEventListenerService {
       return await fn();
     } catch (error) {
       if (attempt > maxRetries) {
-        this.logger.error(
-          `Falha após ${maxRetries} tentativas: ${error.message}`,
-          error.stack
-        );
+        this.logger.error(`Falha após ${maxRetries} tentativas: ${error.message}`, error.stack);
         throw error;
       }
 

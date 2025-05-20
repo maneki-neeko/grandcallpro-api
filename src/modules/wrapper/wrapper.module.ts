@@ -9,22 +9,9 @@ import { CoreModule } from '@core/core.module';
 import { ApiModule } from '@api/api.module';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([CallRecord]),
-    CoreModule,
-    ApiModule,
-  ],
-  controllers: [
-    DashboardController,
-  ],
-  providers: [
-    DashboardService,
-    CallEventListenerService,
-    DashboardGateway,
-  ],
-  exports: [
-    DashboardService,
-    DashboardGateway,
-  ],
+  imports: [TypeOrmModule.forFeature([CallRecord]), CoreModule, ApiModule],
+  controllers: [DashboardController],
+  providers: [DashboardService, CallEventListenerService, DashboardGateway],
+  exports: [DashboardService, DashboardGateway],
 })
 export class WrapperModule {}
