@@ -6,6 +6,7 @@ import { UsersModule } from '@users/users.module';
 import { Extension } from '@api/entities/extension.entity';
 import { CallRecord } from '@core/entities/call-record.entity';
 import { User } from '@users/entities/user.entity';
+import { NotificationsModule } from './modules/notifications/notifications.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { User } from '@users/entities/user.entity';
     ApiModule,
     CoreModule,
     UsersModule,
+    NotificationsModule,
   ],
   controllers: [],
   providers: [],
