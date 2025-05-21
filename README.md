@@ -11,19 +11,19 @@ API para receber, validar e persistir dados da UCM (Unidade de Controle de Módu
 
 ### Desenvolvimento local
 
-Instalar dependências:
+Instale as dependências:
 
 ```bash
 bun install
 ```
 
-Iniciar a aplicação em modo de desenvolvimento (com hot-reload):
+Inicie a aplicação em modo de desenvolvimento (hot-reload):
 
 ```bash
 bun dev
 ```
 
-Iniciar a aplicação em modo de produção:
+Inicie a aplicação em modo de produção:
 
 ```bash
 bun start
@@ -31,7 +31,7 @@ bun start
 
 ### Docker
 
-Construir a imagem Docker:
+Construa a imagem Docker:
 
 ```bash
 bun docker:build
@@ -39,41 +39,101 @@ bun docker:build
 docker build -t grandcallpro-api .
 ```
 
-Executar o container:
+Execute o container:
 
 ```bash
 bun docker:run
 # ou
-docker run -p 3000:3000 grandcallpro-api
+docker run -p 8081:8081 grandcallpro-api
 ```
 
 ### Docker Compose
 
-Iniciar a aplicação em modo de produção:
+Inicie a aplicação em modo de produção:
 
 ```bash
 docker-compose up api -d
 ```
 
-Iniciar a aplicação em modo de desenvolvimento (com hot-reload):
+Inicie a aplicação em modo de desenvolvimento (hot-reload):
 
 ```bash
 docker-compose up api-dev -d
 ```
 
-## Endpoints
+## Estrutura do Projeto
 
-- `POST /data` - Recebe dados de chamada da UCM
-- `GET /troubleshooting/data` - Lista todos os registros de chamada (com paginação via query params `limit` e `offset`)
-- `GET /troubleshooting/data/:uniqueId` - Busca registros de chamada por uniqueId
+- `src/modules/api` — Ramais, notificações e regras gerais da API
+- `src/modules/core` — Núcleo: recebe, valida e persiste dados da UCM
+- `src/modules/users` — Usuários, permissões e autenticação
+- `src/modules/wrapper` — Backend for Frontend: integra módulos e monta dados para o frontend
+
+## Principais Módulos
+
+- **API**: Gerencia ramais e notificações
+- **Core**: Processa e armazena dados da UCM
+- **Usuários**: Cadastro, autenticação (JWT) e permissões
+- **Wrapper**: Integração e montagem de dados para o frontend
+
+## Variáveis de Ambiente
+
+Crie um arquivo `.env` na raiz do projeto com, por exemplo:
+
+```
+JWT_SECRET=grandcallpro-secret-key
+```
+
+## Endpoints Principais
+
+- `POST /data` — Recebe dados de chamada da UCM
+- `GET /troubleshooting/data` — Lista registros de chamada (`limit`, `offset`)
+- `GET /troubleshooting/data/:uniqueId` — Busca registro por uniqueId
+- `POST /v1/auth/register` — Cadastro de usuário
+- `POST /v1/auth/login` — Login (retorna JWT)
+- `POST /v1/extensions` — Criação de ramal (autenticado)
+- `GET /v1/extensions` — Lista ramais (autenticado)
+- `POST /v1/users` — Criação de usuário (autenticado)
+- `GET /v1/users` — Lista usuários (autenticado)
+
+## Exemplo de Autenticação
+
+1. Registre um usuário:
+
+```bash
+curl -X POST http://localhost:8081/v1/auth/register \
+  -H 'Content-Type: application/json' \
+  -d '{"username":"user1","name":"User 1","email":"user1@example.com","department":"TI","password":"senha123","role":"developer","level":"USER"}'
+```
+
+2. Faça login:
+
+```bash
+curl -X POST http://localhost:8081/v1/auth/login \
+  -H 'Content-Type: application/json' \
+  -d '{"login":"user1","password":"senha123"}'
+```
+
+O token JWT retornado deve ser usado no header `Authorization`:
+
+```
+Authorization: Bearer <token>
+```
 
 ## Banco de Dados
 
-A aplicação utiliza SQLite como banco de dados, com o arquivo localizado em `src/database/call_records.db`.
+A aplicação utiliza SQLite, com o arquivo localizado em `src/database/database.sqlite`.
+
+## Testes
+
+Execute os testes automatizados:
+
+```bash
+bun test
+```
 
 ## Documentação da API (Swagger)
 
-Após iniciar a aplicação, acesse a documentação automática e interativa dos endpoints em:
+Após iniciar a aplicação, acesse:
 
     http://localhost:8081/docs
 
