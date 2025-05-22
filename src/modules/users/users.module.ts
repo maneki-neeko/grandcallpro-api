@@ -7,6 +7,7 @@ import { UsersService } from '@users/services/users.service';
 import { AuthController } from './controllers/auth.controller';
 import { AuthService } from '@users/services/auth.service';
 import { JwtStrategy } from '@users/strategies/jwt.strategy';
+import { NotificationsModule } from '../notifications/notifications.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { JwtStrategy } from '@users/strategies/jwt.strategy';
       secret: process.env.JWT_SECRET || 'grandcallpro-secret-key', // Idealmente, use variáveis de ambiente
       signOptions: { expiresIn: '24h' },
     }),
+    NotificationsModule, // importa notifications
   ],
   controllers: [UsersController, AuthController],
   providers: [UsersService, AuthService, JwtStrategy],

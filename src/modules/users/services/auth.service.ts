@@ -8,12 +8,14 @@ import { User } from '@users/entities/user.entity';
 import { AuthResponse } from '@users/dto/auth-response.interface';
 import { JwtPayload } from '@users/dto/jwt-payload.interface';
 import { USER_OR_PASSWORD_MISMATCH } from '../constants';
+import { NotificationService } from '../../notifications/services/notification.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usersService: UsersService,
-    private readonly jwtService: JwtService
+    private readonly jwtService: JwtService,
+    private readonly notificationService: NotificationService // injetar service
   ) {}
 
   async login(authUserDto: AuthUserDto): Promise<AuthResponse> {
@@ -55,6 +57,14 @@ export class AuthService {
     });
 
     const createdUser = await this.usersService.create(user);
+
+    // Notificação para admins
+    await this.notificationService.notifyAdmins(
+      'ACCOUNT_CREATION_REQUEST',
+      'Nova solicitação de cadastro',
+      `Usuário ${createdUser.name} (${createdUser.email}) solicitou acesso ao sistema`,
+      createdUser.id
+    );
 
     const payload: JwtPayload = {
       sub: createdUser.id,
