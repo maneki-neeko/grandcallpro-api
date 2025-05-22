@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import UserLevel from './user-level';
+import UserStatus from './user-status';
 
 @Entity('users')
 export class User {
@@ -24,6 +25,9 @@ export class User {
 
   @Column()
   department: string;
+
+  @Column({ type: 'text', enum: UserStatus })
+  status: UserStatus;
 
   @Column()
   @Exclude()

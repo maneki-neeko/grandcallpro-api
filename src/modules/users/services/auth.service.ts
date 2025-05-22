@@ -9,6 +9,7 @@ import { AuthResponse } from '@users/dto/auth-response.interface';
 import { JwtPayload } from '@users/dto/jwt-payload.interface';
 import { USER_OR_PASSWORD_MISMATCH } from '../constants';
 import { NotificationService } from '../../notifications/services/notification.service';
+import UserStatus from '@users/entities/user-status';
 
 @Injectable()
 export class AuthService {
@@ -43,6 +44,7 @@ export class AuthService {
       user: {
         id: user.id,
         name: user.name,
+        status: user.status,
         email: user.email,
         level: user.level,
       },
@@ -53,18 +55,11 @@ export class AuthService {
   async register(registerUserDto: RegisterUserDto): Promise<AuthResponse> {
     const user = Object.assign(new User(), {
       ...registerUserDto,
+      status: UserStatus.PENDING,
       password: await bcrypt.hash(registerUserDto.password, 10),
     });
 
     const createdUser = await this.usersService.create(user);
-
-    // Notificação para admins
-    await this.notificationService.notifyAdmins(
-      'ACCOUNT_CREATION_REQUEST',
-      'Nova solicitação de cadastro',
-      `Usuário ${createdUser.name} (${createdUser.email}) solicitou acesso ao sistema`,
-      createdUser.id
-    );
 
     const payload: JwtPayload = {
       sub: createdUser.id,
@@ -77,6 +72,7 @@ export class AuthService {
       user: {
         id: createdUser.id,
         name: createdUser.name,
+        status: createdUser.status,
         email: createdUser.email,
         level: createdUser.level,
       },
