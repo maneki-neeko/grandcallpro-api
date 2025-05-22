@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Between } from 'typeorm';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { CallRecord } from '@core/entities/call-record.entity';
 import { UcmCallDataDto } from '@core/dto/ucm-call-data.dto';
 
@@ -10,7 +11,8 @@ export class CallDataService {
 
   constructor(
     @InjectRepository(CallRecord)
-    private repository: Repository<CallRecord>
+    private repository: Repository<CallRecord>,
+    private eventEmitter: EventEmitter2
   ) {}
 
   /**
@@ -34,6 +36,9 @@ export class CallDataService {
 
       // Salva os dados no banco de dados
       const savedRecord = await this.repository.save(callRecord);
+
+      // Emite o evento de forma assíncrona
+      this.eventEmitter.emit('call.recorded', savedRecord.id);
 
       return {
         message: `id: ${savedRecord.id} - unique_id: ${savedRecord.uniqueid}`,
@@ -80,6 +85,96 @@ export class CallDataService {
         .getMany();
     } catch (error) {
       this.logger.error(`Erro ao buscar registro por uniqueId: ${error.message}`, error.stack);
+      throw error;
+    }
+  }
+
+  async findLastFiveCalls(): Promise<CallRecord[]> {
+    try {
+      return await this.repository.find({
+        order: { id: 'DESC' },
+        take: 5,
+      });
+    } catch (error) {
+      this.logger.error(`Erro ao buscar chamadas: ${error.message}`, error.stack);
+      throw error;
+    }
+  }
+
+  async findTotalCallsOfToday(): Promise<number> {
+    try {
+      const todayStart = new Date();
+      todayStart.setHours(0, 0, 0, 0);
+
+      const tomorrowStart = new Date(todayStart);
+      tomorrowStart.setDate(tomorrowStart.getDate() + 1);
+
+      return await this.repository.count({
+        where: {
+          start: Between(todayStart.toISOString(), tomorrowStart.toISOString()),
+        },
+      });
+    } catch (error) {
+      this.logger.error(`Erro ao buscar chamadas: ${error.message}`, error.stack);
+      throw error;
+    }
+  }
+
+  async findTotalCallsOfYesterday(): Promise<number> {
+    try {
+      const todayStart = new Date();
+      todayStart.setHours(0, 0, 0, 0);
+
+      const yesterdayStart = new Date(todayStart);
+      yesterdayStart.setDate(yesterdayStart.getDate() - 1);
+
+      return await this.repository.count({
+        where: {
+          start: Between(yesterdayStart.toISOString(), todayStart.toISOString()),
+        },
+      });
+    } catch (error) {
+      this.logger.error(`Erro ao buscar chamadas: ${error.message}`, error.stack);
+      throw error;
+    }
+  }
+
+  async findTotalLostCallsOfToday(): Promise<number> {
+    try {
+      const todayStart = new Date();
+      todayStart.setHours(0, 0, 0, 0);
+
+      const tomorrowStart = new Date(todayStart);
+      tomorrowStart.setDate(tomorrowStart.getDate() + 1);
+
+      return await this.repository.count({
+        where: {
+          start: Between(todayStart.toISOString(), tomorrowStart.toISOString()),
+          disposition: 'NO ANSWER',
+        },
+      });
+    } catch (error) {
+      this.logger.error(`Erro ao buscar chamadas: ${error.message}`, error.stack);
+      throw error;
+    }
+  }
+
+  async findTotalLostCallsOfYesterday(): Promise<number> {
+    try {
+      const todayStart = new Date();
+      todayStart.setHours(0, 0, 0, 0);
+
+      const yesterdayStart = new Date(todayStart);
+      yesterdayStart.setDate(yesterdayStart.getDate() - 1);
+
+      return await this.repository.count({
+        where: {
+          start: Between(yesterdayStart.toISOString(), todayStart.toISOString()),
+          disposition: 'NO ANSWER',
+        },
+      });
+    } catch (error) {
+      this.logger.error(`Erro ao buscar chamadas: ${error.message}`, error.stack);
       throw error;
     }
   }

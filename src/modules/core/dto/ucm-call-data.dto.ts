@@ -9,7 +9,6 @@ export class UcmCallDataDto {
   AcctId: string;
 
   @IsString()
-  @IsNotEmpty()
   accountcode: string;
 
   @IsString()

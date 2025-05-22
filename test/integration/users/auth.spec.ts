@@ -41,7 +41,15 @@ describe('Auth Controller (e2e)', () => {
         .expect(201);
 
       // Verifica se retornou um token
-      expect(response.body.accessToken).toBeDefined();
+      expect(response.body).toMatchObject({
+        accessToken: expect.any(String),
+        user: {
+          email: 'teste@example.com',
+          id: 1,
+          level: UserLevel.USER,
+          name: 'Teste Usuario',
+        },
+      });
 
       // Verifica se o usuário foi salvo no banco
       const savedUser = await userRepository.findOne({
