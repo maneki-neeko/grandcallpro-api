@@ -26,5 +26,6 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "esModuleInterop": true
-  }
+  },
+  "exclude": ["scripts", "node_modules", "dist"]
 }

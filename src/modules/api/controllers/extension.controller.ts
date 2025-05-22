@@ -8,7 +8,6 @@ import {
   Body,
   HttpStatus,
   HttpCode,
-  BadRequestException,
   ParseIntPipe,
   UseGuards,
 } from '@nestjs/common';

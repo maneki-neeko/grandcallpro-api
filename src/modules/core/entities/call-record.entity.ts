@@ -10,7 +10,7 @@ export class CallRecord {
   id!: number;
 
   @Column()
-  acct_id!: string;
+  AcctId!: string;
 
   @Column()
   accountcode!: string;

@@ -52,13 +52,13 @@ docker run -p 8081:8081 grandcallpro-api
 Inicie a aplicação em modo de produção:
 
 ```bash
-docker-compose up api -d
+docker-compose --profile prod up -d
 ```
 
 Inicie a aplicação em modo de desenvolvimento (hot-reload):
 
 ```bash
-docker-compose up api-dev -d
+docker-compose --profile dev up -d
 ```
 
 ## Estrutura do Projeto
