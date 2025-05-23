@@ -7,7 +7,8 @@ import {
   MessageBody,
   ConnectedSocket,
 } from '@nestjs/websockets';
-import { Logger, UseGuards } from '@nestjs/common';
+import { Injectable, Logger, UseGuards } from '@nestjs/common';
+import { OnEvent } from '@nestjs/event-emitter';
 import { Server, Socket } from 'socket.io';
 import { NotificationService } from '@api/services/notification.service';
 import { WsJwtGuard } from '@users/guards/ws-jwt.guard';
@@ -15,6 +16,7 @@ import { WsCurrentUser } from '@users/decorators/ws-current-user.decorator';
 import { User } from '@users/entities/user.entity';
 import UserLevel from '@users/entities/user-level';
 import { Notification } from '@api/entities/notification.entity';
+import { NOTIFICATIONS_UPDATED_EVENT } from '@shared/events';
 
 @WebSocketGateway({
   cors: {
@@ -41,10 +43,6 @@ export class NotificationGateway implements OnGatewayConnection, OnGatewayDiscon
     this.logger.log(`Cliente desconectado: ${client.id}`);
   }
 
-  /**
-   * Envia dados do dashboard para um cliente específico
-   * @param client Socket do cliente
-   */
   private async sendNotificationData(client: Socket) {
     try {
       const user = client['user'];
@@ -84,6 +82,11 @@ export class NotificationGateway implements OnGatewayConnection, OnGatewayDiscon
     } catch (error) {
       this.logger.error(`Erro ao enviar atualização: ${error.message}`, error.stack);
     }
+  }
+  
+  @OnEvent(NOTIFICATIONS_UPDATED_EVENT)
+  async handleNotificationsUpdatedEvent() {
+    await this.broadcastNotificationUpdate();
   }
 
   /**

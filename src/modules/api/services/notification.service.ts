@@ -4,6 +4,8 @@ import { User } from "@users/entities/user.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Notification, NotificationType } from "../entities/notification.entity";
 import { Repository } from "typeorm";
+import { EventEmitter2 } from "@nestjs/event-emitter";
+import { NOTIFICATIONS_UPDATED_EVENT } from "@shared/events";
 
 @Injectable()
 export class NotificationService {
@@ -11,6 +13,7 @@ export class NotificationService {
 
     constructor(
         private readonly usersService: UsersService,
+        private readonly eventEmitter: EventEmitter2,
         @InjectRepository(Notification)
         private readonly notificationRepository: Repository<Notification>
     ) {
@@ -33,16 +36,14 @@ export class NotificationService {
             return;
         }
 
-        const notification = await this.notificationRepository.save({
+        await this.notificationRepository.save({
             type: NotificationType.ACCOUNT_CREATION_REQUEST,
-            title: 'Um usuário foi criado',
-            description: `O usuário ${userCreated.name} foi criado`,
+            title: 'Um usuário solicitou a criação de uma conta',
+            description: `O usuário ${userCreated.name} solicitou a criação de uma conta`,
             viewed: false,
             requestedUserId: userCreated.id
         });
 
-        for (const admin of admins) {
-            // TBD
-        }
+        this.eventEmitter.emit(NOTIFICATIONS_UPDATED_EVENT);
     }
 }
