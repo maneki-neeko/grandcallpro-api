@@ -68,13 +68,6 @@ export class AuthService {
 
     const createdUser = await this.usersService.create(user);
 
-    const payload: JwtPayload = {
-      sub: createdUser.id,
-      username: createdUser.username,
-      email: createdUser.email,
-      level: createdUser.level,
-    };
-
     this.eventEmitter.emit(USER_CREATED_EVENT, createdUser);
 
     return {

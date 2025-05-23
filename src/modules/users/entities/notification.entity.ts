@@ -16,7 +16,7 @@ export class Notification {
     type: NotificationType;
 
     @Column({ type: 'text', enum: UserLevel })
-    notificationLevel: UserLevel
+    level: UserLevel
 
     @Column()
     title: string;

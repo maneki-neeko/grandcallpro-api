@@ -3,10 +3,18 @@ import {
   WebSocketServer,
   OnGatewayConnection,
   OnGatewayDisconnect,
+  SubscribeMessage,
+  MessageBody,
+  ConnectedSocket,
 } from '@nestjs/websockets';
-import { Logger } from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
 import { NotificationService } from '../services/notification.service';
+import { WsJwtGuard } from '../guards/ws-jwt.guard';
+import { WsCurrentUser } from '../decorators/ws-current-user.decorator';
+import { User } from '../entities/user.entity';
+import UserLevel from '@users/entities/user-level';
+import { Notification } from '@users/entities/notification.entity';
 
 @WebSocketGateway({
   cors: {
@@ -14,6 +22,7 @@ import { NotificationService } from '../services/notification.service';
   },
   namespace: '/v1/notifications',
 })
+@UseGuards(WsJwtGuard)
 export class NotificationGateway implements OnGatewayConnection, OnGatewayDisconnect {
   private readonly logger = new Logger(NotificationGateway.name);
 
@@ -23,7 +32,8 @@ export class NotificationGateway implements OnGatewayConnection, OnGatewayDiscon
   constructor(private notificationService: NotificationService) {}
 
   handleConnection(client: Socket) {
-    this.logger.log(`Cliente conectado: ${client.id}`);
+    const user = client['user'];
+    this.logger.log(`Cliente conectado: ${client.id}, usuário: ${user?.name || 'desconhecido'}`);
     this.sendNotificationData(client);
   }
 
@@ -37,12 +47,30 @@ export class NotificationGateway implements OnGatewayConnection, OnGatewayDiscon
    */
   private async sendNotificationData(client: Socket) {
     try {
+      const user = client['user'];
       const notifications = await this.notificationService.findRecentNotifications();
-      client.emit('notifications', notifications);
-      this.logger.log(`Dados enviados para cliente ${client.id}`);
+
+      this.emitNotificationsByLevel(user, notifications, client);
+      this.logger.log(`Dados enviados para cliente ${client.id}, usuário: ${user?.name}`);
     } catch (error) {
       this.logger.error(`Erro ao enviar dados: ${error.message}`, error.stack);
     }
+  }
+
+  private emitNotificationsByLevel(user: User, notifications: Notification[], client: Socket) {
+    const notification = {
+      [UserLevel.ADMIN]: notifications.filter(
+        notification => notification.level === UserLevel.ADMIN
+      ),
+      [UserLevel.SUPERVISOR]: notifications.filter(
+        notification => notification.level === UserLevel.SUPERVISOR
+      ),
+      [UserLevel.USER]: notifications.filter(notification => notification.level === UserLevel.USER),
+    };
+
+    const userNotifications = notification[user.level];
+
+    client.emit('notifications', userNotifications);
   }
 
   /**
@@ -56,5 +84,19 @@ export class NotificationGateway implements OnGatewayConnection, OnGatewayDiscon
     } catch (error) {
       this.logger.error(`Erro ao enviar atualização: ${error.message}`, error.stack);
     }
+  }
+
+  /**
+   * Exemplo de método que recebe mensagens do cliente e usa o decorator WsCurrentUser
+   */
+  @SubscribeMessage('mark_as_read')
+  async markNotificationAsRead(
+    @MessageBody() notificationId: number,
+    @ConnectedSocket() client: Socket,
+    @WsCurrentUser() user: User
+  ) {
+    this.logger.log(`Marcando notificação ${notificationId} como lida pelo usuário ${user.name}`);
+    // Implementar lógica para marcar notificação como lida
+    return { success: true };
   }
 }
