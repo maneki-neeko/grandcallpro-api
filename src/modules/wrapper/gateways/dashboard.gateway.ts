@@ -4,9 +4,10 @@ import {
   OnGatewayConnection,
   OnGatewayDisconnect,
 } from '@nestjs/websockets';
-import { Logger } from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
 import { DashboardService } from '../services/dashboard.service';
+import { WsJwtGuard } from '@users/guards/ws-jwt.guard';
 
 @WebSocketGateway({
   cors: {
@@ -14,6 +15,7 @@ import { DashboardService } from '../services/dashboard.service';
   },
   namespace: '/v1/dashboard',
 })
+@UseGuards(WsJwtGuard)
 export class DashboardGateway implements OnGatewayConnection, OnGatewayDisconnect {
   private readonly logger = new Logger(DashboardGateway.name);
 
