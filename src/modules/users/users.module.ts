@@ -7,7 +7,9 @@ import { UsersService } from '@users/services/users.service';
 import { AuthController } from './controllers/auth.controller';
 import { AuthService } from '@users/services/auth.service';
 import { JwtStrategy } from '@users/strategies/jwt.strategy';
-import { NotificationsModule } from '../notifications/notifications.module';
+import { NotificationsModule } from '../api/notifications/notifications.module';
+import { WrapperModule } from '../wrapper/wrapper.module';
+import { UsersEventListenerService } from './services/users-event-listener.service';
 
 @Module({
   imports: [
@@ -17,9 +19,10 @@ import { NotificationsModule } from '../notifications/notifications.module';
       signOptions: { expiresIn: '24h' },
     }),
     NotificationsModule, // importa notifications
+    WrapperModule, // importa wrapper para acessar DashboardGateway
   ],
   controllers: [UsersController, AuthController],
-  providers: [UsersService, AuthService, JwtStrategy],
+  providers: [UsersService, AuthService, JwtStrategy, UsersEventListenerService],
   exports: [UsersService, AuthService],
 })
 export class UsersModule {}

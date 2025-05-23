@@ -5,6 +5,8 @@ import { User } from '@users/entities/user.entity';
 import { UpdateUserDto } from '@users/dto/update-user.dto';
 import { RegisterUserDto } from '@users/dto/register-user.dto';
 import { ILike } from 'typeorm';
+import UserLevel from '@users/entities/user-level';
+import UserStatus from '@users/entities/user-status';
 
 @Injectable()
 export class UsersService {
@@ -24,6 +26,10 @@ export class UsersService {
     return this.userRepository.find();
   }
 
+  async findAllAdmins(): Promise<User[]> {
+    return this.userRepository.find({ where: { level: UserLevel.ADMIN } });
+  }
+
   async findOne(id: number): Promise<User> {
     const user = await this.userRepository.findOne({ where: { id } });
     if (!user) {
@@ -36,6 +42,12 @@ export class UsersService {
     return this.userRepository.findOne({
       where: [{ username: login }, { email: login }],
     });
+  }
+
+  async activeUser(id: number): Promise<User> {
+    const user = await this.findOne(id);
+    user.status = UserStatus.ACTIVE;
+    return this.userRepository.save(user);
   }
 
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {

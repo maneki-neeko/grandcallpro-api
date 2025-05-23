@@ -9,12 +9,15 @@ import { AuthResponse } from '@users/dto/auth-response.interface';
 import { JwtPayload } from '@users/dto/jwt-payload.interface';
 import { USER_OR_PASSWORD_MISMATCH } from '../constants';
 import UserStatus from '@users/entities/user-status';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { USER_CREATED_EVENT } from 'src/modules/shared/events';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   async login(authUserDto: AuthUserDto): Promise<AuthResponse> {
@@ -64,6 +67,8 @@ export class AuthService {
       email: createdUser.email,
       level: createdUser.level,
     };
+
+    this.eventEmitter.emit(USER_CREATED_EVENT, createdUser);
 
     return {
       user: {
