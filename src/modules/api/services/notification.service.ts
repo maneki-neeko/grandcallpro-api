@@ -1,8 +1,8 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { UsersService } from "./users.service";
+import { UsersService } from "@users/services/users.service";
 import { User } from "@users/entities/user.entity";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Notification, NotificationType } from "@users/entities/notification.entity";
+import { Notification, NotificationType } from "../entities/notification.entity";
 import { Repository } from "typeorm";
 
 @Injectable()

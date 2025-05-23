@@ -1,13 +1,13 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 import { NotificationService } from './notification.service';
-import { USER_CREATED_EVENT } from 'src/modules/shared/events';
+import { USER_CREATED_EVENT } from '@shared/events';
 import { User } from '@users/entities/user.entity';
-import { retryWithBackoff } from 'src/modules/shared/retry-strategy';
+import { retryWithBackoff } from '@shared/retry-strategy';
 
 @Injectable()
-export class UsersEventListenerService {
-  private readonly logger = new Logger(UsersEventListenerService.name);
+export class NotificationEventListenerService {
+  private readonly logger = new Logger(NotificationEventListenerService.name);
 
   // Configurações para o mecanismo de retry
   private readonly maxRetries = 3;
@@ -18,7 +18,7 @@ export class UsersEventListenerService {
   constructor(private notificationService: NotificationService) {}
 
   @OnEvent(USER_CREATED_EVENT)
-  async handleCallRecordedEvent(userCreated: User) {
+  async handleUserCreatedEvent(userCreated: User) {
     await retryWithBackoff(
       () => this.notificationService.sendAccountCreationNotificationsToAdmins(userCreated),
       this.maxRetries,

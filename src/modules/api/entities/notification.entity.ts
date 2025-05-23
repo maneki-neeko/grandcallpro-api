@@ -1,5 +1,5 @@
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
-import UserLevel from "./user-level";
+import UserLevel from "@users/entities/user-level";
 
 export enum NotificationType {
     ACCOUNT_CREATION_REQUEST = 'ACCOUNT_CREATION_REQUEST',

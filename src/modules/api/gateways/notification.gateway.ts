@@ -9,12 +9,12 @@ import {
 } from '@nestjs/websockets';
 import { Logger, UseGuards } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
-import { NotificationService } from '../services/notification.service';
-import { WsJwtGuard } from '../guards/ws-jwt.guard';
-import { WsCurrentUser } from '../decorators/ws-current-user.decorator';
-import { User } from '../entities/user.entity';
+import { NotificationService } from '@api/services/notification.service';
+import { WsJwtGuard } from '@users/guards/ws-jwt.guard';
+import { WsCurrentUser } from '@users/decorators/ws-current-user.decorator';
+import { User } from '@users/entities/user.entity';
 import UserLevel from '@users/entities/user-level';
-import { Notification } from '@users/entities/notification.entity';
+import { Notification } from '@api/entities/notification.entity';
 
 @WebSocketGateway({
   cors: {
