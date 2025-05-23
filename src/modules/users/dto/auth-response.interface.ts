@@ -11,5 +11,5 @@ interface User {
 
 export interface AuthResponse {
   user: User;
-  accessToken: string;
+  accessToken?: string;
 }

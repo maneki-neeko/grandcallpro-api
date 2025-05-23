@@ -11,6 +11,7 @@ import { USER_OR_PASSWORD_MISMATCH } from '../constants';
 import UserStatus from '@users/entities/user-status';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { USER_CREATED_EVENT } from 'src/modules/shared/events';
+import UserLevel from '@users/entities/user-level';
 
 @Injectable()
 export class AuthService {
@@ -40,6 +41,12 @@ export class AuthService {
       level: user.level,
     };
 
+    let accessToken = null;
+
+    if (user.status == UserStatus.ACTIVE) {
+      accessToken = this.jwtService.sign(payload);
+    }
+
     return {
       user: {
         id: user.id,
@@ -48,7 +55,7 @@ export class AuthService {
         email: user.email,
         level: user.level,
       },
-      accessToken: this.jwtService.sign(payload),
+      accessToken,
     };
   }
 
@@ -77,8 +84,7 @@ export class AuthService {
         status: createdUser.status,
         email: createdUser.email,
         level: createdUser.level,
-      },
-      accessToken: this.jwtService.sign(payload),
+      }
     };
   }
 }

@@ -16,6 +16,15 @@ export class NotificationService {
     ) {
     }
 
+    async findRecentNotifications() {
+        return this.notificationRepository.find({
+            order: {
+                createdAt: 'DESC'
+            },
+            take: 10
+        });
+    }
+
     async sendAccountCreationNotificationsToAdmins(userCreated: User) {
         const admins = await this.usersService.findAllAdmins();
 
@@ -24,7 +33,7 @@ export class NotificationService {
             return;
         }
 
-        this.notificationRepository.save({
+        const notification = await this.notificationRepository.save({
             type: NotificationType.ACCOUNT_CREATION_REQUEST,
             title: 'Um usuário foi criado',
             description: `O usuário ${userCreated.name} foi criado`,

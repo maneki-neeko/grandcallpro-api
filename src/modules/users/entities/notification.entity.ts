@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
+import UserLevel from "./user-level";
 
 export enum NotificationType {
     ACCOUNT_CREATION_REQUEST = 'ACCOUNT_CREATION_REQUEST',
@@ -14,6 +15,9 @@ export class Notification {
     @Column({ type: 'text', enum: NotificationType })
     type: NotificationType;
 
+    @Column({ type: 'text', enum: UserLevel })
+    notificationLevel: UserLevel
+
     @Column()
     title: string;
 
@@ -25,4 +29,7 @@ export class Notification {
 
     @Column()
     requestedUserId: number;
+
+    @CreateDateColumn()
+    createdAt: Date;
 }
