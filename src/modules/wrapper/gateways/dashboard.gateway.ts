@@ -4,10 +4,10 @@ import {
   OnGatewayConnection,
   OnGatewayDisconnect,
 } from '@nestjs/websockets';
-import { Logger, UseGuards } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
 import { DashboardService } from '../services/dashboard.service';
-import { WsJwtGuard } from '@users/guards/ws-jwt.guard';
+import { AuthService } from '@users/services/auth.service';
 
 @WebSocketGateway({
   cors: {
@@ -15,16 +15,24 @@ import { WsJwtGuard } from '@users/guards/ws-jwt.guard';
   },
   namespace: '/v1/dashboard',
 })
-@UseGuards(WsJwtGuard)
 export class DashboardGateway implements OnGatewayConnection, OnGatewayDisconnect {
   private readonly logger = new Logger(DashboardGateway.name);
 
   @WebSocketServer()
   server: Server;
 
-  constructor(private dashboardService: DashboardService) {}
+  constructor(private dashboardService: DashboardService, private authService: AuthService) {}
 
-  handleConnection(client: Socket) {
+  async handleConnection(client: Socket) {
+    const token = client.handshake.headers['authorization']?.split(' ')[1];
+    if (!token) {
+      this.logger.warn(`Cliente sem token: ${client.id}`);
+      client.disconnect();
+      return;
+    }
+    const user = await this.authService.verifyUser(token);
+    client['user'] = user;
+
     this.logger.log(`Cliente conectado: ${client.id}`);
     this.sendDashboardData(client);
   }

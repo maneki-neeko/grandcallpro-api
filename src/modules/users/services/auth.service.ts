@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from './users.service';
 import { AuthUserDto } from '@users/dto/auth-user.dto';
@@ -11,10 +11,11 @@ import { USER_OR_PASSWORD_MISMATCH } from '../constants';
 import UserStatus from '@users/entities/user-status';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { USER_CREATED_EVENT } from 'src/modules/shared/events';
-import UserLevel from '@users/entities/user-level';
+import { Logger } from '@nestjs/common';
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
@@ -79,5 +80,14 @@ export class AuthService {
         level: createdUser.level,
       }
     };
+  }
+
+  async verifyUser(authToken: string): Promise<JwtPayload> {
+    try {
+      const payload = this.jwtService.verify<JwtPayload>(authToken);
+      return payload;
+    } catch (error) {
+      throw new UnauthorizedException('Token inválido ou expirado');
+    }
   }
 }
