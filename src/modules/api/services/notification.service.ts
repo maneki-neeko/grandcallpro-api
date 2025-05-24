@@ -8,6 +8,7 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { NOTIFICATIONS_UPDATED_EVENT } from '@shared/events';
 import UserLevel from '@users/entities/user-level';
 import UserStatus from '@users/entities/user-status';
+import { UserDto } from '@users/dto/user.dto';
 
 @Injectable()
 export class NotificationService {
@@ -53,7 +54,7 @@ export class NotificationService {
     this.eventEmitter.emit(NOTIFICATIONS_UPDATED_EVENT);
   }
 
-  private notValidAdmins(admins: User[]) {
+  private notValidAdmins(admins: UserDto[]) {
     if (admins.length === 0) return true;
 
     const onlyOneAdmin = admins.length === 1;

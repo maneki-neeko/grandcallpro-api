@@ -8,6 +8,7 @@ import {
 import { Exclude } from 'class-transformer';
 import UserLevel from './user-level';
 import UserStatus from './user-status';
+import { UserDto } from '@users/dto/user.dto';
 
 @Entity('users')
 export class User {
@@ -47,5 +48,20 @@ export class User {
 
   activate() {
     this.status = UserStatus.ACTIVE;
+  }
+
+  toDto(): UserDto {
+    return {
+      id: this.id,
+      name: this.name,
+      email: this.email,
+      username: this.username,
+      department: this.department,
+      status: this.status,
+      role: this.role,
+      level: this.level,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
+    };
   }
 }

@@ -46,7 +46,6 @@ describe('Users Controller (e2e)', () => {
         name: 'Teste Usuario Dois',
         email: 'teste22@example.com',
         department: 'TI',
-        password: expect.any(String),
         role: 'developer',
         status: UserStatus.ACTIVE,
         level: UserLevel.USER,

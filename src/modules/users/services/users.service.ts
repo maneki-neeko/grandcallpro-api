@@ -8,6 +8,7 @@ import { ILike } from 'typeorm';
 import UserLevel from '@users/entities/user-level';
 import UserStatus from '@users/entities/user-status';
 import * as bcrypt from 'bcrypt';
+import { UserDto } from '@users/dto/user.dto';
 
 @Injectable()
 export class UsersService {
@@ -16,7 +17,7 @@ export class UsersService {
     private readonly userRepository: Repository<User>
   ) {}
 
-  async createAlreadyActive(user: CreateUserDto): Promise<User> {
+  async createAlreadyActive(user: CreateUserDto): Promise<UserDto> {
     const newUser = Object.assign(new User(), {
       ...user,
       status: UserStatus.ACTIVE,
@@ -25,7 +26,7 @@ export class UsersService {
     return this.create(newUser);
   }
 
-  async create(user: CreateUserDto): Promise<User> {
+  async create(user: CreateUserDto): Promise<UserDto> {
     await this.validateEmail(user.email, '');
     await this.validateUsername(user.username, '');
     await this.validateName(user.name, '');
@@ -34,23 +35,25 @@ export class UsersService {
 
     user.password = encryptedPassword;
 
-    return this.userRepository.save(user);
+    return this.userRepository.save(user).then(user => user.toDto());
   }
 
-  async findAll(): Promise<User[]> {
-    return this.userRepository.find();
+  async findAll(): Promise<UserDto[]> {
+    return (await this.userRepository.find()).map(user => user.toDto());
   }
 
-  async findAllAdmins(): Promise<User[]> {
-    return this.userRepository.find({ where: { level: UserLevel.ADMIN } });
+  async findAllAdmins(): Promise<UserDto[]> {
+    return (await this.userRepository.find({ where: { level: UserLevel.ADMIN } })).map(user =>
+      user.toDto()
+    );
   }
 
-  async findOne(id: number): Promise<User> {
+  async findOne(id: number): Promise<UserDto> {
     const user = await this.userRepository.findOne({ where: { id } });
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
-    return user;
+    return user.toDto();
   }
 
   async findByLogin(login: string): Promise<User | undefined> {
@@ -59,25 +62,34 @@ export class UsersService {
     });
   }
 
-  async activeUser(id: number): Promise<User> {
-    const user = await this.findOne(id);
+  async activeUser(id: number): Promise<UserDto> {
+    const user = await this.userRepository.findOne({ where: { id } });
+
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
 
     user.activate();
 
-    return this.userRepository.save(user);
+    return this.userRepository.save(user).then(user => user.toDto());
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+  async update(id: number, updateUserDto: UpdateUserDto): Promise<UserDto> {
     const user = await this.findOne(id);
     await this.validateEmail(updateUserDto.email, user.email);
     await this.validateUsername(updateUserDto.username, user.username);
     await this.validateName(updateUserDto.name, user.name);
     Object.assign(user, updateUserDto);
-    return this.userRepository.save(user);
+    return this.userRepository.save(user).then(user => user.toDto());
   }
 
   async remove(id: number): Promise<void> {
-    const user = await this.findOne(id);
+    const user = await this.userRepository.findOne({ where: { id } });
+
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+
     await this.userRepository.remove(user);
   }
 
