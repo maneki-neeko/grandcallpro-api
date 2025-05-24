@@ -5,7 +5,6 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Exclude } from 'class-transformer';
 import UserLevel from './user-level';
 import UserStatus from './user-status';
 import { UserDto } from '@users/dto/user.dto';
@@ -31,7 +30,6 @@ export class User {
   status: UserStatus;
 
   @Column()
-  @Exclude()
   password: string;
 
   @Column()
@@ -51,17 +49,6 @@ export class User {
   }
 
   toDto(): UserDto {
-    return {
-      id: this.id,
-      name: this.name,
-      email: this.email,
-      username: this.username,
-      department: this.department,
-      status: this.status,
-      role: this.role,
-      level: this.level,
-      createdAt: this.createdAt,
-      updatedAt: this.updatedAt,
-    };
+    return new UserDto(this);
   }
 }
