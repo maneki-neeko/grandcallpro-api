@@ -19,7 +19,6 @@ import { UserDto } from '@users/dto/user.dto';
 import { AuthLevel } from '@users/guards/auth-level.guard';
 import UserLevel from '@users/entities/user-level';
 import { CurrentUser } from '@users/decorators/current-user.decorator';
-import { JwtPayload } from '@users/dto/jwt-payload.interface';
 
 @Controller('v1/users')
 export class UsersController {
