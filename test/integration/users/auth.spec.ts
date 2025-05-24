@@ -32,7 +32,7 @@ describe('Auth Controller (e2e)', () => {
       department: 'TI',
       password: await bcrypt.hash('senha123', 10),
       role: 'developer',
-      level: UserLevel.USER,
+      level: UserLevel.ADMIN,
       status: UserStatus.ACTIVE,
     });
 
