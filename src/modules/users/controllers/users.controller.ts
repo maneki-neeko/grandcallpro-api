@@ -12,7 +12,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { UsersService } from '@users/services/users.service';
-import { RegisterUserDto } from '@users/dto/register-user.dto';
+import { CreateUserDto } from '@users/dto/create-user.dto';
 import { UpdateUserDto } from '@users/dto/update-user.dto';
 import { User } from '@users/entities/user.entity';
 import { JwtAuthGuard } from '@users/guards/jwt-auth.guard';
@@ -24,8 +24,8 @@ export class UsersController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @UseGuards(JwtAuthGuard)
-  async create(@Body() createUserDto: RegisterUserDto): Promise<User> {
-    return this.usersService.create(createUserDto);
+  async create(@Body() createUserDto: CreateUserDto): Promise<User> {
+    return this.usersService.createAlreadyActive(createUserDto);
   }
 
   @Get()

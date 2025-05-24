@@ -13,6 +13,16 @@ import { UsersService } from '@users/services/users.service';
 import { AuthController } from '@users/controllers/auth.controller';
 import { AuthService } from '@users/services/auth.service';
 import { JwtStrategy } from '@users/strategies/jwt.strategy';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+
+// Create a mock for EventEmitter2
+class MockEventEmitter2 {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  emit(_event: string, ..._args: any[]) {
+    // Mock implementation that does nothing
+    return true;
+  }
+}
 
 export interface TestContext {
   app: INestApplication;
@@ -36,8 +46,18 @@ export async function createTestingModule(): Promise<TestContext> {
         signOptions: { expiresIn: '5h' },
       }),
     ],
+    // Explicitly provide a mock for EventEmitter2
     controllers: [ExtensionController, UsersController, AuthController],
-    providers: [ExtensionService, UsersService, AuthService, JwtStrategy],
+    providers: [
+      ExtensionService,
+      UsersService,
+      AuthService,
+      JwtStrategy,
+      {
+        provide: EventEmitter2,
+        useClass: MockEventEmitter2,
+      },
+    ],
   }).compile();
 
   const app = moduleRef.createNestApplication();

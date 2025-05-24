@@ -2,7 +2,7 @@ import UserLevel from '@users/entities/user-level';
 import { IsString, IsEmail, IsNotEmpty, MinLength, IsEnum, Matches } from 'class-validator';
 import { USERNAME_REGEX, USERNAME_REGEX_MESSAGE } from '../constants';
 
-export class RegisterUserDto {
+export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
   name: string;

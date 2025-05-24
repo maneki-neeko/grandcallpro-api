@@ -1,11 +1,10 @@
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'bun:test';
-import { Repository } from 'typeorm';
-import { User } from '@users/entities/user.entity';
 import { cleanupTestingModule, clearDatabase, createTestingModule, TestContext } from 'test/setup';
 import UserLevel from '@users/entities/user-level';
-import supertest from 'supertest';
+import request from 'supertest';
 import { HttpStatus } from '@nestjs/common';
 import { getToken } from '../utils';
+import UserStatus from '@users/entities/user-status';
 
 describe('Users Controller (e2e)', () => {
   let context: TestContext;
@@ -36,21 +35,27 @@ describe('Users Controller (e2e)', () => {
         level: UserLevel.USER,
       };
 
-      const response = await supertest(context.httpServer)
+      const response = await request(context.httpServer)
         .post('/v1/users')
         .set({ authorization: token })
-        .send(payload)
-        .expect(HttpStatus.CREATED);
+        .send(payload);
 
+      expect(response.body.password).not.toBe('senha123');
       expect(response.body).toMatchObject({
         id: 2,
         name: 'Teste Usuario Dois',
         email: 'teste22@example.com',
         department: 'TI',
-        password: 'senha123',
+        password: expect.any(String),
         role: 'developer',
+        status: UserStatus.ACTIVE,
         level: UserLevel.USER,
+        username: 'userexample22',
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
       });
+
+      expect(response.status).toBe(HttpStatus.CREATED);
     });
 
     it('Não deve ser possível criar um usuário já existente', async () => {
@@ -66,11 +71,18 @@ describe('Users Controller (e2e)', () => {
         level: UserLevel.USER,
       };
 
-      await supertest(context.httpServer)
+      const response = await request(context.httpServer)
         .post('/v1/users')
         .set({ authorization: token })
-        .send(payload)
-        .expect(HttpStatus.CONFLICT);
+        .send(payload);
+
+      expect(response.body).toMatchObject({
+        error: 'Conflict',
+        message: 'Email already exists',
+        statusCode: 409,
+      });
+
+      expect(response.status).toBe(HttpStatus.CONFLICT);
     });
   });
 });

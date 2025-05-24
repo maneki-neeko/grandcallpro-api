@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UsersService } from './users.service';
 import { AuthUserDto } from '@users/dto/auth-user.dto';
 import * as bcrypt from 'bcrypt';
-import { RegisterUserDto } from '@users/dto/register-user.dto';
+import { CreateUserDto } from '@users/dto/create-user.dto';
 import { User } from '@users/entities/user.entity';
 import { AuthResponse } from '@users/dto/auth-response.interface';
 import { JwtPayload } from '@users/dto/jwt-payload.interface';
@@ -60,11 +60,10 @@ export class AuthService {
     };
   }
 
-  async register(registerUserDto: RegisterUserDto): Promise<AuthResponse> {
+  async register(createUserDto: CreateUserDto): Promise<AuthResponse> {
     const user = Object.assign(new User(), {
-      ...registerUserDto,
+      ...createUserDto,
       status: UserStatus.PENDING,
-      password: await bcrypt.hash(registerUserDto.password, 10),
     });
 
     const createdUser = await this.usersService.create(user);
