@@ -33,8 +33,6 @@ export class NotificationService {
   async sendAccountCreationNotificationsToAdmins(userCreated: User) {
     const admins = await this.usersService.findAllAdmins();
 
-    this.logger.log(admins);
-
     if (this.notValidAdmins(admins)) {
       await this.usersService.activeUser(userCreated.id);
       return;

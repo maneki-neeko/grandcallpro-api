@@ -5,7 +5,7 @@ import {
   OnGatewayDisconnect,
   OnGatewayInit,
 } from '@nestjs/websockets';
-import { Logger, UseGuards } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 import { Server, Socket } from 'socket.io';
 import { NotificationService } from '@api/services/notification.service';
@@ -83,7 +83,7 @@ export class NotificationGateway
 
       // Para cada socket conectado, enviar notificações filtradas pelo nível do usuário
       for (const socket of connectedSockets) {
-        const user = socket['user'];
+        const user = socket.data.user;
         if (user) {
           // Filtrar notificações pelo nível do usuário e enviar apenas para este cliente
           this.emitNotificationsByLevel(user, notifications, socket);
