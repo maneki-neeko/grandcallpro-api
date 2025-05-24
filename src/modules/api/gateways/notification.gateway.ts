@@ -19,7 +19,9 @@ import { AuthService } from '@users/services/auth.service';
   cors: true,
   namespace: '/v1/notifications',
 })
-export class NotificationGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
+export class NotificationGateway
+  implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
+{
   private readonly logger = new Logger(NotificationGateway.name);
 
   @WebSocketServer()
@@ -42,9 +44,9 @@ export class NotificationGateway implements OnGatewayInit, OnGatewayConnection, 
       return;
     }
     const user = await this.authService.verifyUser(token);
-    client['user'] = user;
+    client.data['user'] = user;
 
-    this.logger.log(`NotificationGateway: Cliente conectado: ${client.id}`);
+    this.logger.log(`Cliente conectado: ${client.id}, usuário: ${user?.username}`);
     this.sendNotificationData(client);
   }
 
@@ -54,7 +56,7 @@ export class NotificationGateway implements OnGatewayInit, OnGatewayConnection, 
 
   private async sendNotificationData(client: Socket) {
     try {
-      const user = client['user'];
+      const user = client.data['user'];
       const notifications = await this.notificationService.findRecentNotifications();
 
       this.emitNotificationsByLevel(user, notifications, client);
@@ -71,14 +73,14 @@ export class NotificationGateway implements OnGatewayInit, OnGatewayConnection, 
     try {
       const notifications = await this.notificationService.findRecentNotifications();
       this.logger.log('Enviando notificações para clientes conectados');
-      
+
       // Obter todos os clientes conectados ao namespace
       const connectedSockets = await this.server.fetchSockets();
-      
+
       this.logger.log(`Total de ${connectedSockets.length} clientes conectados`);
-      
+
       let notificationsCount = 0;
-      
+
       // Para cada socket conectado, enviar notificações filtradas pelo nível do usuário
       for (const socket of connectedSockets) {
         const user = socket['user'];
@@ -90,17 +92,21 @@ export class NotificationGateway implements OnGatewayInit, OnGatewayConnection, 
           this.logger.warn(`Socket ${socket.id} não tem usuário associado`);
         }
       }
-      
+
       this.logger.log(`Notificações enviadas para ${notificationsCount} usuários`);
     } catch (error) {
       this.logger.error(`Erro ao enviar atualização: ${error.message}`, error.stack);
     }
   }
 
-  private emitNotificationsByLevel(user: User, notifications: Notification[], client: Socket | any) {
+  private emitNotificationsByLevel(
+    user: User,
+    notifications: Notification[],
+    client: Socket | any
+  ) {
     // Se não houver usuário ou cliente, não faz nada
     if (!user || !client) return;
-    
+
     // Filtrar notificações por nível
     const notificationsByLevel = {
       [UserLevel.ADMIN]: notifications.filter(
@@ -109,14 +115,12 @@ export class NotificationGateway implements OnGatewayInit, OnGatewayConnection, 
       [UserLevel.SUPERVISOR]: notifications.filter(
         notification => notification.level === UserLevel.SUPERVISOR
       ),
-      [UserLevel.USER]: notifications.filter(
-        notification => notification.level === UserLevel.USER
-      ),
+      [UserLevel.USER]: notifications.filter(notification => notification.level === UserLevel.USER),
     };
 
     // Obter notificações para o nível do usuário
     const userNotifications = notificationsByLevel[user.level];
-    
+
     // Enviar notificações para o cliente
     // Verificamos se o cliente tem o método emit
     if (typeof client.emit === 'function') {
@@ -129,7 +133,7 @@ export class NotificationGateway implements OnGatewayInit, OnGatewayConnection, 
 
     this.logger.log(`Notificações enviadas para usuário ${user.name} (${user.level})`);
   }
-  
+
   @OnEvent(NOTIFICATIONS_UPDATED_EVENT)
   async handleNotificationsUpdatedEvent() {
     await this.broadcastNotificationUpdate();

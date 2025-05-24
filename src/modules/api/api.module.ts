@@ -18,14 +18,14 @@ import { DashboardGateway } from '../wrapper/gateways/dashboard.gateway';
       secret: process.env.JWT_SECRET || 'grandcallpro-secret-key',
       signOptions: { expiresIn: '24h' },
     }),
-    UsersModule
+    UsersModule,
   ],
   controllers: [ExtensionController],
   providers: [
     ExtensionService,
     NotificationService,
     NotificationEventListenerService,
-    NotificationGateway
+    NotificationGateway,
   ],
   exports: [ExtensionService, NotificationService],
 })

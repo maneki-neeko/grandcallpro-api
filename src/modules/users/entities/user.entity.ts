@@ -45,7 +45,6 @@ export class User {
   @UpdateDateColumn()
   updatedAt: Date;
 
-
   activate() {
     this.status = UserStatus.ACTIVE;
   }

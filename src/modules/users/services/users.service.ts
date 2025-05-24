@@ -46,7 +46,7 @@ export class UsersService {
 
   async activeUser(id: number): Promise<User> {
     const user = await this.findOne(id);
-    
+
     user.activate();
 
     return this.userRepository.save(user);

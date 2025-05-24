@@ -19,7 +19,7 @@ export class AuthService {
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
-    private readonly eventEmitter: EventEmitter2,
+    private readonly eventEmitter: EventEmitter2
   ) {}
 
   async login(authUserDto: AuthUserDto): Promise<AuthResponse> {
@@ -78,7 +78,7 @@ export class AuthService {
         status: createdUser.status,
         email: createdUser.email,
         level: createdUser.level,
-      }
+      },
     };
   }
 

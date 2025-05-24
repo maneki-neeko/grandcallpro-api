@@ -21,7 +21,10 @@ export class DashboardGateway implements OnGatewayConnection, OnGatewayDisconnec
   @WebSocketServer()
   server: Server;
 
-  constructor(private dashboardService: DashboardService, private authService: AuthService) {}
+  constructor(
+    private dashboardService: DashboardService,
+    private authService: AuthService
+  ) {}
 
   async handleConnection(client: Socket) {
     const token = client.handshake.headers['authorization']?.split(' ')[1];
@@ -31,9 +34,9 @@ export class DashboardGateway implements OnGatewayConnection, OnGatewayDisconnec
       return;
     }
     const user = await this.authService.verifyUser(token);
-    client['user'] = user;
+    client.data['user'] = user;
 
-    this.logger.log(`Cliente conectado: ${client.id}`);
+    this.logger.log(`Cliente conectado: ${client.id}, usuário: ${user?.username}`);
     this.sendDashboardData(client);
   }
 
