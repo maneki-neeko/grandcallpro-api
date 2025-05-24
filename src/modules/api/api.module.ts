@@ -1,4 +1,4 @@
-import { forwardRef, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 import { UsersModule } from '@users/users.module';
@@ -9,7 +9,6 @@ import { ExtensionService } from '@api/services/extension.service';
 import { NotificationService } from '@api/services/notification.service';
 import { NotificationEventListenerService } from '@api/services/notification-event-listener.service';
 import { NotificationGateway } from '@api/gateways/notification.gateway';
-import { DashboardGateway } from '../wrapper/gateways/dashboard.gateway';
 
 @Module({
   imports: [
