@@ -12,6 +12,7 @@ import UserStatus from '@users/entities/user-status';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { USER_CREATED_EVENT } from 'src/modules/shared/events';
 import { Logger } from '@nestjs/common';
+import UserLevel from '@users/entities/user-level';
 
 @Injectable()
 export class AuthService {
@@ -63,6 +64,7 @@ export class AuthService {
   async register(createUserDto: CreateUserDto): Promise<AuthResponse> {
     const user = Object.assign(new User(), {
       ...createUserDto,
+      level: UserLevel.USER,
       status: UserStatus.PENDING,
     });
 

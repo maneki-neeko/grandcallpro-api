@@ -14,9 +14,10 @@ import {
 import { UsersService } from '@users/services/users.service';
 import { CreateUserDto } from '@users/dto/create-user.dto';
 import { UpdateUserDto } from '@users/dto/update-user.dto';
-import { User } from '@users/entities/user.entity';
 import { JwtAuthGuard } from '@users/guards/jwt-auth.guard';
 import { UserDto } from '@users/dto/user.dto';
+import { AuthLevel } from '@users/guards/auth-level.guard';
+import UserLevel from '@users/entities/user-level';
 
 @Controller('v1/users')
 export class UsersController {
@@ -24,7 +25,7 @@ export class UsersController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  @UseGuards(JwtAuthGuard)
+  @AuthLevel(UserLevel.ADMIN)
   async create(@Body() createUserDto: CreateUserDto): Promise<UserDto> {
     return this.usersService.createAlreadyActive(createUserDto);
   }
@@ -55,7 +56,7 @@ export class UsersController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  @UseGuards(JwtAuthGuard)
+  @AuthLevel(UserLevel.ADMIN)
   async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
     return this.usersService.remove(id);
   }
