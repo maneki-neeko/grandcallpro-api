@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '@users/entities/user.entity';
@@ -9,6 +14,7 @@ import UserLevel from '@users/entities/user-level';
 import UserStatus from '@users/entities/user-status';
 import * as bcrypt from 'bcrypt';
 import { UserDto } from '@users/dto/user.dto';
+import { JwtPayload } from '@users/dto/jwt-payload.interface';
 
 @Injectable()
 export class UsersService {
@@ -74,13 +80,23 @@ export class UsersService {
     return this.userRepository.save(user).then(user => user.toDto());
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto): Promise<UserDto> {
-    const user = await this.findOne(id);
+  async update(
+    id: number,
+    updateUserDto: UpdateUserDto,
+    currentUser: JwtPayload
+  ): Promise<UserDto> {
+    const user = await this.userRepository.findOne({ where: { id } });
+
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+
+    await this.validateUpdatePermission(currentUser, user, updateUserDto);
     await this.validateEmail(updateUserDto.email, user.email);
     await this.validateUsername(updateUserDto.username, user.username);
     await this.validateName(updateUserDto.name, user.name);
-    Object.assign(user, updateUserDto);
-    return this.userRepository.save(user).then(user => user.toDto());
+
+    return this.userRepository.update({ id }, updateUserDto).then(() => this.findOne(id));
   }
 
   async remove(id: number): Promise<void> {
@@ -91,6 +107,20 @@ export class UsersService {
     }
 
     await this.userRepository.remove(user);
+  }
+
+  private async validateUpdatePermission(
+    currentUser: JwtPayload,
+    user: User,
+    updateUserDto: UpdateUserDto
+  ): Promise<void> {
+    if (currentUser.level !== UserLevel.ADMIN && currentUser.username !== user.username) {
+      throw new ForbiddenException('You can only update yourself');
+    }
+
+    if (currentUser.username === user.username && updateUserDto.level !== user.level) {
+      throw new ForbiddenException('You cannot update your own level');
+    }
   }
 
   private async validateEmail(newEmail: string | undefined, currentEmail: string): Promise<void> {

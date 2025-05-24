@@ -18,6 +18,8 @@ import { JwtAuthGuard } from '@users/guards/jwt-auth.guard';
 import { UserDto } from '@users/dto/user.dto';
 import { AuthLevel } from '@users/guards/auth-level.guard';
 import UserLevel from '@users/entities/user-level';
+import { CurrentUser } from '@users/decorators/current-user.decorator';
+import { JwtPayload } from '@users/dto/jwt-payload.interface';
 
 @Controller('v1/users')
 export class UsersController {
@@ -49,9 +51,10 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   async update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() updateUserDto: UpdateUserDto
+    @Body() updateUserDto: UpdateUserDto,
+    @CurrentUser() currentUser
   ): Promise<UserDto> {
-    return this.usersService.update(id, updateUserDto);
+    return this.usersService.update(id, updateUserDto, currentUser);
   }
 
   @Delete(':id')
