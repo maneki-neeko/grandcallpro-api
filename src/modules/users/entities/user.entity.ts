@@ -5,8 +5,9 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Exclude } from 'class-transformer';
 import UserLevel from './user-level';
+import UserStatus from './user-status';
+import { UserDto } from '@users/dto/user.dto';
 
 @Entity('users')
 export class User {
@@ -25,8 +26,10 @@ export class User {
   @Column()
   department: string;
 
+  @Column({ type: 'text', enum: UserStatus })
+  status: UserStatus;
+
   @Column()
-  @Exclude()
   password: string;
 
   @Column()
@@ -40,4 +43,12 @@ export class User {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  activate() {
+    this.status = UserStatus.ACTIVE;
+  }
+
+  toDto(): UserDto {
+    return new UserDto(this);
+  }
 }

@@ -16,7 +16,8 @@
     "paths": {
       "@users/*": ["src/modules/users/*"],
       "@api/*": ["src/modules/api/*"],
-      "@core/*": ["src/modules/core/*"]
+      "@core/*": ["src/modules/core/*"],
+      "@shared/*": ["src/modules/shared/*"]
     },
     "incremental": true,
     "skipLibCheck": true,

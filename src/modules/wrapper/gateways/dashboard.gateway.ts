@@ -7,6 +7,7 @@ import {
 import { Logger } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
 import { DashboardService } from '../services/dashboard.service';
+import { AuthService } from '@users/services/auth.service';
 
 @WebSocketGateway({
   cors: {
@@ -20,10 +21,22 @@ export class DashboardGateway implements OnGatewayConnection, OnGatewayDisconnec
   @WebSocketServer()
   server: Server;
 
-  constructor(private dashboardService: DashboardService) {}
+  constructor(
+    private dashboardService: DashboardService,
+    private authService: AuthService
+  ) {}
 
-  handleConnection(client: Socket) {
-    this.logger.log(`Cliente conectado: ${client.id}`);
+  async handleConnection(client: Socket) {
+    const token = client.handshake.headers['authorization']?.split(' ')[1];
+    if (!token) {
+      this.logger.warn(`Cliente sem token: ${client.id}`);
+      client.disconnect();
+      return;
+    }
+    const user = await this.authService.verifyUser(token);
+    client.data['user'] = user;
+
+    this.logger.log(`Cliente conectado: ${client.id}, usuário: ${user?.username}`);
     this.sendDashboardData(client);
   }
 
