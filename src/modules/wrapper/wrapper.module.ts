@@ -7,9 +7,10 @@ import { DashboardGateway } from './gateways/dashboard.gateway';
 import { DashboardController } from './controllers/dashboard.controller';
 import { CoreModule } from '@core/core.module';
 import { ApiModule } from '@api/api.module';
+import { UsersModule } from '@users/users.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([CallRecord]), CoreModule, ApiModule],
+  imports: [TypeOrmModule.forFeature([CallRecord]), CoreModule, ApiModule, UsersModule],
   controllers: [DashboardController],
   providers: [DashboardService, CallEventListenerService, DashboardGateway],
   exports: [DashboardService, DashboardGateway],

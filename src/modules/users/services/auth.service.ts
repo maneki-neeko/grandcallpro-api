@@ -1,23 +1,29 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from './users.service';
 import { AuthUserDto } from '@users/dto/auth-user.dto';
 import * as bcrypt from 'bcrypt';
-import { RegisterUserDto } from '@users/dto/register-user.dto';
+import { CreateUserDto } from '@users/dto/create-user.dto';
 import { User } from '@users/entities/user.entity';
 import { AuthResponse } from '@users/dto/auth-response.interface';
 import { JwtPayload } from '@users/dto/jwt-payload.interface';
 import { USER_OR_PASSWORD_MISMATCH } from '../constants';
+import UserStatus from '@users/entities/user-status';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { USER_CREATED_EVENT } from 'src/modules/shared/events';
+import { Logger } from '@nestjs/common';
+import UserLevel from '@users/entities/user-level';
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
   constructor(
     private readonly usersService: UsersService,
-    private readonly jwtService: JwtService
+    private readonly jwtService: JwtService,
+    private readonly eventEmitter: EventEmitter2
   ) {}
 
   async login(authUserDto: AuthUserDto): Promise<AuthResponse> {
-    // Permitir login com username OU email
     const user = await this.usersService.findByLogin(authUserDto.login);
 
     if (!user) {
@@ -37,40 +43,52 @@ export class AuthService {
       level: user.level,
     };
 
+    let accessToken = null;
+
+    if (user.status == UserStatus.ACTIVE) {
+      accessToken = this.jwtService.sign(payload);
+    }
+
     return {
       user: {
         id: user.id,
         name: user.name,
+        status: user.status,
         email: user.email,
         level: user.level,
       },
-      accessToken: this.jwtService.sign(payload),
+      accessToken,
     };
   }
 
-  async register(registerUserDto: RegisterUserDto): Promise<AuthResponse> {
+  async register(createUserDto: CreateUserDto): Promise<AuthResponse> {
     const user = Object.assign(new User(), {
-      ...registerUserDto,
-      password: await bcrypt.hash(registerUserDto.password, 10),
+      ...createUserDto,
+      level: UserLevel.USER,
+      status: UserStatus.PENDING,
     });
 
     const createdUser = await this.usersService.create(user);
 
-    const payload: JwtPayload = {
-      sub: createdUser.id,
-      username: createdUser.username,
-      email: createdUser.email,
-      level: createdUser.level,
-    };
+    this.eventEmitter.emit(USER_CREATED_EVENT, createdUser);
 
     return {
       user: {
         id: createdUser.id,
         name: createdUser.name,
+        status: createdUser.status,
         email: createdUser.email,
         level: createdUser.level,
       },
-      accessToken: this.jwtService.sign(payload),
     };
+  }
+
+  async verifyUser(authToken: string): Promise<JwtPayload> {
+    try {
+      const payload = this.jwtService.verify<JwtPayload>(authToken);
+      return payload;
+    } catch (error) {
+      throw new UnauthorizedException('Token inválido ou expirado');
+    }
   }
 }

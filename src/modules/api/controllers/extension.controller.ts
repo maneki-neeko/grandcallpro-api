@@ -16,6 +16,8 @@ import { ExtensionService } from '@api/services/extension.service';
 import { CreateExtensionDto } from '@api/dto/create-extension.dto';
 import { UpdateExtensionDto } from '@api/dto/update-extension.dto';
 import { JwtAuthGuard } from '@users/guards/jwt-auth.guard';
+import { AuthLevel } from '@users/guards/auth-level.guard';
+import UserLevel from '@users/entities/user-level';
 
 @Controller('v1/extensions')
 export class ExtensionController {
@@ -44,14 +46,14 @@ export class ExtensionController {
 
   @Put()
   @HttpCode(HttpStatus.OK)
-  @UseGuards(JwtAuthGuard)
+  @AuthLevel(UserLevel.ADMIN, UserLevel.SUPERVISOR)
   async update(@Body() updateExtensionDto: UpdateExtensionDto): Promise<Extension> {
     return this.extensionService.update(updateExtensionDto);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  @UseGuards(JwtAuthGuard)
+  @AuthLevel(UserLevel.ADMIN, UserLevel.SUPERVISOR)
   async remove(@Param('id') id: number): Promise<void> {
     await this.extensionService.remove(id);
   }
