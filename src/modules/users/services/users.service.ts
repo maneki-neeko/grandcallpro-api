@@ -118,7 +118,11 @@ export class UsersService {
       throw new ForbiddenException('You can only update yourself');
     }
 
-    if (currentUser.username === user.username && updateUserDto.level !== user.level) {
+    if (
+      currentUser.username === user.username &&
+      updateUserDto.level != null &&
+      updateUserDto.level !== user.level
+    ) {
       throw new ForbiddenException('You cannot update your own level');
     }
   }

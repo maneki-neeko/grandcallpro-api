@@ -9,6 +9,7 @@ export const getToken = async (context: TestContext) => {
   const userRepository = context.dataSource.getRepository(User);
 
   const user = Object.assign(new User(), {
+    id: 1,
     name: 'Usuário Teste',
     email: 'teste@example.com',
     username: 'teste',
