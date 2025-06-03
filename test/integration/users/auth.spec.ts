@@ -195,7 +195,7 @@ describe('Auth Controller (e2e)', () => {
 
     it('deve retornar erro ao tentar autenticar com campo de login inválido', async () => {
       const loginData = { login: ' ', password: 'senha123' };
-      await request(context.httpServer).post('/v1/auth/login').send(loginData).expect(400);
+      await request(context.httpServer).post('/v1/auth/login').send(loginData).expect(401);
     });
 
     it('deve retornar erro ao tentar autenticar com email inexistente', async () => {
@@ -204,7 +204,7 @@ describe('Auth Controller (e2e)', () => {
         password: 'senha123',
       };
 
-      await request(context.httpServer).post('/v1/auth/login').send(loginData).expect(400);
+      await request(context.httpServer).post('/v1/auth/login').send(loginData).expect(401);
     });
 
     it('deve retornar erro ao tentar autenticar com senha incorreta', async () => {
@@ -215,7 +215,7 @@ describe('Auth Controller (e2e)', () => {
         password: 'senhaerrada',
       };
 
-      await request(context.httpServer).post('/v1/auth/login').send(loginData).expect(400);
+      await request(context.httpServer).post('/v1/auth/login').send(loginData).expect(401);
     });
   });
 });

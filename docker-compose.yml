@@ -16,6 +16,8 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=8081
+      - JWT_SECRET=${JWT_SECRET}
+      - WS_CORS_ORIGIN=${WS_CORS_ORIGIN:-http://localhost:3000}
     command: bun start
 
   # Serviço para desenvolvimento com hot-reload
@@ -37,6 +39,8 @@ services:
     environment:
       - NODE_ENV=development
       - PORT=8081
+      - JWT_SECRET=${JWT_SECRET}
+      - WS_CORS_ORIGIN=${WS_CORS_ORIGIN:-http://localhost:3000}
     command: bun dev
   
   # Serviço para envio de dados de chamada

@@ -14,7 +14,7 @@ import { NotificationGateway } from '@api/gateways/notification.gateway';
   imports: [
     TypeOrmModule.forFeature([Extension, Notification]),
     JwtModule.register({
-      secret: process.env.JWT_SECRET || 'grandcallpro-secret-key',
+      secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '24h' },
     }),
     UsersModule,

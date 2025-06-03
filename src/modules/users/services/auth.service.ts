@@ -27,13 +27,13 @@ export class AuthService {
     const user = await this.usersService.findByLogin(authUserDto.login);
 
     if (!user) {
-      throw new BadRequestException(USER_OR_PASSWORD_MISMATCH);
+      throw new UnauthorizedException(USER_OR_PASSWORD_MISMATCH);
     }
 
     const isPasswordMatch = await bcrypt.compare(authUserDto.password, user.password);
 
     if (!isPasswordMatch) {
-      throw new BadRequestException(USER_OR_PASSWORD_MISMATCH);
+      throw new UnauthorizedException(USER_OR_PASSWORD_MISMATCH);
     }
 
     const payload: JwtPayload = {

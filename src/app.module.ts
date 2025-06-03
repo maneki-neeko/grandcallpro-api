@@ -16,7 +16,7 @@ import { User } from '@users/entities/user.entity';
       type: 'sqlite',
       database: 'src/database/database.sqlite',
       entities: [Extension, Notification, CallRecord, User],
-      synchronize: true, // Não usar em produção
+      synchronize: process.env.NODE_ENV !== 'production',
     }),
     EventEmitterModule.forRoot(),
     ApiModule,

@@ -11,7 +11,7 @@ import { AuthService } from '@users/services/auth.service';
 
 @WebSocketGateway({
   cors: {
-    origin: '*',
+    origin: process.env.WS_CORS_ORIGIN || 'http://localhost:3000',
   },
   namespace: '/v1/dashboard',
 })

@@ -77,10 +77,12 @@ docker-compose --profile dev up -d
 
 ## Variáveis de Ambiente
 
-Crie um arquivo `.env` na raiz do projeto com, por exemplo:
+Crie um arquivo `.env` na raiz do projeto contendo seu segredo JWT e a origem
+permitida para conexões WebSocket:
 
 ```
-JWT_SECRET=grandcallpro-secret-key
+JWT_SECRET=uma-chave-secreta-supersegura
+WS_CORS_ORIGIN=http://localhost:3000
 ```
 
 ## Endpoints Principais
@@ -121,7 +123,9 @@ Authorization: Bearer <token>
 
 ## Banco de Dados
 
-A aplicação utiliza SQLite, com o arquivo localizado em `src/database/database.sqlite`.
+A aplicação utiliza SQLite e o arquivo `src/database/database.sqlite` é criado
+automaticamente. Por segurança, ele está listado no `.gitignore` e não é
+versionado.
 
 ## Testes
 

@@ -16,7 +16,9 @@ import { NOTIFICATIONS_UPDATED_EVENT } from '@shared/events';
 import { AuthService } from '@users/services/auth.service';
 
 @WebSocketGateway({
-  cors: true,
+  cors: {
+    origin: process.env.WS_CORS_ORIGIN || 'http://localhost:3000',
+  },
   namespace: '/v1/notifications',
 })
 export class NotificationGateway
