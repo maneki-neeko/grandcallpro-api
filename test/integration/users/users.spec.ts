@@ -84,4 +84,64 @@ describe('Users Controller (e2e)', () => {
       expect(response.status).toBe(HttpStatus.CONFLICT);
     });
   });
+
+  describe('PUT /v1/users/:id', () => {
+    it('Deve atualizar um usuário com sucesso', async () => {
+      const token = await getToken(context);
+
+      const payload = {
+        name: 'Teste Usuario Dois',
+        username: 'userexample22',
+        email: 'teste22@example.com',
+        department: 'TI',
+        role: 'developer',
+      };
+
+      const response = await request(context.httpServer)
+        .put('/v1/users/1')
+        .set({ authorization: token })
+        .send(payload);
+
+      expect(response.body).toMatchObject({
+        id: 1,
+        name: 'Teste Usuario Dois',
+        email: 'teste22@example.com',
+        department: 'TI',
+        role: 'developer',
+        status: UserStatus.ACTIVE,
+        level: UserLevel.ADMIN,
+        username: 'userexample22',
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
+      });
+
+      expect(response.status).toBe(HttpStatus.OK);
+    });
+
+    it('Deve retornar um erro ao tentar atualizar o próprio level', async () => {
+      const token = await getToken(context);
+
+      const payload = {
+        name: 'Teste Usuario Dois',
+        username: 'userexample22',
+        email: 'teste22@example.com',
+        department: 'TI',
+        role: 'developer',
+        level: UserLevel.SUPERVISOR,
+      };
+
+      const response = await request(context.httpServer)
+        .put('/v1/users/1')
+        .set({ authorization: token })
+        .send(payload);
+
+      expect(response.body).toMatchObject({
+        error: 'Forbidden',
+        message: 'You cannot update your own level',
+        statusCode: 403,
+      });
+
+      expect(response.status).toBe(HttpStatus.FORBIDDEN);
+    });
+  });
 });
