@@ -27,12 +27,31 @@ export class DashboardGateway implements OnGatewayConnection, OnGatewayDisconnec
   ) {}
 
   async handleConnection(client: Socket) {
-    const token = client.handshake.headers['authorization']?.split(' ')[1];
+    // Tenta obter o token do objeto auth
+    let token: string | undefined;
+
+    // Verifica se existe um objeto auth com token no formato 'Bearer JWT'
+    const authData = client.handshake.auth?.token;
+    if (authData && typeof authData === 'string' && authData.startsWith('Bearer ')) {
+      token = authData.split(' ')[1];
+      this.logger.log('Token obtido do objeto auth');
+    }
+
+    // Se não encontrou no objeto auth, tenta obter do header de autorização
+    if (!token) {
+      token = client.handshake.headers['authorization']?.split(' ')[1];
+      if (token) {
+        this.logger.log('Token obtido do header de autorização');
+      }
+    }
+
+    // Verifica se o token foi encontrado
     if (!token) {
       this.logger.warn(`Cliente sem token: ${client.id}`);
       client.disconnect();
       return;
     }
+
     const user = await this.authService.verifyUser(token);
     client.data['user'] = user;
 
